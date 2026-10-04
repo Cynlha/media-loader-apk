@@ -5,180 +5,620 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Media Loader</title>
   <style>
-    * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
-    body { background: #0b0b0b; color: #f0f0f0; margin: 0; padding: 16px; }
+    :root {
+      --bg: #070709;
+      --surface: #121216;
+      --surface-2: #1b1b22;
+      --border: #272732;
+      --text: #f4f4f7;
+      --muted: #8b8b9e;
+      --accent: #3b82f6;
+      --accent-2: #2563eb;
+      --accent-fg: #ffffff;
+      --radius: 12px;
+      --blur-amount: 10px;
+    }
+
+    body[data-theme="oled"] {
+      --bg: #000000;
+      --surface: #0c0c0e;
+      --surface-2: #16161a;
+      --border: #242429;
+      --text: #f5f5f7;
+      --muted: #86868b;
+      --accent: #f5f5f7;
+      --accent-2: #d2d2d7;
+      --accent-fg: #000000;
+    }
+
+    body[data-theme="emerald"] {
+      --bg: #040c09;
+      --surface: #0b1813;
+      --surface-2: #12261e;
+      --border: #1b382d;
+      --text: #ebfaf4;
+      --muted: #7aa897;
+      --accent: #10b981;
+      --accent-2: #059669;
+      --accent-fg: #02140d;
+    }
+
+    body[data-theme="graphite"] {
+      --bg: #0d1017;
+      --surface: #161b26;
+      --surface-2: #1f2736;
+      --border: #2d374d;
+      --text: #f0f4f8;
+      --muted: #8b9bb4;
+      --accent: #3b82f6;
+      --accent-2: #2563eb;
+      --accent-fg: #ffffff;
+    }
+
+    body[data-theme="crimson"] {
+      --bg: #0b0507;
+      --surface: #160b0e;
+      --surface-2: #231116;
+      --border: #381b22;
+      --text: #fceef1;
+      --muted: #ad7e88;
+      --accent: #f43f5e;
+      --accent-2: #e11d48;
+      --accent-fg: #ffffff;
+    }
+
+    body[data-theme="light"] {
+      --bg: #f2f4f8;
+      --surface: #ffffff;
+      --surface-2: #e6eaf0;
+      --border: #d5dbe3;
+      --text: #111827;
+      --muted: #64748b;
+      --accent: #2563eb;
+      --accent-2: #1d4ed8;
+      --accent-fg: #ffffff;
+    }
+
+    body[data-radius="sharp"] { --radius: 5px; }
+    body[data-radius="std"]   { --radius: 12px; }
+    body[data-radius="round"] { --radius: 18px; }
+
+    body[data-blur="off"]    { --blur-amount: 0px; }
+    body[data-blur="soft"]   { --blur-amount: 8px; }
+    body[data-blur="strong"] { --blur-amount: 18px; }
+
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 16px 14px 96px 14px;
+      overflow-x: hidden;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
     .wrap { max-width: 460px; margin: 0 auto; }
-    .top {
+
+    .header {
       display: flex; justify-content: space-between; align-items: center;
-      padding-bottom: 12px; margin-bottom: 14px; border-bottom: 1px solid #222;
+      margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border);
     }
-    .top-title { font-size: 16px; font-weight: 700; }
-    .top-sub {
-      font-size: 11px; font-family: monospace; color: #10b981;
-      background: #07291e; border: 1px solid #0f4c36; padding: 3px 8px; border-radius: 4px;
+    .brand-title { font-size: 19px; font-weight: 800; letter-spacing: -0.4px; }
+    .brand-sub { font-size: 11px; color: var(--muted); font-weight: 500; }
+
+    /* Вкладки и настоящие анимации с эффектом Blur */
+    .view-section { display: none; will-change: transform, opacity, filter; }
+    .view-section.active { display: block; }
+
+    body[data-anim="slide"] .view-section.anim-run {
+      animation: tabSlide 0.34s cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
     }
-    .bar { display: flex; gap: 6px; margin-bottom: 10px; }
-    .bar input {
-      flex: 1; min-width: 0; padding: 12px; border-radius: 6px;
-      border: 1px solid #2a2a2a; background: #141414; color: #fff; font-size: 14px; outline: none;
+    body[data-anim="zoom"] .view-section.anim-run {
+      animation: tabZoom 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
-    .bar input:focus { border-color: #555; }
-    .btn-sm {
-      padding: 0 12px; border-radius: 6px; border: 1px solid #2a2a2a;
-      background: #181818; color: #ddd; font-size: 12px; font-weight: 500; cursor: pointer;
+    body[data-anim="bounce"] .view-section.anim-run {
+      animation: tabBounce 0.44s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
-    .btn-check {
-      width: 100%; padding: 12px; border-radius: 6px; border: none;
-      background: #f0f0f0; color: #0b0b0b; font-size: 14px; font-weight: 600; cursor: pointer;
+    body[data-anim="none"] .view-section.anim-run {
+      animation: none;
     }
-    .btn-check:disabled { opacity: 0.45; }
+
+    @keyframes tabSlide {
+      0%   { opacity: 0; transform: translateX(22px); filter: blur(var(--blur-amount)); }
+      100% { opacity: 1; transform: translateX(0); filter: blur(0px); }
+    }
+    @keyframes tabZoom {
+      0%   { opacity: 0; transform: scale(0.93); filter: blur(var(--blur-amount)); }
+      100% { opacity: 1; transform: scale(1); filter: blur(0px); }
+    }
+    @keyframes tabBounce {
+      0%   { opacity: 0; transform: translateY(24px) scale(0.96); filter: blur(var(--blur-amount)); }
+      100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0px); }
+    }
+
+    /* Поле ввода и красивые кнопки */
+    .search-box {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 12px; margin-bottom: 14px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
+    }
+    .input-row { display: flex; gap: 7px; margin-bottom: 10px; }
+    .input-row input {
+      flex: 1; min-width: 0; padding: 13px 14px; border-radius: var(--radius);
+      border: 1px solid var(--border); background: var(--bg);
+      color: var(--text); font-size: 14px; outline: none;
+      transition: border-color 0.2s ease;
+    }
+    .input-row input:focus { border-color: var(--accent); }
+
+    .btn-sec {
+      padding: 0 14px; border-radius: var(--radius); border: 1px solid var(--border);
+      background: var(--surface-2); color: var(--text);
+      font-size: 12px; font-weight: 700; cursor: pointer;
+      transition: transform 0.14s ease, background-color 0.15s ease;
+    }
+    .btn-primary {
+      width: 100%; padding: 14px; border-radius: var(--radius); border: none;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: var(--accent-fg); font-size: 14px; font-weight: 800;
+      letter-spacing: 0.2px; cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+      transition: transform 0.14s ease, opacity 0.15s ease;
+    }
+    .btn-primary:disabled { opacity: 0.45; }
+    .btn-sec:active, .btn-primary:active, .chip:active, .mode-btn:active, .bnav-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Стартовый блок */
+    .idle-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 15px;
+    }
+    .idle-title { font-size: 11px; font-weight: 800; color: var(--muted); letter-spacing: 0.5px; margin-bottom: 10px; }
+    .plat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; margin-bottom: 12px; }
+    .plat-tag {
+      text-align: center; padding: 9px 4px; font-size: 11px; font-weight: 700;
+      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+    }
+    .quick-stats {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+      border-top: 1px solid var(--border); padding-top: 12px;
+    }
+    .stat-box {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 10px 12px;
+    }
+    .stat-val { font-size: 15px; font-weight: 800; font-family: monospace; color: var(--accent); }
+    .stat-lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    /* Карточка найденного видео */
     .panel {
-      background: #131313; border: 1px solid #262626;
-      border-radius: 8px; padding: 14px; margin-top: 14px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 15px; margin-top: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
     }
     .media-head { display: flex; gap: 12px; margin-bottom: 14px; }
     .thumb {
-      width: 78px; height: 78px; border-radius: 6px; object-fit: cover;
-      background: #080808; border: 1px solid #262626; flex-shrink: 0;
+      width: 84px; height: 84px; border-radius: var(--radius); object-fit: cover;
+      background: var(--bg); border: 1px solid var(--border); flex-shrink: 0;
     }
     .info { min-width: 0; flex: 1; }
     .badges { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 6px; }
     .b-item {
-      font-size: 10px; font-family: monospace; padding: 2px 6px;
-      border-radius: 4px; background: #202020; color: #ccc; border: 1px solid #2e2e2e;
+      font-size: 10px; font-family: monospace; font-weight: 700; padding: 3px 7px;
+      border-radius: 5px; background: var(--surface-2);
+      color: var(--text); border: 1px solid var(--border);
     }
     .m-title {
-      font-size: 13px; font-weight: 600; line-height: 1.35; margin-bottom: 4px;
+      font-size: 14px; font-weight: 700; line-height: 1.35; margin-bottom: 4px;
       display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2;
       -webkit-box-orient: vertical; overflow: hidden;
     }
-    .m-author { font-size: 12px; color: #888; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .m-author { font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
     .mode-switch {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
-      background: #0b0b0b; padding: 4px; border-radius: 6px; border: 1px solid #242424;
-      margin-bottom: 14px;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px;
+      background: var(--bg); padding: 4px; border-radius: var(--radius);
+      border: 1px solid var(--border); margin-bottom: 14px;
     }
     .mode-btn {
-      padding: 8px; border: none; border-radius: 4px; background: transparent;
-      color: #888; font-size: 12px; font-weight: 600; cursor: pointer;
+      padding: 9px 4px; border: none; border-radius: calc(var(--radius) - 3px);
+      background: transparent; color: var(--muted);
+      font-size: 12px; font-weight: 700; cursor: pointer;
+      transition: all 0.16s ease;
     }
-    .mode-btn.active { background: #242424; color: #fff; }
+    .mode-btn.active {
+      background: var(--surface-2); color: var(--text);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
     .section-label {
       display: flex; justify-content: space-between;
-      font-size: 11px; color: #999; margin-bottom: 6px;
+      font-size: 11px; color: var(--muted); margin-bottom: 7px; font-weight: 700;
     }
-    .chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 12px; }
+
+    .chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin-bottom: 13px; }
     .chip {
-      padding: 9px 6px; text-align: center; border-radius: 6px;
-      border: 1px solid #2a2a2a; background: #0e0e0e; color: #bbb;
-      font-size: 12px; font-weight: 500; cursor: pointer;
+      padding: 10px 6px; text-align: center; border-radius: var(--radius);
+      border: 1px solid var(--border); background: var(--bg); color: var(--muted);
+      font-size: 12px; font-weight: 700; cursor: pointer;
+      transition: transform 0.14s ease, background-color 0.18s ease, border-color 0.18s ease;
     }
     .chip.active {
-      background: #ededed; color: #0b0b0b; border-color: #ededed; font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: var(--accent-fg); border-color: transparent; font-weight: 800;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.22);
     }
-    .chip small { display: block; font-size: 9px; opacity: 0.7; margin-top: 2px; }
+    .chip small { display: block; font-size: 9px; opacity: 0.82; margin-top: 2px; font-weight: 500; }
+
+    .mini-input {
+      width: 100%; padding: 11px 12px; border-radius: var(--radius);
+      border: 1px solid var(--border); background: var(--bg);
+      color: var(--text); font-size: 12px; outline: none;
+    }
+    .mini-input:focus { border-color: var(--accent); }
+
     .summary {
-      font-size: 11px; font-family: monospace; color: #aaa;
-      background: #0b0b0b; border: 1px solid #222; padding: 8px 10px;
-      border-radius: 6px; margin-bottom: 12px;
+      font-size: 11px; font-family: monospace; color: var(--muted);
+      background: var(--bg); border: 1px solid var(--border); padding: 9px 11px;
+      border-radius: var(--radius); margin-bottom: 12px;
     }
-    .btn-dl {
-      width: 100%; padding: 13px; border-radius: 6px; border: none;
-      background: #10b981; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer;
-    }
-    .btn-dl:disabled { opacity: 0.5; }
+
+    /* Прогресс-бар */
     .prog-wrap {
-      margin-top: 12px; padding: 12px; border-radius: 8px;
-      background: #131313; border: 1px solid #262626; display: none;
+      margin-top: 12px; padding: 13px; border-radius: var(--radius);
+      background: var(--surface); border: 1px solid var(--border); display: none;
     }
     .prog-top {
       display: flex; justify-content: space-between; align-items: center;
       font-size: 12px; margin-bottom: 8px;
     }
-    .prog-stage { color: #ddd; font-weight: 500; }
-    .prog-pct { font-family: monospace; font-weight: 700; color: #10b981; }
+    .prog-stage { color: var(--text); font-weight: 600; }
+    .prog-pct { font-family: monospace; font-weight: 800; color: var(--accent); }
     .prog-track {
-      width: 100%; height: 8px; background: #090909;
-      border-radius: 4px; overflow: hidden; border: 1px solid #222;
+      width: 100%; height: 9px; background: var(--bg);
+      border-radius: 6px; overflow: hidden; border: 1px solid var(--border);
     }
     .prog-fill {
-      height: 100%; width: 0%; background: #10b981;
+      height: 100%; width: 0%; background: var(--accent);
       transition: width 0.25s ease;
     }
     .prog-stats {
       display: flex; justify-content: space-between;
-      font-size: 11px; font-family: monospace; color: #888; margin-top: 8px;
+      font-size: 11px; font-family: monospace; color: var(--muted); margin-top: 8px;
     }
+
     .msg {
-      margin-top: 12px; padding: 11px 12px; border-radius: 6px;
+      margin-top: 12px; padding: 11px 13px; border-radius: var(--radius);
       font-size: 12px; line-height: 1.4; word-break: break-word; display: none;
     }
-    .msg.info { display: block; background: #161616; border: 1px solid #2a2a2a; color: #ccc; }
-    .msg.ok { display: block; background: #07291e; border: 1px solid #0f5138; color: #a7f3d0; }
-    .msg.err { display: block; background: #2c0b0e; border: 1px solid #58151c; color: #f8d7da; }
+    .msg.info { display: block; background: var(--surface); border: 1px solid var(--border); color: var(--text); }
+    .msg.ok   { display: block; background: #07291e; border: 1px solid #0f5138; color: #a7f3d0; }
+    .msg.err  { display: block; background: #2c0b0e; border: 1px solid #58151c; color: #f8d7da; }
+
+    /* История с превью и встроенным просмотром */
+    .hist-card {
+      padding: 11px; border-radius: var(--radius); background: var(--surface);
+      border: 1px solid var(--border); margin-bottom: 10px;
+    }
+    .hist-row {
+      display: flex; gap: 11px; align-items: center;
+    }
+    .hist-thumb {
+      width: 64px; height: 64px; border-radius: calc(var(--radius) - 2px);
+      object-fit: cover; background: var(--bg); border: 1px solid var(--border); flex-shrink: 0;
+    }
+    .hist-info { min-width: 0; flex: 1; }
+    .hist-title {
+      font-size: 13px; font-weight: 700; margin-bottom: 4px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .hist-meta { font-size: 11px; color: var(--muted); font-family: monospace; }
+    .hist-actions {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 7px;
+      margin-top: 10px; padding-top: 9px; border-top: 1px solid var(--border);
+    }
+    .hist-btn {
+      padding: 8px 10px; border-radius: calc(var(--radius) - 3px);
+      border: 1px solid var(--border); background: var(--surface-2);
+      color: var(--text); font-size: 11px; font-weight: 700; cursor: pointer; text-align: center;
+    }
+    .hist-btn.play {
+      background: var(--accent); color: var(--accent-fg); border-color: transparent;
+    }
+
+    /* Встроенный видеоплеер (Модальное окно) */
+    .player-modal {
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(0, 0, 0, 0.82);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      display: none; align-items: center; justify-content: center; padding: 16px;
+    }
+    .player-modal.open {
+      display: flex;
+      animation: tabZoom 0.24s ease-out forwards;
+    }
+    .player-box {
+      width: 100%; max-width: 440px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 12px; box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
+    }
+    .player-top {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 10px; gap: 8px;
+    }
+    .player-title {
+      font-size: 13px; font-weight: 700;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .player-video {
+      width: 100%; max-height: 68vh; border-radius: calc(var(--radius) - 2px);
+      background: #000; outline: none; display: block;
+    }
+
+    /* Настройки */
+    .set-group {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px; margin-bottom: 12px;
+    }
+    .set-title { font-size: 13px; font-weight: 800; margin-bottom: 10px; }
+    .row-between {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 0; border-top: 1px solid var(--border); font-size: 12px; font-weight: 500;
+    }
+    .row-between:first-of-type { border-top: none; padding-top: 0; }
+
+    .switch {
+      position: relative; display: inline-block; width: 44px; height: 24px;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background-color: var(--bg); border: 1px solid var(--border);
+      border-radius: 24px; transition: 0.2s;
+    }
+    .slider:before {
+      position: absolute; content: ""; height: 16px; width: 16px;
+      left: 3px; bottom: 3px; background-color: var(--muted);
+      border-radius: 50%; transition: 0.2s;
+    }
+    input:checked + .slider { background-color: var(--accent); border-color: var(--accent); }
+    input:checked + .slider:before { transform: translateX(20px); background-color: var(--accent-fg); }
+
+    /* Плавающая нижняя панель с размытием */
+    .bottom-nav {
+      position: fixed; bottom: 12px; left: 14px; right: 14px;
+      max-width: 460px; margin: 0 auto;
+      background: color-mix(in srgb, var(--surface) 85%, transparent);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 6px; z-index: 50;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.38);
+    }
+    .bottom-inner {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
+    }
+    .bnav-btn {
+      padding: 10px 6px; border: none; border-radius: calc(var(--radius) - 3px);
+      background: transparent; color: var(--muted);
+      font-size: 12px; font-weight: 800; cursor: pointer; text-align: center;
+      transition: all 0.18s ease;
+    }
+    .bnav-btn.active {
+      background: var(--surface-2); color: var(--accent);
+    }
   </style>
 </head>
-<body>
+<body data-theme="graphite" data-anim="slide" data-radius="std" data-blur="soft">
   <div class="wrap">
-    <div class="top">
-      <div class="top-title">Media Loader</div>
-      <div class="top-sub">MAX BITRATE</div>
+    <div class="header">
+      <div class="brand-title">Media Loader</div>
+      <div class="brand-sub">MAX BITRATE ENGINE</div>
     </div>
-    <div class="bar">
-      <input type="url" id="urlInput" placeholder="Ссылка на TikTok, YouTube, Pinterest, X...">
-      <button class="btn-sm" onclick="pasteUrl()">Вставить</button>
-      <button class="btn-sm" onclick="clearAll()">X</button>
-    </div>
-    <button class="btn-check" id="checkBtn" onclick="checkInfo()">1. Проверить ссылку</button>
-    <div id="card" class="panel" style="display:none;">
-      <div class="media-head">
-        <img id="thumb" class="thumb" src="" alt="preview" style="display:none;">
-        <div class="info">
-          <div class="badges">
-            <span class="b-item" id="bPlatform">MEDIA</span>
-            <span class="b-item" id="bDuration">0:00</span>
-            <span class="b-item" id="bBitrate" style="display:none;"></span>
+
+    <!-- ВКЛАДКА 1: ЗАГРУЗЧИК -->
+    <div id="tabDl" class="view-section active">
+      <div class="search-box">
+        <div class="input-row">
+          <input type="url" id="urlInput" placeholder="Ссылка на TikTok, YouTube, Pinterest, X...">
+          <button type="button" class="btn-sec" onclick="pasteUrl()">Вставить</button>
+          <button type="button" class="btn-sec" onclick="clearAll()">X</button>
+        </div>
+        <button type="button" class="btn-primary" id="checkBtn" onclick="checkInfo()">Проверить поток</button>
+      </div>
+
+      <div id="idleCard" class="idle-card">
+        <div class="idle-title">ПОДДЕРЖИВАЕМЫЕ ПЛОЩАДКИ</div>
+        <div class="plat-grid">
+          <div class="plat-tag">TikTok</div>
+          <div class="plat-tag">YouTube</div>
+          <div class="plat-tag">Pinterest</div>
+          <div class="plat-tag">Twitter/X</div>
+        </div>
+        <div class="quick-stats">
+          <div class="stat-box">
+            <div class="stat-val" id="statCount">0</div>
+            <div class="stat-lbl">В истории загрузок</div>
           </div>
-          <div class="m-title" id="mTitle"></div>
-          <div class="m-author" id="mAuthor"></div>
+          <div class="stat-box">
+            <div class="stat-val" id="statDef">MAX</div>
+            <div class="stat-lbl">Приоритет качества</div>
+          </div>
         </div>
       </div>
-      <div class="mode-switch">
-        <button class="mode-btn active" id="btnModeVideo" onclick="setMode('video')">Видео (MP4)</button>
-        <button class="mode-btn" id="btnModeAudio" onclick="setMode('audio')">Аудио (MP3 320k)</button>
-      </div>
-      <div id="videoSettings">
-        <div class="section-label">
-          <span>Разрешение (Качество):</span>
-          <span id="nativeResHint"></span>
+
+      <div id="card" class="panel" style="display:none;">
+        <div class="media-head">
+          <img id="thumb" class="thumb" src="" alt="preview" style="display:none;">
+          <div class="info">
+            <div class="badges">
+              <span class="b-item" id="bPlatform">MEDIA</span>
+              <span class="b-item" id="bDuration">0:00</span>
+              <span class="b-item" id="bBitrate" style="display:none;"></span>
+            </div>
+            <div class="m-title" id="mTitle"></div>
+            <div class="m-author" id="mAuthor"></div>
+          </div>
         </div>
-        <div class="chips" id="resChips"></div>
-        <div class="section-label">
-          <span>Частота кадров (FPS):</span>
-          <span id="nativeFpsHint"></span>
+
+        <div class="mode-switch">
+          <button type="button" class="mode-btn active" id="btnModeVideo" onclick="setMode('video')">Видео MP4</button>
+          <button type="button" class="mode-btn" id="btnModeAudio" onclick="setMode('audio')">Аудио MP3</button>
+          <button type="button" class="mode-btn" id="btnModeThumb" onclick="setMode('thumb')">Обложка JPG</button>
         </div>
-        <div class="chips" id="fpsChips"></div>
+
+        <div id="videoSettings">
+          <div class="section-label">
+            <span>Разрешение:</span>
+            <span id="nativeResHint"></span>
+          </div>
+          <div class="chips" id="resChips"></div>
+
+          <div class="section-label">
+            <span>Частота кадров (FPS):</span>
+            <span id="nativeFpsHint"></span>
+          </div>
+          <div class="chips" id="fpsChips"></div>
+        </div>
+
+        <div id="extraTools">
+          <div class="section-label">
+            <span>Свое имя файла (необязательно):</span>
+          </div>
+          <input type="text" class="mini-input" id="customName" placeholder="Оставьте пустым для авто-имени" style="margin-bottom:12px;">
+        </div>
+
+        <div class="summary" id="summaryBox"></div>
+
+        <button type="button" class="btn-primary" id="dlBtn" onclick="downloadMedia()">Скачать в Галерею</button>
       </div>
-      <div class="summary" id="summaryBox"></div>
-      <button class="btn-dl" id="dlBtn" onclick="downloadMedia()">2. Скачать в Загрузки</button>
+
+      <div id="progWrap" class="prog-wrap">
+        <div class="prog-top">
+          <span class="prog-stage" id="progStage">Подготовка...</span>
+          <span class="prog-pct" id="progPct">0%</span>
+        </div>
+        <div class="prog-track">
+          <div class="prog-fill" id="progFill"></div>
+        </div>
+        <div class="prog-stats">
+          <span id="progSize">0 MB</span>
+          <span id="progSpeed">-- MB/s</span>
+        </div>
+      </div>
+
+      <div id="msgBox" class="msg"></div>
     </div>
-    <div id="progWrap" class="prog-wrap">
-      <div class="prog-top">
-        <span class="prog-stage" id="progStage">Подготовка...</span>
-        <span class="prog-pct" id="progPct">0%</span>
+
+    <!-- ВКЛАДКА 2: ИСТОРИЯ С ПРЕВЬЮ И ПРОСМОТРОМ -->
+    <div id="tabHist" class="view-section">
+      <div class="section-label" style="margin-bottom:10px;">
+        <span>СКАЧАННЫЕ МЕДИАФАЙЛЫ</span>
+        <span style="cursor:pointer; color:var(--accent);" onclick="clearHistory()">Очистить всё</span>
       </div>
-      <div class="prog-track">
-        <div class="prog-fill" id="progFill"></div>
+      <div id="histList"></div>
+    </div>
+
+    <!-- ВКЛАДКА 3: НАСТРОЙКИ -->
+    <div id="tabSet" class="view-section">
+      <div class="set-group">
+        <div class="set-title">Цветовая тема</div>
+        <div class="chips" style="grid-template-columns: repeat(2, 1fr); margin-bottom:7px;">
+          <button type="button" class="chip" id="th_graphite" onclick="applyTheme('graphite')">Graphite<small>Синий графит</small></button>
+          <button type="button" class="chip" id="th_emerald" onclick="applyTheme('emerald')">Emerald<small>Изумрудный</small></button>
+          <button type="button" class="chip" id="th_oled" onclick="applyTheme('oled')">OLED Black<small>Чистый черный</small></button>
+          <button type="button" class="chip" id="th_crimson" onclick="applyTheme('crimson')">Crimson<small>Темно-красный</small></button>
+        </div>
+        <button type="button" class="chip" id="th_light" onclick="applyTheme('light')" style="width:100%;">Light Clean<small>Светлое оформление</small></button>
       </div>
-      <div class="prog-stats">
-        <span id="progSize">0 MB</span>
-        <span id="progSpeed">-- MB/s</span>
+
+      <div class="set-group">
+        <div class="set-title">Анимация переходов</div>
+        <div class="chips" style="grid-template-columns: repeat(2, 1fr); margin-bottom:0;">
+          <button type="button" class="chip" id="an_slide" onclick="applyAnim('slide')">Сдвиг<small>Боковой слайд</small></button>
+          <button type="button" class="chip" id="an_zoom" onclick="applyAnim('zoom')">Масштаб<small>Плавный зум</small></button>
+          <button type="button" class="chip" id="an_bounce" onclick="applyAnim('bounce')">Пружина<small>Динамичный</small></button>
+          <button type="button" class="chip" id="an_none" onclick="applyAnim('none')">Выкл<small>Мгновенно</small></button>
+        </div>
+      </div>
+
+      <div class="set-group">
+        <div class="set-title">Размытие при переходе вкладок (Blur)</div>
+        <div class="chips" style="margin-bottom:0;">
+          <button type="button" class="chip" id="bl_off" onclick="applyBlur('off')">Выкл<small>Без размытия</small></button>
+          <button type="button" class="chip" id="bl_soft" onclick="applyBlur('soft')">Мягкое<small>8px Blur</small></button>
+          <button type="button" class="chip" id="bl_strong" onclick="applyBlur('strong')">Сильное<small>18px Blur</small></button>
+        </div>
+      </div>
+
+      <div class="set-group">
+        <div class="set-title">Форма кнопок и карточек</div>
+        <div class="chips" style="margin-bottom:0;">
+          <button type="button" class="chip" id="rad_sharp" onclick="applyRadius('sharp')">Острые<small>5px</small></button>
+          <button type="button" class="chip" id="rad_std" onclick="applyRadius('std')">Стандарт<small>12px</small></button>
+          <button type="button" class="chip" id="rad_round" onclick="applyRadius('round')">Мягкие<small>18px</small></button>
+        </div>
+      </div>
+
+      <div class="set-group">
+        <div class="set-title">Параметры по умолчанию</div>
+        <div class="row-between">
+          <span>Автопроверка при нажатии «Вставить»</span>
+          <label class="switch">
+            <input type="checkbox" id="chkAutoCheck" onchange="savePrefs()">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="row-between">
+          <span>Разрешение по умолчанию</span>
+          <select id="defResSelect" onchange="savePrefs()" class="mini-input" style="width:auto;">
+            <option value="best">MAX (Лучшее)</option>
+            <option value="1080">1080p</option>
+            <option value="720">720p</option>
+            <option value="480">480p</option>
+          </select>
+        </div>
+        <div class="row-between">
+          <span>FPS по умолчанию</span>
+          <select id="defFpsSelect" onchange="savePrefs()" class="mini-input" style="width:auto;">
+            <option value="best">Макс FPS</option>
+            <option value="60">60 FPS</option>
+            <option value="30">30 FPS</option>
+          </select>
+        </div>
       </div>
     </div>
-    <div id="msgBox" class="msg"></div>
   </div>
+
+  <!-- Модальное окно встроенного видеоплеера -->
+  <div id="playerModal" class="player-modal" onclick="closePlayer(event)">
+    <div class="player-box" onclick="event.stopPropagation()">
+      <div class="player-top">
+        <div class="player-title" id="playerTitle">Просмотр</div>
+        <button type="button" class="btn-sec" style="padding:5px 10px;" onclick="closePlayer()">Закрыть</button>
+      </div>
+      <video id="playerVideo" class="player-video" controls playsinline></video>
+    </div>
+  </div>
+
+  <!-- Нижняя панель навигации -->
+  <div class="bottom-nav">
+    <div class="bottom-inner">
+      <button type="button" class="bnav-btn active" id="navDl" onclick="switchTab('dl')">Загрузчик</button>
+      <button type="button" class="bnav-btn" id="navHist" onclick="switchTab('hist')">История</button>
+      <button type="button" class="bnav-btn" id="navSet" onclick="switchTab('set')">Настройки</button>
+    </div>
+  </div>
+
   <script>
     const API = "http://127.0.0.1:5000";
+
     const ALL_RES = [
       { val: "best", label: "MAX", sub: "Лучшее" },
       { val: "2160", label: "4K", sub: "2160p" },
@@ -187,60 +627,286 @@
       { val: "720",  label: "720p",  sub: "HD" },
       { val: "480",  label: "480p",  sub: "SD" }
     ];
+
     const ALL_FPS = [
       { val: "best", label: "Макс FPS", sub: "Оригинал" },
       { val: "60",   label: "60 FPS",   sub: "Плавное" },
       { val: "30",   label: "30 FPS",   sub: "Стандарт" }
     ];
+
+    let prefs = {
+      theme: "graphite",
+      radius: "std",
+      anim: "slide",
+      blur: "soft",
+      autoCheck: true,
+      defRes: "best",
+      defFps: "best"
+    };
+
     let mode = "video";
     let selectedRes = "best";
     let selectedFps = "best";
     let nativeRes = [];
     let nativeFps = [];
     let pollTimer = null;
+    let currentTitle = "";
+    let currentThumb = "";
+
+    function loadPrefs() {
+      try {
+        const saved = JSON.parse(localStorage.getItem("ml_prefs") || "{}");
+        prefs = { ...prefs, ...saved };
+      } catch (_e) {}
+      applyTheme(prefs.theme, false);
+      applyRadius(prefs.radius || "std", false);
+      applyAnim(prefs.anim || "slide", false);
+      applyBlur(prefs.blur || "soft", false);
+      document.getElementById("chkAutoCheck").checked = !!prefs.autoCheck;
+      document.getElementById("defResSelect").value = prefs.defRes;
+      document.getElementById("defFpsSelect").value = prefs.defFps;
+      selectedRes = prefs.defRes;
+      selectedFps = prefs.defFps;
+      updateDashboardStats();
+      renderHistory();
+    }
+
+    function updateDashboardStats() {
+      let list = [];
+      try { list = JSON.parse(localStorage.getItem("ml_hist") || "[]"); } catch (_e) {}
+      document.getElementById("statCount").textContent = String(list.length);
+      document.getElementById("statDef").textContent = prefs.defRes === "best" ? "MAX" : (prefs.defRes + "p");
+    }
+
+    function savePrefs() {
+      prefs.autoCheck = document.getElementById("chkAutoCheck").checked;
+      prefs.defRes = document.getElementById("defResSelect").value;
+      prefs.defFps = document.getElementById("defFpsSelect").value;
+      localStorage.setItem("ml_prefs", JSON.stringify(prefs));
+      updateDashboardStats();
+    }
+
+    function applyTheme(t = "graphite", save = true) {
+      prefs.theme = t;
+      document.body.setAttribute("data-theme", t);
+      ["oled", "emerald", "graphite", "crimson", "light"].forEach((id) => {
+        const el = document.getElementById("th_" + id);
+        if (el) el.className = "chip" + (id === t ? " active" : "");
+      });
+      if (save) localStorage.setItem("ml_prefs", JSON.stringify(prefs));
+    }
+
+    function applyRadius(r = "std", save = true) {
+      prefs.radius = r;
+      document.body.setAttribute("data-radius", r);
+      ["sharp", "std", "round"].forEach((id) => {
+        const el = document.getElementById("rad_" + id);
+        if (el) el.className = "chip" + (id === r ? " active" : "");
+      });
+      if (save) localStorage.setItem("ml_prefs", JSON.stringify(prefs));
+    }
+
+    function applyAnim(a = "slide", save = true) {
+      prefs.anim = a;
+      document.body.setAttribute("data-anim", a);
+      ["slide", "zoom", "bounce", "none"].forEach((id) => {
+        const el = document.getElementById("an_" + id);
+        if (el) el.className = "chip" + (id === a ? " active" : "");
+      });
+      if (save) {
+        localStorage.setItem("ml_prefs", JSON.stringify(prefs));
+        triggerSectionAnim("tabSet");
+      }
+    }
+
+    function applyBlur(b = "soft", save = true) {
+      prefs.blur = b;
+      document.body.setAttribute("data-blur", b);
+      ["off", "soft", "strong"].forEach((id) => {
+        const el = document.getElementById("bl_" + id);
+        if (el) el.className = "chip" + (id === b ? " active" : "");
+      });
+      if (save) {
+        localStorage.setItem("ml_prefs", JSON.stringify(prefs));
+        triggerSectionAnim("tabSet");
+      }
+    }
+
+    function triggerSectionAnim(secId = "tabDl") {
+      const el = document.getElementById(secId);
+      if (!el) return;
+      el.classList.remove("anim-run");
+      void el.offsetWidth;
+      el.classList.add("anim-run");
+    }
+
+    function switchTab(tab = "dl") {
+      const map = { dl: "tabDl", hist: "tabHist", set: "tabSet" };
+      ["dl", "hist", "set"].forEach((k) => {
+        const sec = document.getElementById(map[k]);
+        sec.className = "view-section" + (k === tab ? " active" : "");
+      });
+
+      document.getElementById("navDl").className = "bnav-btn" + (tab === "dl" ? " active" : "");
+      document.getElementById("navHist").className = "bnav-btn" + (tab === "hist" ? " active" : "");
+      document.getElementById("navSet").className = "bnav-btn" + (tab === "set" ? " active" : "");
+
+      if (tab === "hist") renderHistory();
+      triggerSectionAnim(map[tab]);
+    }
+
+    function addHistory(title = "", url = "", details = "", thumb = "", filename = "") {
+      try {
+        const list = JSON.parse(localStorage.getItem("ml_hist") || "[]");
+        const entry = {
+          title: title || "Видео",
+          url,
+          details,
+          thumb: thumb || "",
+          filename: filename || "",
+          time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+        };
+        const updated = [entry, ...list.filter((i) => i.url !== url)].slice(0, 30);
+        localStorage.setItem("ml_hist", JSON.stringify(updated));
+        updateDashboardStats();
+      } catch (_e) {}
+    }
+
+    function openPlayer(filename = "", title = "") {
+      if (!filename) {
+        showMsg("Файл для предпросмотра не найден", "err");
+        return;
+      }
+      const modal = document.getElementById("playerModal");
+      const video = document.getElementById("playerVideo");
+      document.getElementById("playerTitle").textContent = title || filename;
+      video.src = API + "/media/" + encodeURIComponent(filename);
+      modal.className = "player-modal open";
+      video.play().catch(() => {});
+    }
+
+    function closePlayer() {
+      const modal = document.getElementById("playerModal");
+      const video = document.getElementById("playerVideo");
+      video.pause();
+      video.src = "";
+      modal.className = "player-modal";
+    }
+
+    function renderHistory() {
+      const box = document.getElementById("histList");
+      box.innerHTML = "";
+      let list = [];
+      try { list = JSON.parse(localStorage.getItem("ml_hist") || "[]"); } catch (_e) {}
+
+      if (list.length === 0) {
+        box.innerHTML = "<div class='panel' style='text-align:center; color:var(--muted); font-size:12px;'>История загрузок пока пуста :)</div>";
+        return;
+      }
+
+      list.forEach((item) => {
+        const card = document.createElement("div");
+        card.className = "hist-card";
+
+        const thumbHtml = item.thumb
+          ? "<img class='hist-thumb' src='" + item.thumb + "' alt='preview'>"
+          : "<div class='hist-thumb'></div>";
+
+        card.innerHTML =
+          "<div class='hist-row'>" +
+            thumbHtml +
+            "<div class='hist-info'>" +
+              "<div class='hist-title'>" + item.title + "</div>" +
+              "<div class='hist-meta'>" + item.details + " • " + item.time + "</div>" +
+            "</div>" +
+          "</div>" +
+          "<div class='hist-actions'>" +
+            "<button type='button' class='hist-btn play'>Смотреть в приложении</button>" +
+            "<button type='button' class='hist-btn repeat'>Скачать снова</button>" +
+          "</div>";
+
+        const playBtn = card.querySelector(".play");
+        playBtn.onclick = () => {
+          if (item.filename) {
+            openPlayer(item.filename, item.title);
+          } else {
+            document.getElementById("urlInput").value = item.url;
+            switchTab("dl");
+            checkInfo();
+          }
+        };
+
+        const repBtn = card.querySelector(".repeat");
+        repBtn.onclick = () => {
+          document.getElementById("urlInput").value = item.url;
+          switchTab("dl");
+          checkInfo();
+        };
+
+        box.appendChild(card);
+      });
+    }
+
+    function clearHistory() {
+      localStorage.removeItem("ml_hist");
+      updateDashboardStats();
+      renderHistory();
+    }
 
     function showMsg(text = "", type = "info") {
       const b = document.getElementById("msgBox");
       b.className = "msg " + type;
       b.textContent = text;
     }
+
     function hideMsg() {
       document.getElementById("msgBox").className = "msg";
     }
+
     async function pasteUrl() {
       try {
         const t = await navigator.clipboard.readText();
-        if (t) document.getElementById("urlInput").value = t;
+        if (t) {
+          document.getElementById("urlInput").value = t;
+          if (prefs.autoCheck) checkInfo();
+        }
       } catch (_e) {
         showMsg("Вставьте ссылку долгим нажатием в поле ввода", "info");
       }
     }
+
     function clearAll() {
       if (pollTimer) clearInterval(pollTimer);
       document.getElementById("urlInput").value = "";
+      document.getElementById("customName").value = "";
       document.getElementById("card").style.display = "none";
+      document.getElementById("idleCard").style.display = "block";
       document.getElementById("progWrap").style.display = "none";
       hideMsg();
     }
+
     function fmtTime(sec = 0) {
       if (!sec || sec <= 0) return "--:--";
       const m = Math.floor(sec / 60);
       const s = Math.floor(sec % 60);
       return m + ":" + (s < 10 ? "0" : "") + s;
     }
+
     function setMode(m = "video") {
       mode = m;
       document.getElementById("btnModeVideo").className = "mode-btn" + (m === "video" ? " active" : "");
       document.getElementById("btnModeAudio").className = "mode-btn" + (m === "audio" ? " active" : "");
+      document.getElementById("btnModeThumb").className = "mode-btn" + (m === "thumb" ? " active" : "");
       document.getElementById("videoSettings").style.display = m === "video" ? "block" : "none";
+      document.getElementById("extraTools").style.display = m === "thumb" ? "none" : "block";
       updateSummary();
     }
+
     function renderChips() {
       const resBox = document.getElementById("resChips");
       resBox.innerHTML = "";
-      const maxNative = nativeRes.length > 0 ? Math.max(...nativeRes) : null;
+
       ALL_RES.forEach((item) => {
-        if (item.val !== "best" && maxNative && Number(item.val) > maxNative && Number(item.val) > 1080) return;
         const isNative = item.val !== "best" && nativeRes.includes(Number(item.val));
         const btn = document.createElement("button");
         btn.type = "button";
@@ -249,6 +915,7 @@
         btn.onclick = () => { selectedRes = item.val; renderChips(); updateSummary(); };
         resBox.appendChild(btn);
       });
+
       const fpsBox = document.getElementById("fpsChips");
       fpsBox.innerHTML = "";
       ALL_FPS.forEach((item) => {
@@ -261,25 +928,31 @@
         fpsBox.appendChild(btn);
       });
     }
+
     function updateSummary() {
       const s = document.getElementById("summaryBox");
       if (mode === "audio") {
         s.textContent = "Аудио: MP3 | 320 kbps (максимальный битрейт)";
+      } else if (mode === "thumb") {
+        s.textContent = "Обложка: оригинальное изображение превью";
       } else {
-        const rText = selectedRes === "best" ? "Максимальное" : selectedRes + "p";
-        const fText = selectedFps === "best" ? "Макс. FPS" : "до " + selectedFps + " FPS";
-        s.textContent = "Видео: MP4 | Качество: " + rText + " | " + fText + " | Макс. битрейт";
+        const rText = selectedRes === "best" ? "MAX" : selectedRes + "p";
+        const fText = selectedFps === "best" ? "Макс. FPS" : selectedFps + " FPS";
+        s.textContent = "Видео: MP4 | " + rText + " | " + fText + " | Макс. битрейт";
       }
     }
+
     async function checkInfo() {
       const url = document.getElementById("urlInput").value.trim();
       const btn = document.getElementById("checkBtn");
       const card = document.getElementById("card");
       if (!url) return;
+
       btn.disabled = true;
       card.style.display = "none";
       document.getElementById("progWrap").style.display = "none";
-      showMsg("Получаем данные о видео...", "info");
+      showMsg("Получаем данные о потоках...", "info");
+
       try {
         const res = await fetch(API + "/info", {
           method: "POST",
@@ -288,10 +961,14 @@
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Ошибка проверки");
-        document.getElementById("mTitle").textContent = data.title;
+
+        currentTitle = data.title || "Видео";
+        currentThumb = data.thumbnail || "";
+        document.getElementById("mTitle").textContent = currentTitle;
         document.getElementById("mAuthor").textContent = "Автор: " + data.uploader;
         document.getElementById("bPlatform").textContent = data.platform;
         document.getElementById("bDuration").textContent = fmtTime(data.duration);
+
         const bBit = document.getElementById("bBitrate");
         if (data.max_kbps) {
           bBit.style.display = "inline-block";
@@ -299,21 +976,26 @@
         } else {
           bBit.style.display = "none";
         }
+
         const thumb = document.getElementById("thumb");
-        if (data.thumbnail) {
-          thumb.src = data.thumbnail;
+        if (currentThumb) {
+          thumb.src = currentThumb;
           thumb.style.display = "block";
         } else {
           thumb.style.display = "none";
         }
+
         nativeRes = data.available_res || [];
         nativeFps = data.available_fps || [];
         document.getElementById("nativeResHint").textContent = nativeRes.length ? "Исходник: " + nativeRes[0] + "p" : "";
         document.getElementById("nativeFpsHint").textContent = nativeFps.length ? "Исходник: " + nativeFps[0] + " FPS" : "";
-        selectedRes = "best";
-        selectedFps = "best";
+
+        selectedRes = prefs.defRes;
+        selectedFps = prefs.defFps;
         setMode("video");
         renderChips();
+
+        document.getElementById("idleCard").style.display = "none";
         card.style.display = "block";
         hideMsg();
       } catch (e) {
@@ -322,27 +1004,48 @@
         btn.disabled = false;
       }
     }
+
     async function downloadMedia() {
       const url = document.getElementById("urlInput").value.trim();
       const btn = document.getElementById("dlBtn");
       const progWrap = document.getElementById("progWrap");
+      const customName = document.getElementById("customName").value.trim();
+
+      if (mode === "thumb") {
+        if (!currentThumb) {
+          showMsg("У этого видео нет обложки", "err");
+          return;
+        }
+        window.open(currentThumb, "_blank");
+        return;
+      }
+
       if (pollTimer) clearInterval(pollTimer);
       btn.disabled = true;
       hideMsg();
+
       document.getElementById("progStage").textContent = "Запуск загрузки...";
       document.getElementById("progPct").textContent = "0%";
       document.getElementById("progFill").style.width = "0%";
       document.getElementById("progSize").textContent = "0 MB";
       document.getElementById("progSpeed").textContent = "-- MB/s";
       progWrap.style.display = "block";
+
       try {
         const res = await fetch(API + "/download", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ url, mode, res: selectedRes, fps: selectedFps })
+          body: JSON.stringify({
+            url,
+            mode,
+            res: selectedRes,
+            fps: selectedFps,
+            custom_name: customName
+          })
         });
         const startData = await res.json();
         if (!res.ok) throw new Error(startData.error || "Ошибка старта загрузки");
+
         const jobId = startData.job_id;
         pollTimer = setInterval(async () => {
           try {
@@ -355,17 +1058,27 @@
               showMsg("Ошибка: " + (pData.error || "сбой загрузки"), "err");
               return;
             }
+
             const pct = pData.percent || 0;
             document.getElementById("progStage").textContent = pData.stage || "Загрузка...";
             document.getElementById("progPct").textContent = pct + "%";
             document.getElementById("progFill").style.width = pct + "%";
             if (pData.size) document.getElementById("progSize").textContent = pData.size;
             if (pData.speed) document.getElementById("progSpeed").textContent = pData.speed;
+
             if (pData.state === "done") {
               clearInterval(pollTimer);
               btn.disabled = false;
               document.getElementById("progSpeed").textContent = "В Галерее :)";
-              showMsg("Сохранено и добавлено в Галерею: " + pData.saved_to + " (" + pData.size + ") :)", "ok");
+              const resLabel = mode === "audio" ? "MP3 320k" : (selectedRes === "best" ? "MAX" : (selectedRes + "p"));
+              addHistory(
+                currentTitle,
+                url,
+                resLabel + " (" + pData.size + ")",
+                currentThumb,
+                pData.filename || ""
+              );
+              showMsg("Сохранено в Галерею: " + pData.saved_to + " (" + pData.size + ") :)", "ok");
             }
           } catch (_err) {}
         }, 600);
@@ -375,6 +1088,8 @@
         showMsg("Ошибка: " + e.message, "err");
       }
     }
+
+    loadPrefs();
   </script>
 </body>
 </html>
