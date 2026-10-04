@@ -1,1091 +1,1593 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Media Loader</title>
   <style>
-    :root {
-      --bg: #070709;
-      --surface: #121216;
-      --surface-2: #1b1b22;
-      --border: #272732;
-      --text: #f4f4f7;
-      --muted: #8b8b9e;
-      --accent: #3b82f6;
-      --accent-2: #2563eb;
-      --accent-fg: #ffffff;
-      --radius: 12px;
-      --blur-amount: 10px;
+    :root, [data-theme="midnight"] {
+      --bg: #090c12;
+      --card: #121722;
+      --card-2: #192132;
+      --text: #f1f5f9;
+      --muted: #7e8fa6;
+      --acc: #3b82f6;
+      --acc-rgb: 59, 130, 246;
+      --border: rgba(59, 130, 246, 0.16);
+      --glass-dock: rgba(14, 19, 30, 0.64);
+      --glass-dock-border: rgba(59, 130, 246, 0.24);
+      --glass-btn: rgba(59, 130, 246, 0.08);
+      --glass-btn-border: rgba(255, 255, 255, 0.08);
+      --glass-active: rgba(59, 130, 246, 0.28);
+      --glass-active-border: rgba(59, 130, 246, 0.56);
     }
 
-    body[data-theme="oled"] {
+    [data-theme="crimson"] {
+      --bg: #12070b;
+      --card: #1c0b12;
+      --card-2: #2b121c;
+      --text: #fdf2f5;
+      --muted: #b48694;
+      --acc: #e11d48;
+      --acc-rgb: 225, 29, 72;
+      --border: rgba(225, 29, 72, 0.18);
+      --glass-dock: rgba(28, 10, 17, 0.64);
+      --glass-dock-border: rgba(225, 29, 72, 0.26);
+      --glass-btn: rgba(225, 29, 72, 0.08);
+      --glass-btn-border: rgba(255, 210, 220, 0.08);
+      --glass-active: rgba(225, 29, 72, 0.30);
+      --glass-active-border: rgba(225, 29, 72, 0.58);
+    }
+
+    [data-theme="emerald"] {
+      --bg: #06110c;
+      --card: #0d1d16;
+      --card-2: #152e24;
+      --text: #ecfdf5;
+      --muted: #7ca694;
+      --acc: #10b981;
+      --acc-rgb: 16, 185, 129;
+      --border: rgba(16, 185, 129, 0.18);
+      --glass-dock: rgba(10, 25, 19, 0.64);
+      --glass-dock-border: rgba(16, 185, 129, 0.26);
+      --glass-btn: rgba(16, 185, 129, 0.08);
+      --glass-btn-border: rgba(210, 255, 235, 0.08);
+      --glass-active: rgba(16, 185, 129, 0.28);
+      --glass-active-border: rgba(16, 185, 129, 0.56);
+    }
+
+    [data-theme="ocean"] {
+      --bg: #060f16;
+      --card: #0c1b26;
+      --card-2: #142b3c;
+      --text: #ecfeff;
+      --muted: #7ba2b8;
+      --acc: #06b6d4;
+      --acc-rgb: 6, 182, 212;
+      --border: rgba(6, 182, 212, 0.18);
+      --glass-dock: rgba(10, 23, 33, 0.64);
+      --glass-dock-border: rgba(6, 182, 212, 0.26);
+      --glass-btn: rgba(6, 182, 212, 0.08);
+      --glass-btn-border: rgba(210, 245, 255, 0.08);
+      --glass-active: rgba(6, 182, 212, 0.28);
+      --glass-active-border: rgba(6, 182, 212, 0.56);
+    }
+
+    [data-theme="amoled"] {
       --bg: #000000;
-      --surface: #0c0c0e;
-      --surface-2: #16161a;
-      --border: #242429;
+      --card: #0c0c10;
+      --card-2: #17171f;
       --text: #f5f5f7;
-      --muted: #86868b;
-      --accent: #f5f5f7;
-      --accent-2: #d2d2d7;
-      --accent-fg: #000000;
+      --muted: #868690;
+      --acc: #8b5cf6;
+      --acc-rgb: 139, 92, 246;
+      --border: rgba(139, 92, 246, 0.2);
+      --glass-dock: rgba(13, 13, 19, 0.70);
+      --glass-dock-border: rgba(139, 92, 246, 0.26);
+      --glass-btn: rgba(139, 92, 246, 0.08);
+      --glass-btn-border: rgba(255, 255, 255, 0.08);
+      --glass-active: rgba(139, 92, 246, 0.30);
+      --glass-active-border: rgba(139, 92, 246, 0.58);
     }
 
-    body[data-theme="emerald"] {
-      --bg: #040c09;
-      --surface: #0b1813;
-      --surface-2: #12261e;
-      --border: #1b382d;
-      --text: #ebfaf4;
-      --muted: #7aa897;
-      --accent: #10b981;
-      --accent-2: #059669;
-      --accent-fg: #02140d;
+    :root {
+      --rad-card: 20px;
+      --rad-btn: 13px;
     }
-
-    body[data-theme="graphite"] {
-      --bg: #0d1017;
-      --surface: #161b26;
-      --surface-2: #1f2736;
-      --border: #2d374d;
-      --text: #f0f4f8;
-      --muted: #8b9bb4;
-      --accent: #3b82f6;
-      --accent-2: #2563eb;
-      --accent-fg: #ffffff;
+    [data-shape="pill"] {
+      --rad-card: 24px;
+      --rad-btn: 999px;
     }
-
-    body[data-theme="crimson"] {
-      --bg: #0b0507;
-      --surface: #160b0e;
-      --surface-2: #231116;
-      --border: #381b22;
-      --text: #fceef1;
-      --muted: #ad7e88;
-      --accent: #f43f5e;
-      --accent-2: #e11d48;
-      --accent-fg: #ffffff;
+    [data-shape="sharp"] {
+      --rad-card: 10px;
+      --rad-btn: 7px;
     }
-
-    body[data-theme="light"] {
-      --bg: #f2f4f8;
-      --surface: #ffffff;
-      --surface-2: #e6eaf0;
-      --border: #d5dbe3;
-      --text: #111827;
-      --muted: #64748b;
-      --accent: #2563eb;
-      --accent-2: #1d4ed8;
-      --accent-fg: #ffffff;
-    }
-
-    body[data-radius="sharp"] { --radius: 5px; }
-    body[data-radius="std"]   { --radius: 12px; }
-    body[data-radius="round"] { --radius: 18px; }
-
-    body[data-blur="off"]    { --blur-amount: 0px; }
-    body[data-blur="soft"]   { --blur-amount: 8px; }
-    body[data-blur="strong"] { --blur-amount: 18px; }
 
     * {
       box-sizing: border-box;
-      font-family: system-ui, -apple-system, sans-serif;
+      margin: 0;
+      padding: 0;
       -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    input {
+      user-select: text;
     }
 
     body {
       background: var(--bg);
       color: var(--text);
-      margin: 0;
-      padding: 16px 14px 96px 14px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      padding: calc(env(safe-area-inset-top, 12px) + 10px) 14px 124px;
       overflow-x: hidden;
-      transition: background-color 0.25s ease, color 0.25s ease;
     }
 
-    .wrap { max-width: 460px; margin: 0 auto; }
+    .app-wrap {
+      max-width: 460px;
+      margin: 0 auto;
+    }
 
+    /* Шапка */
     .header {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding: 4px 2px;
     }
-    .brand-title { font-size: 19px; font-weight: 800; letter-spacing: -0.4px; }
-    .brand-sub { font-size: 11px; color: var(--muted); font-weight: 500; }
-
-    /* Вкладки и настоящие анимации с эффектом Blur */
-    .view-section { display: none; will-change: transform, opacity, filter; }
-    .view-section.active { display: block; }
-
-    body[data-anim="slide"] .view-section.anim-run {
-      animation: tabSlide 0.34s cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+    .brand-title {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      color: var(--text);
     }
-    body[data-anim="zoom"] .view-section.anim-run {
-      animation: tabZoom 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-    body[data-anim="bounce"] .view-section.anim-run {
-      animation: tabBounce 0.44s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-    }
-    body[data-anim="none"] .view-section.anim-run {
-      animation: none;
-    }
-
-    @keyframes tabSlide {
-      0%   { opacity: 0; transform: translateX(22px); filter: blur(var(--blur-amount)); }
-      100% { opacity: 1; transform: translateX(0); filter: blur(0px); }
-    }
-    @keyframes tabZoom {
-      0%   { opacity: 0; transform: scale(0.93); filter: blur(var(--blur-amount)); }
-      100% { opacity: 1; transform: scale(1); filter: blur(0px); }
-    }
-    @keyframes tabBounce {
-      0%   { opacity: 0; transform: translateY(24px) scale(0.96); filter: blur(var(--blur-amount)); }
-      100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0px); }
+    .ver-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: var(--glass-btn);
+      color: var(--acc);
+      border: 1px solid var(--glass-dock-border);
+      letter-spacing: 0.4px;
     }
 
-    /* Поле ввода и красивые кнопки */
-    .search-box {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 12px; margin-bottom: 14px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
+    /* Карточки */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--rad-card);
+      padding: 15px;
+      margin-bottom: 12px;
+      contain: content;
     }
-    .input-row { display: flex; gap: 7px; margin-bottom: 10px; }
-    .input-row input {
-      flex: 1; min-width: 0; padding: 13px 14px; border-radius: var(--radius);
-      border: 1px solid var(--border); background: var(--bg);
-      color: var(--text); font-size: 14px; outline: none;
-      transition: border-color 0.2s ease;
+    .card.compact {
+      padding: 12px 14px;
     }
-    .input-row input:focus { border-color: var(--accent); }
-
-    .btn-sec {
-      padding: 0 14px; border-radius: var(--radius); border: 1px solid var(--border);
-      background: var(--surface-2); color: var(--text);
-      font-size: 12px; font-weight: 700; cursor: pointer;
-      transition: transform 0.14s ease, background-color 0.15s ease;
-    }
-    .btn-primary {
-      width: 100%; padding: 14px; border-radius: var(--radius); border: none;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: var(--accent-fg); font-size: 14px; font-weight: 800;
-      letter-spacing: 0.2px; cursor: pointer;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-      transition: transform 0.14s ease, opacity 0.15s ease;
-    }
-    .btn-primary:disabled { opacity: 0.45; }
-    .btn-sec:active, .btn-primary:active, .chip:active, .mode-btn:active, .bnav-btn:active {
-      transform: scale(0.95);
+    .label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--muted);
+      margin-bottom: 9px;
     }
 
-    /* Стартовый блок */
-    .idle-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 15px;
+    /* Поле ссылки */
+    .url-row {
+      display: flex;
+      gap: 8px;
     }
-    .idle-title { font-size: 11px; font-weight: 800; color: var(--muted); letter-spacing: 0.5px; margin-bottom: 10px; }
-    .plat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; margin-bottom: 12px; }
-    .plat-tag {
-      text-align: center; padding: 9px 4px; font-size: 11px; font-weight: 700;
-      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+    .input-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 0;
     }
-    .quick-stats {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
-      border-top: 1px solid var(--border); padding-top: 12px;
+    .inp {
+      width: 100%;
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: var(--rad-btn);
+      padding: 12px 34px 12px 13px;
+      font-size: 14px;
+      outline: none;
     }
-    .stat-box {
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 10px 12px;
+    .inp:focus {
+      border-color: var(--acc);
     }
-    .stat-val { font-size: 15px; font-weight: 800; font-family: monospace; color: var(--accent); }
-    .stat-lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
-
-    /* Карточка найденного видео */
-    .panel {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 15px; margin-top: 12px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
+    .inp::placeholder {
+      color: var(--muted);
+      opacity: 0.7;
     }
-    .media-head { display: flex; gap: 12px; margin-bottom: 14px; }
-    .thumb {
-      width: 84px; height: 84px; border-radius: var(--radius); object-fit: cover;
-      background: var(--bg); border: 1px solid var(--border); flex-shrink: 0;
-    }
-    .info { min-width: 0; flex: 1; }
-    .badges { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 6px; }
-    .b-item {
-      font-size: 10px; font-family: monospace; font-weight: 700; padding: 3px 7px;
-      border-radius: 5px; background: var(--surface-2);
-      color: var(--text); border: 1px solid var(--border);
-    }
-    .m-title {
-      font-size: 14px; font-weight: 700; line-height: 1.35; margin-bottom: 4px;
-      display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2;
-      -webkit-box-orient: vertical; overflow: hidden;
-    }
-    .m-author { font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-    .mode-switch {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px;
-      background: var(--bg); padding: 4px; border-radius: var(--radius);
-      border: 1px solid var(--border); margin-bottom: 14px;
-    }
-    .mode-btn {
-      padding: 9px 4px; border: none; border-radius: calc(var(--radius) - 3px);
-      background: transparent; color: var(--muted);
-      font-size: 12px; font-weight: 700; cursor: pointer;
-      transition: all 0.16s ease;
-    }
-    .mode-btn.active {
-      background: var(--surface-2); color: var(--text);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    .clear-btn {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: none;
+      background: var(--card-2);
+      color: var(--muted);
+      font-size: 14px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
     }
 
-    .section-label {
-      display: flex; justify-content: space-between;
-      font-size: 11px; color: var(--muted); margin-bottom: 7px; font-weight: 700;
+    /* Сетки кнопок */
+    .seg-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    .seg-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .seg-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 7px;
     }
 
-    .chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin-bottom: 13px; }
-    .chip {
-      padding: 10px 6px; text-align: center; border-radius: var(--radius);
-      border: 1px solid var(--border); background: var(--bg); color: var(--muted);
-      font-size: 12px; font-weight: 700; cursor: pointer;
-      transition: transform 0.14s ease, background-color 0.18s ease, border-color 0.18s ease;
+    .theme-flex {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
     }
-    .chip.active {
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: var(--accent-fg); border-color: transparent; font-weight: 800;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.22);
-    }
-    .chip small { display: block; font-size: 9px; opacity: 0.82; margin-top: 2px; font-weight: 500; }
-
-    .mini-input {
-      width: 100%; padding: 11px 12px; border-radius: var(--radius);
-      border: 1px solid var(--border); background: var(--bg);
-      color: var(--text); font-size: 12px; outline: none;
-    }
-    .mini-input:focus { border-color: var(--accent); }
-
-    .summary {
-      font-size: 11px; font-family: monospace; color: var(--muted);
-      background: var(--bg); border: 1px solid var(--border); padding: 9px 11px;
-      border-radius: var(--radius); margin-bottom: 12px;
+    .theme-flex .seg-btn {
+      flex: 1 1 calc(33.333% - 8px);
+      min-width: 92px;
     }
 
-    /* Прогресс-бар */
+    /* ОБЩИЕ КНОПКИ */
+    .btn-paste, .seg-btn, .act-btn, .fps-btn {
+      position: relative;
+      color: var(--muted);
+      border-radius: var(--rad-btn);
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      transform: translateZ(0);
+    }
+
+    .seg-btn {
+      padding: 11px 8px;
+    }
+
+    .fps-btn {
+      padding: 7px 4px;
+      font-size: 11.5px;
+      font-weight: 700;
+      border-radius: 10px;
+    }
+
+    .btn-paste {
+      color: var(--text);
+      padding: 0 16px;
+      flex-shrink: 0;
+    }
+
+    .act-btn {
+      color: var(--text);
+      padding: 7px 12px;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    .main-btn {
+      width: 100%;
+      padding: 15px;
+      border-radius: var(--rad-btn);
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transform: translateZ(0);
+    }
+    .main-btn:disabled {
+      opacity: 0.55;
+      pointer-events: none;
+    }
+
+    /* НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ */
+    .bottom-nav {
+      position: fixed;
+      left: 50%;
+      bottom: calc(env(safe-area-inset-bottom, 10px) + 10px);
+      transform: translate3d(-50%, 0, 0);
+      width: calc(100% - 28px);
+      max-width: 432px;
+      background: var(--glass-dock);
+      backdrop-filter: blur(18px) saturate(165%);
+      -webkit-backdrop-filter: blur(18px) saturate(165%);
+      border: 1px solid var(--glass-dock-border);
+      border-radius: 999px;
+      padding: 6px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      z-index: 60;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.14),
+        0 10px 28px rgba(0, 0, 0, 0.5);
+    }
+
+    .nav-liquid-pill {
+      position: absolute;
+      top: 6px;
+      bottom: 6px;
+      left: 6px;
+      width: calc((100% - 24px) / 3);
+      border-radius: 999px;
+      pointer-events: none;
+      z-index: 0;
+      transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+      will-change: transform;
+    }
+
+    .nav-btn {
+      position: relative;
+      z-index: 1;
+      border-radius: 999px;
+      padding: 11px 6px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+      text-align: center;
+      cursor: pointer;
+      transform: translateZ(0);
+    }
+
+    .nav-btn.active {
+      color: #ffffff;
+      background: transparent !important;
+      border-color: transparent !important;
+      box-shadow: none !important;
+    }
+
+    /* ============================================================
+       4 СТИЛЯ КНОПОК (РАБОТАЮТ НА ВСЕ ВКЛАДКИ + НА НИЖНЮЮ ПАНЕЛЬ)
+       ============================================================ */
+
+    /* 1. СТЕКЛО (GLASS) */
+    [data-btnstyle="glass"] .btn-paste,
+    [data-btnstyle="glass"] .seg-btn,
+    [data-btnstyle="glass"] .act-btn,
+    [data-btnstyle="glass"] .fps-btn,
+    [data-btnstyle="glass"] .nav-btn {
+      background: var(--glass-btn);
+      border: 1px solid var(--glass-btn-border);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.09);
+    }
+    [data-btnstyle="glass"] .seg-btn.active,
+    [data-btnstyle="glass"] .fps-btn.active,
+    [data-btnstyle="glass"] .nav-liquid-pill {
+      background: linear-gradient(135deg, rgba(var(--acc-rgb), 0.34), rgba(var(--acc-rgb), 0.12));
+      color: var(--text);
+      border: 1px solid var(--glass-active-border);
+      box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.26),
+        0 4px 12px rgba(var(--acc-rgb), 0.18);
+    }
+    [data-btnstyle="glass"] .main-btn {
+      background: linear-gradient(135deg, rgba(var(--acc-rgb), 0.85), rgba(var(--acc-rgb), 0.55));
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3), 0 6px 16px rgba(var(--acc-rgb), 0.25);
+    }
+
+    /* 2. НЕОН (NEON) */
+    [data-btnstyle="neon"] .btn-paste,
+    [data-btnstyle="neon"] .seg-btn,
+    [data-btnstyle="neon"] .act-btn,
+    [data-btnstyle="neon"] .fps-btn,
+    [data-btnstyle="neon"] .nav-btn {
+      background: rgba(var(--acc-rgb), 0.05);
+      border: 1px solid rgba(var(--acc-rgb), 0.28);
+      box-shadow: inset 0 0 6px rgba(var(--acc-rgb), 0.12);
+    }
+    [data-btnstyle="neon"] .seg-btn.active,
+    [data-btnstyle="neon"] .fps-btn.active,
+    [data-btnstyle="neon"] .nav-liquid-pill {
+      background: rgba(var(--acc-rgb), 0.22);
+      color: #ffffff;
+      border: 1px solid var(--acc);
+      box-shadow:
+        inset 0 0 12px rgba(var(--acc-rgb), 0.45),
+        0 0 14px rgba(var(--acc-rgb), 0.38);
+    }
+    [data-btnstyle="neon"] .bottom-nav {
+      border-color: rgba(var(--acc-rgb), 0.45);
+      box-shadow: 0 0 18px rgba(var(--acc-rgb), 0.22), 0 10px 28px rgba(0, 0, 0, 0.5);
+    }
+    [data-btnstyle="neon"] .main-btn {
+      background: rgba(var(--acc-rgb), 0.28);
+      border: 1.5px solid var(--acc);
+      box-shadow: inset 0 0 14px rgba(var(--acc-rgb), 0.5), 0 0 16px rgba(var(--acc-rgb), 0.4);
+    }
+
+    /* 3. ГРАДИЕНТ (GRADIENT) */
+    [data-btnstyle="gradient"] .btn-paste,
+    [data-btnstyle="gradient"] .seg-btn,
+    [data-btnstyle="gradient"] .act-btn,
+    [data-btnstyle="gradient"] .fps-btn,
+    [data-btnstyle="gradient"] .nav-btn {
+      background: linear-gradient(160deg, var(--card-2), var(--bg));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    [data-btnstyle="gradient"] .seg-btn.active,
+    [data-btnstyle="gradient"] .fps-btn.active,
+    [data-btnstyle="gradient"] .nav-liquid-pill {
+      background: linear-gradient(135deg, var(--acc) 0%, rgba(var(--acc-rgb), 0.42) 100%);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+    [data-btnstyle="gradient"] .main-btn {
+      background: linear-gradient(135deg, var(--acc) 0%, rgba(var(--acc-rgb), 0.5) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+
+    /* 4. КОНТУР (OUTLINE) */
+    [data-btnstyle="outline"] .btn-paste,
+    [data-btnstyle="outline"] .seg-btn,
+    [data-btnstyle="outline"] .act-btn,
+    [data-btnstyle="outline"] .fps-btn,
+    [data-btnstyle="outline"] .nav-btn {
+      background: transparent;
+      border: 1.5px solid var(--border);
+      box-shadow: none;
+    }
+    [data-btnstyle="outline"] .seg-btn.active,
+    [data-btnstyle="outline"] .fps-btn.active,
+    [data-btnstyle="outline"] .nav-liquid-pill {
+      background: rgba(var(--acc-rgb), 0.12);
+      color: var(--acc);
+      border: 1.5px solid var(--acc);
+      box-shadow: none;
+    }
+    [data-btnstyle="outline"] .nav-btn.active {
+      color: var(--acc);
+    }
+    [data-btnstyle="outline"] .main-btn {
+      background: rgba(var(--acc-rgb), 0.16);
+      color: var(--acc);
+      border: 2px solid var(--acc);
+      box-shadow: none;
+    }
+
+    .act-btn.danger {
+      color: #f87171 !important;
+      border-color: rgba(248, 113, 113, 0.4) !important;
+      background: rgba(248, 113, 113, 0.12) !important;
+    }
+
+    /* Тумблеры опций */
+    .opt-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0 4px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      margin-top: 9px;
+      font-size: 13px;
+      color: var(--text);
+      cursor: pointer;
+    }
+    .switch {
+      width: 44px;
+      height: 25px;
+      border-radius: 999px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      position: relative;
+      flex-shrink: 0;
+    }
+    .switch::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 19px;
+      height: 19px;
+      border-radius: 50%;
+      background: var(--muted);
+      transition: transform 0.2s cubic-bezier(0.28, 1.35, 0.55, 1);
+    }
+    .switch.on {
+      background: var(--glass-active);
+      border-color: var(--glass-active-border);
+    }
+    .switch.on::after {
+      transform: translate3d(19px, 0, 0);
+      background: var(--acc);
+    }
+
+    /* Прогресс и уведомления */
     .prog-wrap {
-      margin-top: 12px; padding: 13px; border-radius: var(--radius);
-      background: var(--surface); border: 1px solid var(--border); display: none;
+      display: none;
+      margin-top: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--rad-card);
+      padding: 13px;
     }
     .prog-top {
-      display: flex; justify-content: space-between; align-items: center;
-      font-size: 12px; margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 7px;
+      color: var(--muted);
     }
-    .prog-stage { color: var(--text); font-weight: 600; }
-    .prog-pct { font-family: monospace; font-weight: 800; color: var(--accent); }
     .prog-track {
-      width: 100%; height: 9px; background: var(--bg);
-      border-radius: 6px; overflow: hidden; border: 1px solid var(--border);
+      height: 7px;
+      background: var(--bg);
+      border-radius: 999px;
+      overflow: hidden;
     }
     .prog-fill {
-      height: 100%; width: 0%; background: var(--accent);
-      transition: width 0.25s ease;
+      height: 100%;
+      width: 0%;
+      background: var(--acc);
+      transition: width 0.2s linear;
     }
-    .prog-stats {
-      display: flex; justify-content: space-between;
-      font-size: 11px; font-family: monospace; color: var(--muted); margin-top: 8px;
+    .msg-box {
+      display: none;
+      margin-top: 10px;
+      padding: 12px 14px;
+      border-radius: var(--rad-btn);
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      background: var(--card);
+    }
+    .msg-box.ok {
+      border-color: rgba(16, 185, 129, 0.45);
+      color: #34d399;
+    }
+    .msg-box.err {
+      border-color: rgba(239, 68, 68, 0.45);
+      color: #f87171;
     }
 
-    .msg {
-      margin-top: 12px; padding: 11px 13px; border-radius: var(--radius);
-      font-size: 12px; line-height: 1.4; word-break: break-word; display: none;
+    /* Вкладки */
+    .tab-pane {
+      display: none;
+      will-change: transform, opacity;
     }
-    .msg.info { display: block; background: var(--surface); border: 1px solid var(--border); color: var(--text); }
-    .msg.ok   { display: block; background: #07291e; border: 1px solid #0f5138; color: #a7f3d0; }
-    .msg.err  { display: block; background: #2c0b0e; border: 1px solid #58151c; color: #f8d7da; }
+    .tab-pane.active {
+      display: block;
+    }
 
-    /* История с превью и встроенным просмотром */
-    .hist-card {
-      padding: 11px; border-radius: var(--radius); background: var(--surface);
-      border: 1px solid var(--border); margin-bottom: 10px;
+    /* История */
+    .hist-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      gap: 6px;
+      flex-wrap: wrap;
     }
-    .hist-row {
-      display: flex; gap: 11px; align-items: center;
+    .hist-item {
+      display: flex;
+      gap: 11px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--rad-card);
+      padding: 10px;
+      margin-bottom: 9px;
+      align-items: center;
+      position: relative;
+      contain: content;
+    }
+    .hist-item.selected {
+      border-color: var(--acc);
+      background: var(--glass-btn);
+    }
+    .hist-check {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid var(--muted);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+      color: #fff;
+    }
+    .select-mode .hist-check {
+      display: flex;
+    }
+    .hist-item.selected .hist-check {
+      background: var(--acc);
+      border-color: var(--acc);
     }
     .hist-thumb {
-      width: 64px; height: 64px; border-radius: calc(var(--radius) - 2px);
-      object-fit: cover; background: var(--bg); border: 1px solid var(--border); flex-shrink: 0;
+      width: 68px;
+      height: 52px;
+      border-radius: 10px;
+      background: var(--bg);
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 1px solid var(--border);
     }
-    .hist-info { min-width: 0; flex: 1; }
+    .hist-info {
+      flex: 1;
+      min-width: 0;
+    }
     .hist-title {
-      font-size: 13px; font-weight: 700; margin-bottom: 4px;
-      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 4px;
     }
-    .hist-meta { font-size: 11px; color: var(--muted); font-family: monospace; }
-    .hist-actions {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 7px;
-      margin-top: 10px; padding-top: 9px; border-top: 1px solid var(--border);
-    }
-    .hist-btn {
-      padding: 8px 10px; border-radius: calc(var(--radius) - 3px);
-      border: 1px solid var(--border); background: var(--surface-2);
-      color: var(--text); font-size: 11px; font-weight: 700; cursor: pointer; text-align: center;
-    }
-    .hist-btn.play {
-      background: var(--accent); color: var(--accent-fg); border-color: transparent;
-    }
-
-    /* Встроенный видеоплеер (Модальное окно) */
-    .player-modal {
-      position: fixed; inset: 0; z-index: 100;
-      background: rgba(0, 0, 0, 0.82);
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      display: none; align-items: center; justify-content: center; padding: 16px;
-    }
-    .player-modal.open {
+    .hist-meta {
+      font-size: 11px;
+      color: var(--muted);
       display: flex;
-      animation: tabZoom 0.24s ease-out forwards;
+      gap: 6px;
+      align-items: center;
     }
-    .player-box {
-      width: 100%; max-width: 440px; background: var(--surface);
-      border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 12px; box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
-    }
-    .player-top {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 10px; gap: 8px;
-    }
-    .player-title {
-      font-size: 13px; font-weight: 700;
-      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    }
-    .player-video {
-      width: 100%; max-height: 68vh; border-radius: calc(var(--radius) - 2px);
-      background: #000; outline: none; display: block;
+    .badge-fmt {
+      padding: 2px 6px;
+      border-radius: 5px;
+      background: var(--glass-btn);
+      color: var(--acc);
+      border: 1px solid var(--glass-dock-border);
+      font-weight: 700;
+      font-size: 10px;
     }
 
-    /* Настройки */
-    .set-group {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 14px; margin-bottom: 12px;
+    /* Модальное окно плеера */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.84);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
     }
-    .set-title { font-size: 13px; font-weight: 800; margin-bottom: 10px; }
-    .row-between {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 10px 0; border-top: 1px solid var(--border); font-size: 12px; font-weight: 500;
+    .modal-overlay.open {
+      display: flex;
     }
-    .row-between:first-of-type { border-top: none; padding-top: 0; }
-
-    .switch {
-      position: relative; display: inline-block; width: 44px; height: 24px;
+    .modal-card {
+      width: 100%;
+      max-width: 440px;
+      background: var(--card);
+      border: 1px solid var(--glass-dock-border);
+      border-radius: var(--rad-card);
+      padding: 14px;
     }
-    .switch input { opacity: 0; width: 0; height: 0; }
-    .slider {
-      position: absolute; cursor: pointer; inset: 0;
-      background-color: var(--bg); border: 1px solid var(--border);
-      border-radius: 24px; transition: 0.2s;
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 8px;
     }
-    .slider:before {
-      position: absolute; content: ""; height: 16px; width: 16px;
-      left: 3px; bottom: 3px; background-color: var(--muted);
-      border-radius: 50%; transition: 0.2s;
+    .modal-title {
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    input:checked + .slider { background-color: var(--accent); border-color: var(--accent); }
-    input:checked + .slider:before { transform: translateX(20px); background-color: var(--accent-fg); }
-
-    /* Плавающая нижняя панель с размытием */
-    .bottom-nav {
-      position: fixed; bottom: 12px; left: 14px; right: 14px;
-      max-width: 460px; margin: 0 auto;
-      background: color-mix(in srgb, var(--surface) 85%, transparent);
-      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-      border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 6px; z-index: 50;
-      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.38);
+    .modal-body video {
+      width: 100%;
+      max-height: 66vh;
+      border-radius: 12px;
+      background: #000;
+      display: block;
     }
-    .bottom-inner {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
-    }
-    .bnav-btn {
-      padding: 10px 6px; border: none; border-radius: calc(var(--radius) - 3px);
-      background: transparent; color: var(--muted);
-      font-size: 12px; font-weight: 800; cursor: pointer; text-align: center;
-      transition: all 0.18s ease;
-    }
-    .bnav-btn.active {
-      background: var(--surface-2); color: var(--accent);
+    .modal-body audio {
+      width: 100%;
+      margin: 12px 0;
     }
   </style>
 </head>
-<body data-theme="graphite" data-anim="slide" data-radius="std" data-blur="soft">
-  <div class="wrap">
+<body data-theme="crimson" data-shape="rounded" data-btnstyle="glass" data-blur="soft" data-fps="120">
+  <div class="app-wrap">
+    <!-- Шапка -->
     <div class="header">
-      <div class="brand-title">Media Loader</div>
-      <div class="brand-sub">MAX BITRATE ENGINE</div>
+      <span class="brand-title">Media Loader</span>
+      <span class="ver-badge">0.1 BETA</span>
     </div>
 
     <!-- ВКЛАДКА 1: ЗАГРУЗЧИК -->
-    <div id="tabDl" class="view-section active">
-      <div class="search-box">
-        <div class="input-row">
-          <input type="url" id="urlInput" placeholder="Ссылка на TikTok, YouTube, Pinterest, X...">
-          <button type="button" class="btn-sec" onclick="pasteUrl()">Вставить</button>
-          <button type="button" class="btn-sec" onclick="clearAll()">X</button>
-        </div>
-        <button type="button" class="btn-primary" id="checkBtn" onclick="checkInfo()">Проверить поток</button>
-      </div>
-
-      <div id="idleCard" class="idle-card">
-        <div class="idle-title">ПОДДЕРЖИВАЕМЫЕ ПЛОЩАДКИ</div>
-        <div class="plat-grid">
-          <div class="plat-tag">TikTok</div>
-          <div class="plat-tag">YouTube</div>
-          <div class="plat-tag">Pinterest</div>
-          <div class="plat-tag">Twitter/X</div>
-        </div>
-        <div class="quick-stats">
-          <div class="stat-box">
-            <div class="stat-val" id="statCount">0</div>
-            <div class="stat-lbl">В истории загрузок</div>
+    <div id="tab-loader" class="tab-pane active">
+      <div class="card">
+        <span class="label" data-i18n="lblUrl">Ссылка на медиа</span>
+        <div class="url-row">
+          <div class="input-wrap">
+            <input
+              id="urlInp"
+              type="url"
+              class="inp"
+              placeholder="Вставьте ссылку..."
+              autocomplete="off"
+              oninput="toggleClearBtn()"
+            />
+            <button id="clearBtn" type="button" class="clear-btn" onclick="clearUrl()">×</button>
           </div>
-          <div class="stat-box">
-            <div class="stat-val" id="statDef">MAX</div>
-            <div class="stat-lbl">Приоритет качества</div>
-          </div>
+          <button type="button" class="btn-paste" data-i18n="btnPaste" onclick="pasteUrl()">Вставить</button>
         </div>
       </div>
 
-      <div id="card" class="panel" style="display:none;">
-        <div class="media-head">
-          <img id="thumb" class="thumb" src="" alt="preview" style="display:none;">
-          <div class="info">
-            <div class="badges">
-              <span class="b-item" id="bPlatform">MEDIA</span>
-              <span class="b-item" id="bDuration">0:00</span>
-              <span class="b-item" id="bBitrate" style="display:none;"></span>
-            </div>
-            <div class="m-title" id="mTitle"></div>
-            <div class="m-author" id="mAuthor"></div>
-          </div>
+      <div class="card">
+        <span class="label" data-i18n="lblFormat">Формат</span>
+        <div class="seg-grid-2" id="fmtGroup">
+          <button type="button" class="seg-btn active" data-i18n="fmtMp4" onclick="setFmt('mp4', this)">Видео MP4</button>
+          <button type="button" class="seg-btn" data-i18n="fmtMp3" onclick="setFmt('mp3', this)">Аудио MP3</button>
         </div>
 
-        <div class="mode-switch">
-          <button type="button" class="mode-btn active" id="btnModeVideo" onclick="setMode('video')">Видео MP4</button>
-          <button type="button" class="mode-btn" id="btnModeAudio" onclick="setMode('audio')">Аудио MP3</button>
-          <button type="button" class="mode-btn" id="btnModeThumb" onclick="setMode('thumb')">Обложка JPG</button>
-        </div>
-
-        <div id="videoSettings">
-          <div class="section-label">
-            <span>Разрешение:</span>
-            <span id="nativeResHint"></span>
+        <div id="qualWrap" style="margin-top: 13px;">
+          <span class="label" data-i18n="lblQuality">Качество видео</span>
+          <div class="seg-grid-4" id="qualGroup">
+            <button type="button" class="seg-btn active" data-i18n="qBest" onclick="setQual('best', this)">Макс.</button>
+            <button type="button" class="seg-btn" onclick="setQual('1080', this)">1080p</button>
+            <button type="button" class="seg-btn" onclick="setQual('720', this)">720p</button>
+            <button type="button" class="seg-btn" onclick="setQual('480', this)">480p</button>
           </div>
-          <div class="chips" id="resChips"></div>
-
-          <div class="section-label">
-            <span>Частота кадров (FPS):</span>
-            <span id="nativeFpsHint"></span>
-          </div>
-          <div class="chips" id="fpsChips"></div>
         </div>
-
-        <div id="extraTools">
-          <div class="section-label">
-            <span>Свое имя файла (необязательно):</span>
-          </div>
-          <input type="text" class="mini-input" id="customName" placeholder="Оставьте пустым для авто-имени" style="margin-bottom:12px;">
-        </div>
-
-        <div class="summary" id="summaryBox"></div>
-
-        <button type="button" class="btn-primary" id="dlBtn" onclick="downloadMedia()">Скачать в Галерею</button>
       </div>
+
+      <div class="card">
+        <span class="label" data-i18n="lblCustomName">Своё имя файла (необязательно)</span>
+        <input
+          id="customName"
+          type="text"
+          class="inp"
+          placeholder="Оставьте пустым для авто-имени"
+          style="padding-right: 12px;"
+        />
+
+        <div class="opt-row" onclick="toggleSwitch('swWatermark')">
+          <span data-i18n="optWatermark">Без водяного знака</span>
+          <div id="swWatermark" class="switch on"></div>
+        </div>
+
+        <div class="opt-row" onclick="toggleSwitch('swAudioBitrate')">
+          <span data-i18n="optBitrate">Максимальный аудио-битрейт</span>
+          <div id="swAudioBitrate" class="switch on"></div>
+        </div>
+      </div>
+
+      <button id="dlBtn" type="button" class="main-btn" data-i18n="btnDownload" onclick="startDownload()">
+        Скачать
+      </button>
 
       <div id="progWrap" class="prog-wrap">
         <div class="prog-top">
-          <span class="prog-stage" id="progStage">Подготовка...</span>
-          <span class="prog-pct" id="progPct">0%</span>
+          <span id="progText">Подготовка...</span>
+          <span id="progPct">0%</span>
         </div>
         <div class="prog-track">
-          <div class="prog-fill" id="progFill"></div>
-        </div>
-        <div class="prog-stats">
-          <span id="progSize">0 MB</span>
-          <span id="progSpeed">-- MB/s</span>
+          <div id="progBar" class="prog-fill"></div>
         </div>
       </div>
 
-      <div id="msgBox" class="msg"></div>
+      <div id="msgBox" class="msg-box"></div>
     </div>
 
-    <!-- ВКЛАДКА 2: ИСТОРИЯ С ПРЕВЬЮ И ПРОСМОТРОМ -->
-    <div id="tabHist" class="view-section">
-      <div class="section-label" style="margin-bottom:10px;">
-        <span>СКАЧАННЫЕ МЕДИАФАЙЛЫ</span>
-        <span style="cursor:pointer; color:var(--accent);" onclick="clearHistory()">Очистить всё</span>
+    <!-- ВКЛАДКА 2: ИСТОРИЯ -->
+    <div id="tab-history" class="tab-pane">
+      <div class="hist-head">
+        <span class="label" data-i18n="lblHistory" style="margin-bottom: 0;">История загрузок</span>
+
+        <div id="histNormalBar" style="display: flex; gap: 6px;">
+          <button type="button" class="act-btn" data-i18n="btnClearAll" onclick="clearHistory()">Очистить всё</button>
+        </div>
+
+        <div id="histSelectBar" style="display: none; gap: 6px; align-items: center;">
+          <button type="button" class="act-btn" data-i18n="btnSelectAll" onclick="selectAllHistory()">Все</button>
+          <button type="button" class="act-btn danger" id="delSelectedBtn" onclick="deleteSelectedHistory()">Удалить (0)</button>
+          <button type="button" class="act-btn" data-i18n="btnCancel" onclick="exitSelectMode()">Отмена</button>
+        </div>
       </div>
-      <div id="histList"></div>
+
+      <div id="histHint" style="font-size: 11px; color: var(--muted); margin-bottom: 10px;">
+        Зажмите карточку пальцем, чтобы выбрать несколько записей для удаления :)
+      </div>
+
+      <div id="historyList"></div>
     </div>
 
     <!-- ВКЛАДКА 3: НАСТРОЙКИ -->
-    <div id="tabSet" class="view-section">
-      <div class="set-group">
-        <div class="set-title">Цветовая тема</div>
-        <div class="chips" style="grid-template-columns: repeat(2, 1fr); margin-bottom:7px;">
-          <button type="button" class="chip" id="th_graphite" onclick="applyTheme('graphite')">Graphite<small>Синий графит</small></button>
-          <button type="button" class="chip" id="th_emerald" onclick="applyTheme('emerald')">Emerald<small>Изумрудный</small></button>
-          <button type="button" class="chip" id="th_oled" onclick="applyTheme('oled')">OLED Black<small>Чистый черный</small></button>
-          <button type="button" class="chip" id="th_crimson" onclick="applyTheme('crimson')">Crimson<small>Темно-красный</small></button>
-        </div>
-        <button type="button" class="chip" id="th_light" onclick="applyTheme('light')" style="width:100%;">Light Clean<small>Светлое оформление</small></button>
-      </div>
-
-      <div class="set-group">
-        <div class="set-title">Анимация переходов</div>
-        <div class="chips" style="grid-template-columns: repeat(2, 1fr); margin-bottom:0;">
-          <button type="button" class="chip" id="an_slide" onclick="applyAnim('slide')">Сдвиг<small>Боковой слайд</small></button>
-          <button type="button" class="chip" id="an_zoom" onclick="applyAnim('zoom')">Масштаб<small>Плавный зум</small></button>
-          <button type="button" class="chip" id="an_bounce" onclick="applyAnim('bounce')">Пружина<small>Динамичный</small></button>
-          <button type="button" class="chip" id="an_none" onclick="applyAnim('none')">Выкл<small>Мгновенно</small></button>
+    <div id="tab-settings" class="tab-pane">
+      <div class="card">
+        <span class="label" data-i18n="lblTheme">Тема оформления</span>
+        <div class="theme-flex" id="themeGroup">
+          <button type="button" class="seg-btn" data-val="midnight" onclick="setPref('theme', 'midnight')">Midnight</button>
+          <button type="button" class="seg-btn active" data-val="crimson" onclick="setPref('theme', 'crimson')">Crimson</button>
+          <button type="button" class="seg-btn" data-val="emerald" onclick="setPref('theme', 'emerald')">Emerald</button>
+          <button type="button" class="seg-btn" data-val="ocean" onclick="setPref('theme', 'ocean')">Ocean</button>
+          <button type="button" class="seg-btn" data-val="amoled" onclick="setPref('theme', 'amoled')">AMOLED</button>
         </div>
       </div>
 
-      <div class="set-group">
-        <div class="set-title">Размытие при переходе вкладок (Blur)</div>
-        <div class="chips" style="margin-bottom:0;">
-          <button type="button" class="chip" id="bl_off" onclick="applyBlur('off')">Выкл<small>Без размытия</small></button>
-          <button type="button" class="chip" id="bl_soft" onclick="applyBlur('soft')">Мягкое<small>8px Blur</small></button>
-          <button type="button" class="chip" id="bl_strong" onclick="applyBlur('strong')">Сильное<small>18px Blur</small></button>
+      <!-- СТИЛЬ КНОПОК ПОД ТЕМУ (РАБОТАЕТ И НА НИЖНЮЮ ПАНЕЛЬ, И НА ВСЕ ВКЛАДКИ) -->
+      <div class="card">
+        <span class="label" data-i18n="lblBtnStyle">Стиль кнопок под тему</span>
+        <div class="seg-grid-4" id="btnStyleGroup">
+          <button type="button" class="seg-btn active" data-val="glass" data-i18n="bsGlass" onclick="setPref('btnstyle', 'glass')">Стекло</button>
+          <button type="button" class="seg-btn" data-val="neon" data-i18n="bsNeon" onclick="setPref('btnstyle', 'neon')">Неон</button>
+          <button type="button" class="seg-btn" data-val="gradient" data-i18n="bsGrad" onclick="setPref('btnstyle', 'gradient')">Градиент</button>
+          <button type="button" class="seg-btn" data-val="outline" data-i18n="bsOutline" onclick="setPref('btnstyle', 'outline')">Контур</button>
         </div>
       </div>
 
-      <div class="set-group">
-        <div class="set-title">Форма кнопок и карточек</div>
-        <div class="chips" style="margin-bottom:0;">
-          <button type="button" class="chip" id="rad_sharp" onclick="applyRadius('sharp')">Острые<small>5px</small></button>
-          <button type="button" class="chip" id="rad_std" onclick="applyRadius('std')">Стандарт<small>12px</small></button>
-          <button type="button" class="chip" id="rad_round" onclick="applyRadius('round')">Мягкие<small>18px</small></button>
+      <div class="card">
+        <span class="label" data-i18n="lblAnim">Анимация переходов</span>
+        <div class="seg-grid-4" id="animGroup">
+          <button type="button" class="seg-btn active" data-val="slide" data-i18n="animSlide" onclick="setPref('anim', 'slide')">Сдвиг</button>
+          <button type="button" class="seg-btn" data-val="scale" data-i18n="animScale" onclick="setPref('anim', 'scale')">Масштаб</button>
+          <button type="button" class="seg-btn" data-val="spring" data-i18n="animSpring" onclick="setPref('anim', 'spring')">Пружина</button>
+          <button type="button" class="seg-btn" data-val="none" data-i18n="optOff" onclick="setPref('anim', 'none')">Выкл</button>
         </div>
       </div>
 
-      <div class="set-group">
-        <div class="set-title">Параметры по умолчанию</div>
-        <div class="row-between">
-          <span>Автопроверка при нажатии «Вставить»</span>
-          <label class="switch">
-            <input type="checkbox" id="chkAutoCheck" onchange="savePrefs()">
-            <span class="slider"></span>
-          </label>
+      <div class="card">
+        <span class="label" data-i18n="lblBlur">Размытие при переходах (Blur)</span>
+        <div class="seg-grid-3" id="blurGroup">
+          <button type="button" class="seg-btn" data-val="none" data-i18n="optOff" onclick="setPref('blur', 'none')">Выкл</button>
+          <button type="button" class="seg-btn active" data-val="soft" data-i18n="blurSoft" onclick="setPref('blur', 'soft')">Лёгкое</button>
+          <button type="button" class="seg-btn" data-val="strong" data-i18n="blurStrong" onclick="setPref('blur', 'strong')">Сильное</button>
         </div>
-        <div class="row-between">
-          <span>Разрешение по умолчанию</span>
-          <select id="defResSelect" onchange="savePrefs()" class="mini-input" style="width:auto;">
-            <option value="best">MAX (Лучшее)</option>
-            <option value="1080">1080p</option>
-            <option value="720">720p</option>
-            <option value="480">480p</option>
-          </select>
+      </div>
+
+      <div class="card">
+        <span class="label" data-i18n="lblShape">Форма интерфейса</span>
+        <div class="seg-grid-3" id="shapeGroup">
+          <button type="button" class="seg-btn active" data-val="rounded" data-i18n="shapeRound" onclick="setPref('shape', 'rounded')">Мягкая</button>
+          <button type="button" class="seg-btn" data-val="pill" data-i18n="shapePill" onclick="setPref('shape', 'pill')">Капсула</button>
+          <button type="button" class="seg-btn" data-val="sharp" data-i18n="shapeSharp" onclick="setPref('shape', 'sharp')">Строгая</button>
         </div>
-        <div class="row-between">
-          <span>FPS по умолчанию</span>
-          <select id="defFpsSelect" onchange="savePrefs()" class="mini-input" style="width:auto;">
-            <option value="best">Макс FPS</option>
-            <option value="60">60 FPS</option>
-            <option value="30">30 FPS</option>
-          </select>
+      </div>
+
+      <div class="card">
+        <span class="label" data-i18n="lblLang">Язык / Language</span>
+        <div class="seg-grid-2" id="langGroup">
+          <button type="button" class="seg-btn active" data-val="ru" onclick="setPref('lang', 'ru')">Русский</button>
+          <button type="button" class="seg-btn" data-val="en" onclick="setPref('lang', 'en')">English</button>
+        </div>
+      </div>
+
+      <!-- ГЕРЦОВКА ПРИЛОЖЕНИЯ В САМОМ НИЗУ -->
+      <div class="card compact">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;">
+          <span class="label" data-i18n="lblFps" style="margin-bottom:0;">Частота кадров (Герцовка)</span>
+          <span id="fpsLiveBadge" style="font-size:11px;font-weight:700;color:var(--acc);">120 Hz</span>
+        </div>
+        <div class="seg-grid-4" id="fpsGroup">
+          <button type="button" class="fps-btn" data-val="30" data-i18n="fps30" onclick="setPref('fps', '30')">30 фпс</button>
+          <button type="button" class="fps-btn" data-val="60" data-i18n="fps60" onclick="setPref('fps', '60')">60 фпс</button>
+          <button type="button" class="fps-btn" data-val="90" data-i18n="fps90" onclick="setPref('fps', '90')">90 фпс</button>
+          <button type="button" class="fps-btn active" data-val="120" data-i18n="fps120" onclick="setPref('fps', '120')">120 фпс</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Модальное окно встроенного видеоплеера -->
-  <div id="playerModal" class="player-modal" onclick="closePlayer(event)">
-    <div class="player-box" onclick="event.stopPropagation()">
-      <div class="player-top">
-        <div class="player-title" id="playerTitle">Просмотр</div>
-        <button type="button" class="btn-sec" style="padding:5px 10px;" onclick="closePlayer()">Закрыть</button>
+  <!-- Модальное окно встроенного плеера -->
+  <div id="mediaModal" class="modal-overlay" onclick="if(event.target===this)closeMediaModal()">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div id="modalTitle" class="modal-title">Просмотр</div>
+        <button type="button" class="act-btn" data-i18n="btnClose" onclick="closeMediaModal()">Закрыть</button>
       </div>
-      <video id="playerVideo" class="player-video" controls playsinline></video>
+      <div id="modalBody" class="modal-body"></div>
     </div>
   </div>
 
   <!-- Нижняя панель навигации -->
-  <div class="bottom-nav">
-    <div class="bottom-inner">
-      <button type="button" class="bnav-btn active" id="navDl" onclick="switchTab('dl')">Загрузчик</button>
-      <button type="button" class="bnav-btn" id="navHist" onclick="switchTab('hist')">История</button>
-      <button type="button" class="bnav-btn" id="navSet" onclick="switchTab('set')">Настройки</button>
-    </div>
-  </div>
+  <nav class="bottom-nav" id="bottomNav">
+    <div class="nav-liquid-pill" id="navPill"></div>
+    <button type="button" class="nav-btn active" data-idx="0" data-i18n="navLoader" onclick="switchTab('loader', 0, this)">Загрузчик</button>
+    <button type="button" class="nav-btn" data-idx="1" data-i18n="navHistory" onclick="switchTab('history', 1, this)">История</button>
+    <button type="button" class="nav-btn" data-idx="2" data-i18n="navSettings" onclick="switchTab('settings', 2, this)">Настройки</button>
+  </nav>
 
   <script>
-    const API = "http://127.0.0.1:5000";
-
-    const ALL_RES = [
-      { val: "best", label: "MAX", sub: "Лучшее" },
-      { val: "2160", label: "4K", sub: "2160p" },
-      { val: "1440", label: "2K", sub: "1440p" },
-      { val: "1080", label: "1080p", sub: "Full HD" },
-      { val: "720",  label: "720p",  sub: "HD" },
-      { val: "480",  label: "480p",  sub: "SD" }
-    ];
-
-    const ALL_FPS = [
-      { val: "best", label: "Макс FPS", sub: "Оригинал" },
-      { val: "60",   label: "60 FPS",   sub: "Плавное" },
-      { val: "30",   label: "30 FPS",   sub: "Стандарт" }
-    ];
+    const API = "http://127.0.0.1:8080";
+    let curFmt = "mp4";
+    let curQual = "best";
+    let pollTimer = null;
 
     let prefs = {
-      theme: "graphite",
-      radius: "std",
+      lang: "ru",
+      theme: "crimson",
+      btnstyle: "glass",
       anim: "slide",
       blur: "soft",
-      autoCheck: true,
-      defRes: "best",
-      defFps: "best"
+      shape: "rounded",
+      fps: "120"
     };
 
-    let mode = "video";
-    let selectedRes = "best";
-    let selectedFps = "best";
-    let nativeRes = [];
-    let nativeFps = [];
-    let pollTimer = null;
-    let currentTitle = "";
-    let currentThumb = "";
-
-    function loadPrefs() {
-      try {
-        const saved = JSON.parse(localStorage.getItem("ml_prefs") || "{}");
-        prefs = { ...prefs, ...saved };
-      } catch (_e) {}
-      applyTheme(prefs.theme, false);
-      applyRadius(prefs.radius || "std", false);
-      applyAnim(prefs.anim || "slide", false);
-      applyBlur(prefs.blur || "soft", false);
-      document.getElementById("chkAutoCheck").checked = !!prefs.autoCheck;
-      document.getElementById("defResSelect").value = prefs.defRes;
-      document.getElementById("defFpsSelect").value = prefs.defFps;
-      selectedRes = prefs.defRes;
-      selectedFps = prefs.defFps;
-      updateDashboardStats();
-      renderHistory();
-    }
-
-    function updateDashboardStats() {
-      let list = [];
-      try { list = JSON.parse(localStorage.getItem("ml_hist") || "[]"); } catch (_e) {}
-      document.getElementById("statCount").textContent = String(list.length);
-      document.getElementById("statDef").textContent = prefs.defRes === "best" ? "MAX" : (prefs.defRes + "p");
-    }
-
-    function savePrefs() {
-      prefs.autoCheck = document.getElementById("chkAutoCheck").checked;
-      prefs.defRes = document.getElementById("defResSelect").value;
-      prefs.defFps = document.getElementById("defFpsSelect").value;
-      localStorage.setItem("ml_prefs", JSON.stringify(prefs));
-      updateDashboardStats();
-    }
-
-    function applyTheme(t = "graphite", save = true) {
-      prefs.theme = t;
-      document.body.setAttribute("data-theme", t);
-      ["oled", "emerald", "graphite", "crimson", "light"].forEach((id) => {
-        const el = document.getElementById("th_" + id);
-        if (el) el.className = "chip" + (id === t ? " active" : "");
-      });
-      if (save) localStorage.setItem("ml_prefs", JSON.stringify(prefs));
-    }
-
-    function applyRadius(r = "std", save = true) {
-      prefs.radius = r;
-      document.body.setAttribute("data-radius", r);
-      ["sharp", "std", "round"].forEach((id) => {
-        const el = document.getElementById("rad_" + id);
-        if (el) el.className = "chip" + (id === r ? " active" : "");
-      });
-      if (save) localStorage.setItem("ml_prefs", JSON.stringify(prefs));
-    }
-
-    function applyAnim(a = "slide", save = true) {
-      prefs.anim = a;
-      document.body.setAttribute("data-anim", a);
-      ["slide", "zoom", "bounce", "none"].forEach((id) => {
-        const el = document.getElementById("an_" + id);
-        if (el) el.className = "chip" + (id === a ? " active" : "");
-      });
-      if (save) {
-        localStorage.setItem("ml_prefs", JSON.stringify(prefs));
-        triggerSectionAnim("tabSet");
+    const I18N = {
+      ru: {
+        lblUrl: "Ссылка на медиа",
+        phUrl: "Вставьте ссылку...",
+        btnPaste: "Вставить",
+        lblFormat: "Формат",
+        fmtMp4: "Видео MP4",
+        fmtMp3: "Аудио MP3",
+        lblQuality: "Качество видео",
+        qBest: "Макс.",
+        lblCustomName: "Своё имя файла (необязательно)",
+        phCustomName: "Оставьте пустым для авто-имени",
+        optWatermark: "Без водяного знака",
+        optBitrate: "Максимальный аудио-битрейт",
+        btnDownload: "Скачать",
+        lblHistory: "История загрузок",
+        btnClearAll: "Очистить всё",
+        btnSelectAll: "Все",
+        btnCancel: "Отмена",
+        histHint: "Зажмите карточку пальцем, чтобы выбрать несколько записей для удаления :)",
+        histEmpty: "История пока пуста :)",
+        btnWatch: "Смотреть",
+        btnDeleteCount: "Удалить",
+        lblLang: "Язык / Language",
+        lblTheme: "Тема оформления",
+        lblBtnStyle: "Стиль кнопок под тему",
+        bsGlass: "Стекло",
+        bsNeon: "Неон",
+        bsGrad: "Градиент",
+        bsOutline: "Контур",
+        lblAnim: "Анимация переходов",
+        animSlide: "Сдвиг",
+        animScale: "Масштаб",
+        animSpring: "Пружина",
+        optOff: "Выкл",
+        lblBlur: "Размытие при переходах (Blur)",
+        blurSoft: "Лёгкое",
+        blurStrong: "Сильное",
+        lblShape: "Форма интерфейса",
+        shapeRound: "Мягкая",
+        shapePill: "Капсула",
+        shapeSharp: "Строгая",
+        lblFps: "Частота кадров (Герцовка)",
+        fps30: "30 фпс",
+        fps60: "60 фпс",
+        fps90: "90 фпс",
+        fps120: "120 фпс",
+        btnClose: "Закрыть",
+        navLoader: "Загрузчик",
+        navHistory: "История",
+        navSettings: "Настройки",
+        msgPasteFirst: "Сначала вставьте ссылку :)",
+        msgStartDl: "Запуск загрузки...",
+        msgSaved: "Сохранено в Галерею: ",
+        msgErr: "Ошибка: ",
+        msgTermuxErr: "Ошибка связи с Termux: "
+      },
+      en: {
+        lblUrl: "Media Link",
+        phUrl: "Paste link...",
+        btnPaste: "Paste",
+        lblFormat: "Format",
+        fmtMp4: "Video MP4",
+        fmtMp3: "Audio MP3",
+        lblQuality: "Video Quality",
+        qBest: "Max",
+        lblCustomName: "Custom file name (optional)",
+        phCustomName: "Leave empty for auto-name",
+        optWatermark: "No watermark",
+        optBitrate: "Max audio bitrate",
+        btnDownload: "Download",
+        lblHistory: "Download History",
+        btnClearAll: "Clear All",
+        btnSelectAll: "All",
+        btnCancel: "Cancel",
+        histHint: "Long-press any card to select multiple items for deletion :)",
+        histEmpty: "History is empty :)",
+        btnWatch: "Watch",
+        btnDeleteCount: "Delete",
+        lblLang: "Language / Язык",
+        lblTheme: "App Theme",
+        lblBtnStyle: "Theme Button Style",
+        bsGlass: "Glass",
+        bsNeon: "Neon",
+        bsGrad: "Gradient",
+        bsOutline: "Outline",
+        lblAnim: "Tab Animation",
+        animSlide: "Slide",
+        animScale: "Scale",
+        animSpring: "Spring",
+        optOff: "Off",
+        lblBlur: "Transition Blur",
+        blurSoft: "Soft",
+        blurStrong: "Strong",
+        lblShape: "Interface Shape",
+        shapeRound: "Rounded",
+        shapePill: "Capsule",
+        shapeSharp: "Sharp",
+        lblFps: "Frame Rate (Refresh Rate)",
+        fps30: "30 FPS",
+        fps60: "60 FPS",
+        fps90: "90 FPS",
+        fps120: "120 FPS",
+        btnClose: "Close",
+        navLoader: "Loader",
+        navHistory: "History",
+        navSettings: "Settings",
+        msgPasteFirst: "Please paste a link first :)",
+        msgStartDl: "Starting download...",
+        msgSaved: "Saved to Gallery: ",
+        msgErr: "Error: ",
+        msgTermuxErr: "Termux connection error: "
       }
+    };
+
+    let selectMode = false;
+    let selectedIndices = new Set();
+    let longPressTimer = null;
+    let longPressTriggered = false;
+
+    // Состояние покадрового движка герцовки
+    let curTabIdx = 0;
+    let pillPos = 0;
+    let pillAnimRaf = null;
+    let tabAnimRaf = null;
+
+    const elUrl = document.getElementById("urlInp");
+    const elCustomName = document.getElementById("customName");
+    const elClear = document.getElementById("clearBtn");
+    const elQualWrap = document.getElementById("qualWrap");
+    const elDlBtn = document.getElementById("dlBtn");
+    const elProgWrap = document.getElementById("progWrap");
+    const elProgBar = document.getElementById("progBar");
+    const elProgText = document.getElementById("progText");
+    const elProgPct = document.getElementById("progPct");
+    const elMsgBox = document.getElementById("msgBox");
+    const elNavPill = document.getElementById("navPill");
+    const elHistList = document.getElementById("historyList");
+    const elFpsBadge = document.getElementById("fpsLiveBadge");
+
+    function t(key) {
+      const dict = I18N[prefs.lang] || I18N.ru;
+      return dict[key] || key;
     }
 
-    function applyBlur(b = "soft", save = true) {
-      prefs.blur = b;
-      document.body.setAttribute("data-blur", b);
-      ["off", "soft", "strong"].forEach((id) => {
-        const el = document.getElementById("bl_" + id);
-        if (el) el.className = "chip" + (id === b ? " active" : "");
+    function applyLang() {
+      document.documentElement.lang = prefs.lang;
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        el.textContent = t(key);
       });
-      if (save) {
-        localStorage.setItem("ml_prefs", JSON.stringify(prefs));
-        triggerSectionAnim("tabSet");
+      elUrl.placeholder = t("phUrl");
+      elCustomName.placeholder = t("phCustomName");
+      document.getElementById("histHint").textContent = t("histHint");
+      document.getElementById("delSelectedBtn").textContent = `${t("btnDeleteCount")} (${selectedIndices.size})`;
+    }
+
+    // Покадровый движок (строго держит 30 / 60 / 90 / 120 FPS и всегда доводит анимацию до 100%)
+    function runFpsAnimation(durationMs, onStep, onDone) {
+      const targetFps = Number(prefs.fps) || 120;
+      const minFrameDelta = targetFps >= 120 ? 0 : (1000 / targetFps) * 0.92;
+      const startTime = performance.now();
+      let lastFrameTime = 0;
+      let rafId = null;
+
+      function loop(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(1, elapsed / durationMs);
+
+        if (progress >= 1) {
+          onStep(1);
+          if (onDone) onDone();
+          return;
+        }
+
+        if (now - lastFrameTime >= minFrameDelta) {
+          lastFrameTime = now;
+          onStep(progress);
+        }
+
+        rafId = requestAnimationFrame(loop);
       }
+
+      onStep(0);
+      rafId = requestAnimationFrame(loop);
+      return () => {
+        if (rafId) cancelAnimationFrame(rafId);
+      };
     }
 
-    function triggerSectionAnim(secId = "tabDl") {
-      const el = document.getElementById(secId);
-      if (!el) return;
-      el.classList.remove("anim-run");
-      void el.offsetWidth;
-      el.classList.add("anim-run");
+    // Пружинная кривая для жидкой капсулы
+    function easeOutBack(x) {
+      const c1 = 1.70158;
+      const c3 = c1 + 1;
+      return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
     }
 
-    function switchTab(tab = "dl") {
-      const map = { dl: "tabDl", hist: "tabHist", set: "tabSet" };
-      ["dl", "hist", "set"].forEach((k) => {
-        const sec = document.getElementById(map[k]);
-        sec.className = "view-section" + (k === tab ? " active" : "");
-      });
-
-      document.getElementById("navDl").className = "bnav-btn" + (tab === "dl" ? " active" : "");
-      document.getElementById("navHist").className = "bnav-btn" + (tab === "hist" ? " active" : "");
-      document.getElementById("navSet").className = "bnav-btn" + (tab === "set" ? " active" : "");
-
-      if (tab === "hist") renderHistory();
-      triggerSectionAnim(map[tab]);
+    function easeOutCubic(x) {
+      return 1 - Math.pow(1 - x, 3);
     }
 
-    function addHistory(title = "", url = "", details = "", thumb = "", filename = "") {
-      try {
-        const list = JSON.parse(localStorage.getItem("ml_hist") || "[]");
-        const entry = {
-          title: title || "Видео",
-          url,
-          details,
-          thumb: thumb || "",
-          filename: filename || "",
-          time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-        };
-        const updated = [entry, ...list.filter((i) => i.url !== url)].slice(0, 30);
-        localStorage.setItem("ml_hist", JSON.stringify(updated));
-        updateDashboardStats();
-      } catch (_e) {}
-    }
+    // Движение нижней капсулы с реальной герцовкой 30/60/90/120 FPS
+    function animateLiquidPill(toIdx, immediate) {
+      if (pillAnimRaf) pillAnimRaf();
+      const fromPos = pillPos;
+      const toPos = toIdx;
+      curTabIdx = toIdx;
 
-    function openPlayer(filename = "", title = "") {
-      if (!filename) {
-        showMsg("Файл для предпросмотра не найден", "err");
+      if (immediate || fromPos === toPos) {
+        pillPos = toPos;
+        elNavPill.style.transform = `translate3d(calc(${toPos * 100}% + ${toPos * 6}px), 0, 0) scale3d(1, 1, 1)`;
         return;
       }
-      const modal = document.getElementById("playerModal");
-      const video = document.getElementById("playerVideo");
-      document.getElementById("playerTitle").textContent = title || filename;
-      video.src = API + "/media/" + encodeURIComponent(filename);
-      modal.className = "player-modal open";
-      video.play().catch(() => {});
-    }
 
-    function closePlayer() {
-      const modal = document.getElementById("playerModal");
-      const video = document.getElementById("playerVideo");
-      video.pause();
-      video.src = "";
-      modal.className = "player-modal";
-    }
-
-    function renderHistory() {
-      const box = document.getElementById("histList");
-      box.innerHTML = "";
-      let list = [];
-      try { list = JSON.parse(localStorage.getItem("ml_hist") || "[]"); } catch (_e) {}
-
-      if (list.length === 0) {
-        box.innerHTML = "<div class='panel' style='text-align:center; color:var(--muted); font-size:12px;'>История загрузок пока пуста :)</div>";
-        return;
-      }
-
-      list.forEach((item) => {
-        const card = document.createElement("div");
-        card.className = "hist-card";
-
-        const thumbHtml = item.thumb
-          ? "<img class='hist-thumb' src='" + item.thumb + "' alt='preview'>"
-          : "<div class='hist-thumb'></div>";
-
-        card.innerHTML =
-          "<div class='hist-row'>" +
-            thumbHtml +
-            "<div class='hist-info'>" +
-              "<div class='hist-title'>" + item.title + "</div>" +
-              "<div class='hist-meta'>" + item.details + " • " + item.time + "</div>" +
-            "</div>" +
-          "</div>" +
-          "<div class='hist-actions'>" +
-            "<button type='button' class='hist-btn play'>Смотреть в приложении</button>" +
-            "<button type='button' class='hist-btn repeat'>Скачать снова</button>" +
-          "</div>";
-
-        const playBtn = card.querySelector(".play");
-        playBtn.onclick = () => {
-          if (item.filename) {
-            openPlayer(item.filename, item.title);
-          } else {
-            document.getElementById("urlInput").value = item.url;
-            switchTab("dl");
-            checkInfo();
-          }
-        };
-
-        const repBtn = card.querySelector(".repeat");
-        repBtn.onclick = () => {
-          document.getElementById("urlInput").value = item.url;
-          switchTab("dl");
-          checkInfo();
-        };
-
-        box.appendChild(card);
+      pillAnimRaf = runFpsAnimation(340, (p) => {
+        const eased = easeOutBack(p);
+        const cur = fromPos + (toPos - fromPos) * eased;
+        pillPos = cur;
+        // Растяжение капли в середине движения и возврат к 1 в конце
+        const stretch = Math.sin(p * Math.PI);
+        const sx = 1 + stretch * 0.14;
+        const sy = 1 - stretch * 0.10;
+        elNavPill.style.transform = `translate3d(calc(${cur * 100}% + ${cur * 6}px), 0, 0) scale3d(${sx.toFixed(3)}, ${sy.toFixed(3)}, 1)`;
+      }, () => {
+        pillPos = toPos;
+        elNavPill.style.transform = `translate3d(calc(${toPos * 100}% + ${toPos * 6}px), 0, 0) scale3d(1, 1, 1)`;
       });
     }
 
-    function clearHistory() {
-      localStorage.removeItem("ml_hist");
-      updateDashboardStats();
-      renderHistory();
+    // Анимация смены вкладки с реальной герцовкой 30/60/90/120 FPS
+    function animateTabPane(paneEl) {
+      if (tabAnimRaf) tabAnimRaf();
+      if (prefs.anim === "none" && prefs.blur === "none") {
+        paneEl.style.opacity = "";
+        paneEl.style.transform = "";
+        paneEl.style.filter = "";
+        return;
+      }
+
+      const maxBlur = prefs.blur === "strong" ? 5 : (prefs.blur === "soft" ? 2.5 : 0);
+      const mode = prefs.anim;
+      const dur = mode === "spring" ? 260 : 200;
+
+      tabAnimRaf = runFpsAnimation(dur, (p) => {
+        const e = mode === "spring" ? easeOutBack(p) : easeOutCubic(p);
+        const inv = Math.max(0, 1 - e);
+        paneEl.style.opacity = Math.min(1, p * 1.35).toFixed(3);
+
+        if (mode === "slide") {
+          paneEl.style.transform = `translate3d(${(inv * 16).toFixed(1)}px, 0, 0)`;
+        } else if (mode === "scale") {
+          const s = 0.95 + 0.05 * e;
+          paneEl.style.transform = `scale3d(${s.toFixed(3)}, ${s.toFixed(3)}, 1)`;
+        } else if (mode === "spring") {
+          const s = 0.96 + 0.04 * e;
+          paneEl.style.transform = `translate3d(0, ${(inv * 14).toFixed(1)}px, 0) scale3d(${s.toFixed(3)}, ${s.toFixed(3)}, 1)`;
+        } else {
+          paneEl.style.transform = "none";
+        }
+
+        if (maxBlur > 0) {
+          const b = (1 - p) * maxBlur;
+          paneEl.style.filter = b > 0.15 ? `blur(${b.toFixed(2)}px)` : "none";
+        } else {
+          paneEl.style.filter = "none";
+        }
+      }, () => {
+        paneEl.style.opacity = "";
+        paneEl.style.transform = "";
+        paneEl.style.filter = "";
+      });
     }
 
-    function showMsg(text = "", type = "info") {
-      const b = document.getElementById("msgBox");
-      b.className = "msg " + type;
-      b.textContent = text;
+    // Покадровый жидкий отклик при нажатии на любую кнопку
+    document.addEventListener("pointerdown", (e) => {
+      const btn = e.target.closest(".seg-btn, .btn-paste, .act-btn, .fps-btn, .main-btn, .nav-btn");
+      if (!btn || btn.disabled) return;
+      const isMain = btn.classList.contains("main-btn");
+      const minScaleX = isMain ? 0.95 : 0.90;
+      const minScaleY = isMain ? 0.91 : 0.85;
+
+      runFpsAnimation(220, (p) => {
+        const dip = Math.sin(p * Math.PI);
+        const sx = 1 - dip * (1 - minScaleX);
+        const sy = 1 - dip * (1 - minScaleY);
+        btn.style.transform = `scale3d(${sx.toFixed(3)}, ${sy.toFixed(3)}, 1)`;
+      }, () => {
+        btn.style.transform = "";
+      });
+    }, { passive: true });
+
+    function switchTab(tabName, idx, btnEl) {
+      const target = document.getElementById("tab-" + tabName);
+      if (!target || target.classList.contains("active")) return;
+
+      document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+      btnEl.classList.add("active");
+      animateLiquidPill(idx, false);
+
+      document.querySelectorAll(".tab-pane").forEach(p => {
+        p.classList.remove("active");
+        p.style.opacity = "";
+        p.style.transform = "";
+        p.style.filter = "";
+      });
+
+      target.classList.add("active");
+      animateTabPane(target);
+
+      if (tabName === "history") {
+        renderHistory();
+      } else if (selectMode) {
+        exitSelectMode();
+      }
     }
 
-    function hideMsg() {
-      document.getElementById("msgBox").className = "msg";
+    function toggleClearBtn() {
+      elClear.style.display = elUrl.value.trim() ? "flex" : "none";
+    }
+
+    function clearUrl() {
+      elUrl.value = "";
+      elClear.style.display = "none";
+      elUrl.focus();
     }
 
     async function pasteUrl() {
       try {
-        const t = await navigator.clipboard.readText();
-        if (t) {
-          document.getElementById("urlInput").value = t;
-          if (prefs.autoCheck) checkInfo();
+        const text = await navigator.clipboard.readText();
+        if (text) {
+          elUrl.value = text.trim();
+          toggleClearBtn();
         }
       } catch (_e) {
-        showMsg("Вставьте ссылку долгим нажатием в поле ввода", "info");
+        elUrl.focus();
       }
     }
 
-    function clearAll() {
-      if (pollTimer) clearInterval(pollTimer);
-      document.getElementById("urlInput").value = "";
-      document.getElementById("customName").value = "";
-      document.getElementById("card").style.display = "none";
-      document.getElementById("idleCard").style.display = "block";
-      document.getElementById("progWrap").style.display = "none";
-      hideMsg();
+    function setFmt(fmt, btn) {
+      curFmt = fmt;
+      document.querySelectorAll("#fmtGroup .seg-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      elQualWrap.style.display = fmt === "mp4" ? "block" : "none";
     }
 
-    function fmtTime(sec = 0) {
-      if (!sec || sec <= 0) return "--:--";
-      const m = Math.floor(sec / 60);
-      const s = Math.floor(sec % 60);
-      return m + ":" + (s < 10 ? "0" : "") + s;
+    function setQual(q, btn) {
+      curQual = q;
+      document.querySelectorAll("#qualGroup .seg-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
     }
 
-    function setMode(m = "video") {
-      mode = m;
-      document.getElementById("btnModeVideo").className = "mode-btn" + (m === "video" ? " active" : "");
-      document.getElementById("btnModeAudio").className = "mode-btn" + (m === "audio" ? " active" : "");
-      document.getElementById("btnModeThumb").className = "mode-btn" + (m === "thumb" ? " active" : "");
-      document.getElementById("videoSettings").style.display = m === "video" ? "block" : "none";
-      document.getElementById("extraTools").style.display = m === "thumb" ? "none" : "block";
-      updateSummary();
+    function toggleSwitch(id) {
+      document.getElementById(id).classList.toggle("on");
     }
 
-    function renderChips() {
-      const resBox = document.getElementById("resChips");
-      resBox.innerHTML = "";
+    function showMsg(text, type) {
+      elMsgBox.textContent = text;
+      elMsgBox.className = "msg-box " + (type || "ok");
+      elMsgBox.style.display = "block";
+    }
 
-      ALL_RES.forEach((item) => {
-        const isNative = item.val !== "best" && nativeRes.includes(Number(item.val));
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "chip" + (selectedRes === item.val ? " active" : "");
-        btn.innerHTML = item.label + "<small>" + (isNative ? "исходник" : item.sub) + "</small>";
-        btn.onclick = () => { selectedRes = item.val; renderChips(); updateSummary(); };
-        resBox.appendChild(btn);
-      });
-
-      const fpsBox = document.getElementById("fpsChips");
-      fpsBox.innerHTML = "";
-      ALL_FPS.forEach((item) => {
-        const isNative = item.val !== "best" && nativeFps.includes(Number(item.val));
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "chip" + (selectedFps === item.val ? " active" : "");
-        btn.innerHTML = item.label + "<small>" + (isNative ? "исходник" : item.sub) + "</small>";
-        btn.onclick = () => { selectedFps = item.val; renderChips(); updateSummary(); };
-        fpsBox.appendChild(btn);
+    function syncGroup(groupId, val) {
+      document.querySelectorAll(`#${groupId} [data-val]`).forEach(b => {
+        b.classList.toggle("active", b.getAttribute("data-val") === val);
       });
     }
 
-    function updateSummary() {
-      const s = document.getElementById("summaryBox");
-      if (mode === "audio") {
-        s.textContent = "Аудио: MP3 | 320 kbps (максимальный битрейт)";
-      } else if (mode === "thumb") {
-        s.textContent = "Обложка: оригинальное изображение превью";
-      } else {
-        const rText = selectedRes === "best" ? "MAX" : selectedRes + "p";
-        const fText = selectedFps === "best" ? "Макс. FPS" : selectedFps + " FPS";
-        s.textContent = "Видео: MP4 | " + rText + " | " + fText + " | Макс. битрейт";
-      }
-    }
-
-    async function checkInfo() {
-      const url = document.getElementById("urlInput").value.trim();
-      const btn = document.getElementById("checkBtn");
-      const card = document.getElementById("card");
-      if (!url) return;
-
-      btn.disabled = true;
-      card.style.display = "none";
-      document.getElementById("progWrap").style.display = "none";
-      showMsg("Получаем данные о потоках...", "info");
-
+    function setPref(key, val) {
+      if (prefs[key] === val) return;
+      prefs[key] = val;
       try {
-        const res = await fetch(API + "/info", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ url })
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Ошибка проверки");
+        localStorage.setItem("ml_prefs_v7", JSON.stringify(prefs));
+      } catch (_e) {}
 
-        currentTitle = data.title || "Видео";
-        currentThumb = data.thumbnail || "";
-        document.getElementById("mTitle").textContent = currentTitle;
-        document.getElementById("mAuthor").textContent = "Автор: " + data.uploader;
-        document.getElementById("bPlatform").textContent = data.platform;
-        document.getElementById("bDuration").textContent = fmtTime(data.duration);
-
-        const bBit = document.getElementById("bBitrate");
-        if (data.max_kbps) {
-          bBit.style.display = "inline-block";
-          bBit.textContent = data.max_kbps + " kbps";
-        } else {
-          bBit.style.display = "none";
-        }
-
-        const thumb = document.getElementById("thumb");
-        if (currentThumb) {
-          thumb.src = currentThumb;
-          thumb.style.display = "block";
-        } else {
-          thumb.style.display = "none";
-        }
-
-        nativeRes = data.available_res || [];
-        nativeFps = data.available_fps || [];
-        document.getElementById("nativeResHint").textContent = nativeRes.length ? "Исходник: " + nativeRes[0] + "p" : "";
-        document.getElementById("nativeFpsHint").textContent = nativeFps.length ? "Исходник: " + nativeFps[0] + " FPS" : "";
-
-        selectedRes = prefs.defRes;
-        selectedFps = prefs.defFps;
-        setMode("video");
-        renderChips();
-
-        document.getElementById("idleCard").style.display = "none";
-        card.style.display = "block";
-        hideMsg();
-      } catch (e) {
-        showMsg("Ошибка: " + e.message + " (Проверьте, запущен ли server.py в Termux)", "err");
-      } finally {
-        btn.disabled = false;
+      if (key === "theme") {
+        document.body.setAttribute("data-theme", val);
+        syncGroup("themeGroup", val);
+      } else if (key === "btnstyle") {
+        document.body.setAttribute("data-btnstyle", val);
+        syncGroup("btnStyleGroup", val);
+      } else if (key === "anim") {
+        syncGroup("animGroup", val);
+      } else if (key === "blur") {
+        document.body.setAttribute("data-blur", val);
+        syncGroup("blurGroup", val);
+      } else if (key === "shape") {
+        document.body.setAttribute("data-shape", val);
+        syncGroup("shapeGroup", val);
+      } else if (key === "fps") {
+        document.body.setAttribute("data-fps", val);
+        syncGroup("fpsGroup", val);
+        elFpsBadge.textContent = val + " Hz";
+      } else if (key === "lang") {
+        syncGroup("langGroup", val);
+        applyLang();
       }
     }
 
-    async function downloadMedia() {
-      const url = document.getElementById("urlInput").value.trim();
-      const btn = document.getElementById("dlBtn");
-      const progWrap = document.getElementById("progWrap");
-      const customName = document.getElementById("customName").value.trim();
+    function loadPrefs() {
+      try {
+        const saved = JSON.parse(localStorage.getItem("ml_prefs_v7") || "{}");
+        prefs = Object.assign(prefs, saved);
+      } catch (_e) {}
 
-      if (mode === "thumb") {
-        if (!currentThumb) {
-          showMsg("У этого видео нет обложки", "err");
-          return;
+      document.body.setAttribute("data-theme", prefs.theme);
+      document.body.setAttribute("data-btnstyle", prefs.btnstyle);
+      document.body.setAttribute("data-blur", prefs.blur);
+      document.body.setAttribute("data-shape", prefs.shape);
+      document.body.setAttribute("data-fps", prefs.fps);
+      elFpsBadge.textContent = prefs.fps + " Hz";
+
+      syncGroup("langGroup", prefs.lang);
+      syncGroup("themeGroup", prefs.theme);
+      syncGroup("btnStyleGroup", prefs.btnstyle);
+      syncGroup("animGroup", prefs.anim);
+      syncGroup("blurGroup", prefs.blur);
+      syncGroup("shapeGroup", prefs.shape);
+      syncGroup("fpsGroup", prefs.fps);
+
+      applyLang();
+      animateLiquidPill(0, true);
+    }
+
+    function getHistory() {
+      try {
+        return JSON.parse(localStorage.getItem("ml_history_v2") || "[]");
+      } catch (_e) {
+        return [];
+      }
+    }
+
+    function saveHistory(arr) {
+      try {
+        localStorage.setItem("ml_history_v2", JSON.stringify(arr.slice(0, 60)));
+      } catch (_e) {}
+    }
+
+    function formatBadge(item) {
+      const f = (item.format || "mp4").toUpperCase();
+      if (f === "MP3") return "MP3";
+      const q = item.quality === "best" ? "MAX" : (item.quality + "p");
+      return `MP4 ${q}`;
+    }
+
+    function renderHistory() {
+      const list = getHistory();
+      elHistList.classList.toggle("select-mode", selectMode);
+
+      document.getElementById("histNormalBar").style.display = selectMode ? "none" : "flex";
+      document.getElementById("histSelectBar").style.display = selectMode ? "flex" : "none";
+      document.getElementById("delSelectedBtn").textContent = `${t("btnDeleteCount")} (${selectedIndices.size})`;
+
+      if (!list.length) {
+        elHistList.innerHTML = `<div class="card" style="text-align:center;color:var(--muted);font-size:13px;">${t("histEmpty")}</div>`;
+        return;
+      }
+
+      let html = "";
+      for (let i = 0; i < list.length; i++) {
+        const it = list[i];
+        const isSel = selectedIndices.has(i);
+        const thumbSrc = it.thumb || "";
+        const safeTitle = (it.title || it.saved_to || "Media").replace(/"/g, "&quot;");
+        html += `
+          <div class="hist-item ${isSel ? "selected" : ""}" data-idx="${i}">
+            <div class="hist-check">${isSel ? "✓" : ""}</div>
+            ${thumbSrc
+              ? `<img class="hist-thumb" src="${thumbSrc}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.display='none'" />`
+              : `<div class="hist-thumb" style="display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);">${(it.format || "MP4").toUpperCase()}</div>`
+            }
+            <div class="hist-info">
+              <div class="hist-title">${safeTitle}</div>
+              <div class="hist-meta">
+                <span class="badge-fmt">${formatBadge(it)}</span>
+                <span>${it.size || ""}</span>
+                <span>${it.date || ""}</span>
+              </div>
+            </div>
+            ${!selectMode ? `<button type="button" class="act-btn" data-play="${i}">${t("btnWatch")}</button>` : ""}
+          </div>
+        `;
+      }
+      elHistList.innerHTML = html;
+    }
+
+    elHistList.addEventListener("pointerdown", (e) => {
+      const card = e.target.closest(".hist-item");
+      if (!card || e.target.closest("[data-play]")) return;
+      const idx = Number(card.getAttribute("data-idx"));
+      longPressTriggered = false;
+      clearTimeout(longPressTimer);
+      longPressTimer = setTimeout(() => {
+        longPressTriggered = true;
+        if (!selectMode) {
+          selectMode = true;
+          selectedIndices.clear();
         }
-        window.open(currentThumb, "_blank");
+        selectedIndices.add(idx);
+        if (navigator.vibrate) navigator.vibrate(25);
+        renderHistory();
+      }, 420);
+    }, { passive: true });
+
+    elHistList.addEventListener("pointerup", () => clearTimeout(longPressTimer), { passive: true });
+    elHistList.addEventListener("pointercancel", () => clearTimeout(longPressTimer), { passive: true });
+    elHistList.addEventListener("pointermove", () => clearTimeout(longPressTimer), { passive: true });
+
+    elHistList.addEventListener("click", (e) => {
+      if (longPressTriggered) {
+        longPressTriggered = false;
+        return;
+      }
+      const playBtn = e.target.closest("[data-play]");
+      if (playBtn) {
+        const idx = Number(playBtn.getAttribute("data-play"));
+        openMediaModal(idx);
+        return;
+      }
+      const card = e.target.closest(".hist-item");
+      if (!card) return;
+      const idx = Number(card.getAttribute("data-idx"));
+      if (selectMode) {
+        if (selectedIndices.has(idx)) selectedIndices.delete(idx);
+        else selectedIndices.add(idx);
+        renderHistory();
+      }
+    });
+
+    function selectAllHistory() {
+      const list = getHistory();
+      if (selectedIndices.size === list.length) {
+        selectedIndices.clear();
+      } else {
+        list.forEach((_, idx) => selectedIndices.add(idx));
+      }
+      renderHistory();
+    }
+
+    function deleteSelectedHistory() {
+      if (!selectedIndices.size) return;
+      const list = getHistory().filter((_, idx) => !selectedIndices.has(idx));
+      saveHistory(list);
+      exitSelectMode();
+    }
+
+    function exitSelectMode() {
+      selectMode = false;
+      selectedIndices.clear();
+      renderHistory();
+    }
+
+    function clearHistory() {
+      saveHistory([]);
+      exitSelectMode();
+    }
+
+    function openMediaModal(idx) {
+      const list = getHistory();
+      const item = list[idx];
+      if (!item) return;
+
+      const fileName = item.filename || item.saved_to || "";
+      const fileUrl = `${API}/file?name=${encodeURIComponent(fileName)}&t=${Date.now()}`;
+      const fmt = (item.format || "mp4").toLowerCase();
+
+      document.getElementById("modalTitle").textContent = item.title || fileName || "Media";
+      const body = document.getElementById("modalBody");
+
+      if (fmt === "mp3") {
+        body.innerHTML = `<audio controls autoplay src="${fileUrl}"></audio>`;
+      } else {
+        body.innerHTML = `<video controls autoplay playsinline preload="metadata" src="${fileUrl}"></video>`;
+      }
+
+      document.getElementById("mediaModal").classList.add("open");
+    }
+
+    function closeMediaModal() {
+      const body = document.getElementById("modalBody");
+      body.innerHTML = "";
+      document.getElementById("mediaModal").classList.remove("open");
+    }
+
+    async function startDownload() {
+      const url = elUrl.value.trim();
+      if (!url) {
+        showMsg(t("msgPasteFirst"), "err");
         return;
       }
 
       if (pollTimer) clearInterval(pollTimer);
-      btn.disabled = true;
-      hideMsg();
+      elDlBtn.disabled = true;
+      elMsgBox.style.display = "none";
+      elProgWrap.style.display = "block";
+      elProgBar.style.width = "3%";
+      elProgPct.textContent = "0%";
+      elProgText.textContent = t("msgStartDl");
 
-      document.getElementById("progStage").textContent = "Запуск загрузки...";
-      document.getElementById("progPct").textContent = "0%";
-      document.getElementById("progFill").style.width = "0%";
-      document.getElementById("progSize").textContent = "0 MB";
-      document.getElementById("progSpeed").textContent = "-- MB/s";
-      progWrap.style.display = "block";
+      const payload = {
+        url: url,
+        format: curFmt,
+        quality: curQual,
+        custom_name: elCustomName.value.trim(),
+        no_watermark: document.getElementById("swWatermark").classList.contains("on"),
+        max_audio: document.getElementById("swAudioBitrate").classList.contains("on")
+      };
 
       try {
-        const res = await fetch(API + "/download", {
+        const res = await fetch(`${API}/download`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            url,
-            mode,
-            res: selectedRes,
-            fps: selectedFps,
-            custom_name: customName
-          })
+          body: JSON.stringify(payload)
         });
-        const startData = await res.json();
-        if (!res.ok) throw new Error(startData.error || "Ошибка старта загрузки");
+        const dData = await res.json();
+        if (!res.ok || dData.error) {
+          throw new Error(dData.error || "Server error");
+        }
 
-        const jobId = startData.job_id;
+        const taskId = dData.task_id || "";
         pollTimer = setInterval(async () => {
           try {
-            const pRes = await fetch(API + "/progress/" + jobId);
+            const pRes = await fetch(`${API}/progress?id=${encodeURIComponent(taskId)}`);
             const pData = await pRes.json();
-            if (!pRes.ok || pData.state === "error") {
-              clearInterval(pollTimer);
-              btn.disabled = false;
-              progWrap.style.display = "none";
-              showMsg("Ошибка: " + (pData.error || "сбой загрузки"), "err");
-              return;
+
+            if (pData.percent !== undefined) {
+              const pct = Math.min(100, Math.max(0, Math.round(pData.percent)));
+              elProgBar.style.width = pct + "%";
+              elProgPct.textContent = pct + "%";
+            }
+            if (pData.step) {
+              elProgText.textContent = pData.step;
             }
 
-            const pct = pData.percent || 0;
-            document.getElementById("progStage").textContent = pData.stage || "Загрузка...";
-            document.getElementById("progPct").textContent = pct + "%";
-            document.getElementById("progFill").style.width = pct + "%";
-            if (pData.size) document.getElementById("progSize").textContent = pData.size;
-            if (pData.speed) document.getElementById("progSpeed").textContent = pData.speed;
-
-            if (pData.state === "done") {
+            if (pData.status === "error") {
               clearInterval(pollTimer);
-              btn.disabled = false;
-              document.getElementById("progSpeed").textContent = "В Галерее :)";
-              const resLabel = mode === "audio" ? "MP3 320k" : (selectedRes === "best" ? "MAX" : (selectedRes + "p"));
-              addHistory(
-                currentTitle,
-                url,
-                resLabel + " (" + pData.size + ")",
-                currentThumb,
-                pData.filename || ""
-              );
-              showMsg("Сохранено в Галерею: " + pData.saved_to + " (" + pData.size + ") :)", "ok");
+              elDlBtn.disabled = false;
+              elProgWrap.style.display = "none";
+              showMsg(t("msgErr") + (pData.error || "Failed"), "err");
+            } else if (pData.status === "done") {
+              clearInterval(pollTimer);
+              elDlBtn.disabled = false;
+              elProgBar.style.width = "100%";
+              elProgPct.textContent = "100%";
+
+              const hist = getHistory();
+              hist.unshift({
+                title: pData.title || pData.saved_to || "Media",
+                saved_to: pData.saved_to || "",
+                filename: pData.filename || pData.saved_to || "",
+                size: pData.size || "",
+                thumb: pData.thumb || "",
+                format: curFmt,
+                quality: curQual,
+                date: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+              });
+              saveHistory(hist);
+
+              setTimeout(() => {
+                elProgWrap.style.display = "none";
+              }, 500);
+
+              showMsg(t("msgSaved") + (pData.saved_to || "file") + (pData.size ? " (" + pData.size + ")" : "") + " :)", "ok");
             }
           } catch (_err) {}
-        }, 600);
+        }, 500);
       } catch (e) {
-        btn.disabled = false;
-        progWrap.style.display = "none";
-        showMsg("Ошибка: " + e.message, "err");
+        elDlBtn.disabled = false;
+        elProgWrap.style.display = "none";
+        showMsg(t("msgTermuxErr") + e.message, "err");
       }
     }
 
