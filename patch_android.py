@@ -26,9 +26,16 @@ import android.util.Base64;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import com.getcapacitor.BridgeActivity;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
+import org.json.JSONObject;
 
 public class MainActivity extends BridgeActivity {{
     private volatile String cachedClip = "";
@@ -71,11 +78,120 @@ public class MainActivity extends BridgeActivity {{
         }}
     }}
 
+    private byte[] readAllBytes(InputStream is) throws Exception {{
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        byte[] data = new byte[16384];
+        int nRead;
+        while ((nRead = is.read(data, 0, data.length)) != -1) {{
+            buffer.write(data, 0, nRead);
+        }}
+        return buffer.toByteArray();
+    }}
+
     public class AndroidNativeBridge {{
         @JavascriptInterface
         public String getClipboard() {{
             String live = readSystemClip();
             return live != null ? live : "";
+        }}
+
+        @JavascriptInterface
+        public String resolveRedirect(String urlStr) {{
+            try {{
+                HttpURLConnection conn = (HttpURLConnection) new URL(urlStr).openConnection();
+                conn.setInstanceFollowRedirects(true);
+                conn.setConnectTimeout(10000);
+                conn.setReadTimeout(10000);
+                conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/124.0.0.0 Mobile Safari/537.36");
+                conn.connect();
+                String finalUrl = conn.getURL().toString();
+                conn.disconnect();
+                return finalUrl;
+            }} catch (Exception e) {{
+                return urlStr;
+            }}
+        }}
+
+        @JavascriptInterface
+        public String httpGet(String urlStr, String headersJson) {{
+            try {{
+                HttpURLConnection conn = (HttpURLConnection) new URL(urlStr).openConnection();
+                conn.setInstanceFollowRedirects(true);
+                conn.setRequestMethod("GET");
+                conn.setConnectTimeout(12000);
+                conn.setReadTimeout(12000);
+                conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36");
+                if (headersJson != null && !headersJson.isEmpty()) {{
+                    JSONObject obj = new JSONObject(headersJson);
+                    Iterator<String> keys = obj.keys();
+                    while (keys.hasNext()) {{
+                        String k = keys.next();
+                        conn.setRequestProperty(k, obj.optString(k, ""));
+                    }}
+                }}
+                InputStream is = conn.getResponseCode() >= 400 ? conn.getErrorStream() : conn.getInputStream();
+                if (is == null) return "";
+                byte[] bytes = readAllBytes(is);
+                is.close();
+                return new String(bytes, StandardCharsets.UTF_8);
+            }} catch (Exception e) {{
+                return "";
+            }}
+        }}
+
+        @JavascriptInterface
+        public String httpPost(String urlStr, String bodyStr, String headersJson) {{
+            try {{
+                HttpURLConnection conn = (HttpURLConnection) new URL(urlStr).openConnection();
+                conn.setInstanceFollowRedirects(true);
+                conn.setRequestMethod("POST");
+                conn.setDoOutput(true);
+                conn.setConnectTimeout(12000);
+                conn.setReadTimeout(12000);
+                conn.setRequestProperty("Content-Type", "application/json");
+                if (headersJson != null && !headersJson.isEmpty()) {{
+                    JSONObject obj = new JSONObject(headersJson);
+                    Iterator<String> keys = obj.keys();
+                    while (keys.hasNext()) {{
+                        String k = keys.next();
+                        conn.setRequestProperty(k, obj.optString(k, ""));
+                    }}
+                }}
+                if (bodyStr != null) {{
+                    try (OutputStream os = conn.getOutputStream()) {{
+                        os.write(bodyStr.getBytes(StandardCharsets.UTF_8));
+                        os.flush();
+                    }}
+                }}
+                InputStream is = conn.getResponseCode() >= 400 ? conn.getErrorStream() : conn.getInputStream();
+                if (is == null) return "";
+                byte[] bytes = readAllBytes(is);
+                is.close();
+                return new String(bytes, StandardCharsets.UTF_8);
+            }} catch (Exception e) {{
+                return "";
+            }}
+        }}
+
+        @JavascriptInterface
+        public String fetchMediaBase64(String urlStr) {{
+            try {{
+                HttpURLConnection conn = (HttpURLConnection) new URL(urlStr).openConnection();
+                conn.setInstanceFollowRedirects(true);
+                conn.setConnectTimeout(15000);
+                conn.setReadTimeout(30000);
+                if (urlStr.contains("googlevideo.com")) {{
+                    conn.setRequestProperty("User-Agent", "com.google.android.apps.youtube.vr.oculus/1.56.21 (Linux; U; Android 12L; eureka-user Build/SQ3A.220605.009.A1) gzip");
+                }} else {{
+                    conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/124.0.0.0 Mobile Safari/537.36");
+                }}
+                InputStream is = conn.getInputStream();
+                byte[] bytes = readAllBytes(is);
+                is.close();
+                return Base64.encodeToString(bytes, Base64.NO_WRAP);
+            }} catch (Exception e) {{
+                return "";
+            }}
         }}
 
         @JavascriptInterface

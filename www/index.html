@@ -924,7 +924,7 @@
 
   <script>
     const API = "http://127.0.0.1:8080";
-    const CLOUD_API = "https://ais-pre-ineo35obwx7bs3aehadvke-384724507315.europe-west2.run.app";
+    const CLOUD_API = "https://ais-dev-ineo35obwx7bs3aehadvke-384724507315.europe-west2.run.app";
     const BLANK_POSTER = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
     let curFmt = "mp4";
     let curQual = "best";
@@ -988,7 +988,7 @@
         msgStartDl: "Запуск загрузки...",
         msgSaved: "Сохранено в Галерею: ",
         msgErr: "Ошибка: ",
-        msgTermuxErr: "Ошибка связи с Termux: "
+        msgTermuxErr: "Ошибка скачивания: "
       },
       en: {
         lblUrl: "Media Link",
@@ -1038,7 +1038,7 @@
         msgStartDl: "Starting download...",
         msgSaved: "Saved to Gallery: ",
         msgErr: "Error: ",
-        msgTermuxErr: "Termux connection error: "
+        msgTermuxErr: "Download error: "
       }
     };
 
@@ -1670,12 +1670,52 @@
       }
     }
 
-    async function downloadWithoutTermux(payload) {
-      elProgText.textContent = "Скачивание напрямую (без Termux)...";
-      elProgBar.style.width = "25%";
-      elProgPct.textContent = "25%";
+    async function nativeHttpGet(url, headersObj) {
+      try {
+        if (window.AndroidNative && typeof window.AndroidNative.httpGet === "function") {
+          const res = window.AndroidNative.httpGet(url, JSON.stringify(headersObj || {}));
+          if (res && String(res).trim()) return String(res);
+        }
+      } catch (_e) {}
+      const r = await fetch(url, { headers: headersObj || {}, referrerPolicy: "no-referrer" });
+      return await r.text();
+    }
 
-      const url = payload.url;
+    async function nativeHttpPost(url, bodyStr, headersObj) {
+      try {
+        if (window.AndroidNative && typeof window.AndroidNative.httpPost === "function") {
+          const res = window.AndroidNative.httpPost(url, bodyStr, JSON.stringify(headersObj || {}));
+          if (res && String(res).trim()) return String(res);
+        }
+      } catch (_e) {}
+      const r = await fetch(url, {
+        method: "POST",
+        headers: Object.assign({ "Content-Type": "application/json" }, headersObj || {}),
+        body: bodyStr,
+        referrerPolicy: "no-referrer"
+      });
+      return await r.text();
+    }
+
+    function extractYoutubeId(rawUrl) {
+      const m = rawUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|shorts\/|embed\/|live\/))([a-zA-Z0-9_-]{11})/);
+      return m ? m[1] : null;
+    }
+
+    async function downloadWithoutTermux(payload) {
+      elProgText.textContent = "Получение прямой ссылки...";
+      elProgBar.style.width = "20%";
+      elProgPct.textContent = "20%";
+
+      let url = payload.url.trim();
+      try {
+        if (window.AndroidNative && typeof window.AndroidNative.resolveRedirect === "function" && (url.includes("pin.it") || url.includes("t.co") || url.includes("vm.tiktok") || url.includes("vt.tiktok"))) {
+          const resolved = window.AndroidNative.resolveRedirect(url);
+          if (resolved && String(resolved).startsWith("http")) url = String(resolved);
+        }
+      } catch (_e) {}
+
+      const lower = url.toLowerCase();
       const isMp3 = payload.format === "mp3";
       const ext = isMp3 ? "mp3" : "mp4";
       const mimeType = isMp3 ? "audio/mpeg" : "video/mp4";
@@ -1684,10 +1724,11 @@
       let playUrl = "";
       let sizeStr = "";
 
-      if (url.toLowerCase().includes("tiktok.com")) {
+      // 1. TIKTOK
+      if (lower.includes("tiktok.com")) {
         try {
-          const r = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(url)}`);
-          const j = await r.json();
+          const txt = await nativeHttpGet(`https://www.tikwm.com/api/?url=${encodeURIComponent(url)}`, {});
+          const j = JSON.parse(txt);
           if (j && j.data) {
             if (!payload.custom_name) title = j.data.title || (j.data.author && j.data.author.nickname) || title;
             thumb = j.data.cover || j.data.origin_cover || "";
@@ -1701,47 +1742,244 @@
         } catch (_e) {}
       }
 
+      // 2. TWITTER / X
+      if (!playUrl && (lower.includes("twitter.com") || lower.includes("x.com"))) {
+        try {
+          const m = url.match(/status(?:es)?\/(\d+)/);
+          if (m && m[1]) {
+            const txt = await nativeHttpGet(`https://api.fxtwitter.com/i/status/${m[1]}`, {
+              "User-Agent": "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/124.0.0.0 Mobile Safari/537.36"
+            });
+            const j = JSON.parse(txt);
+            if (j && j.tweet) {
+              const tw = j.tweet;
+              if (!payload.custom_name && tw.text) {
+                title = tw.text.replace(/https?:\/\/\S+/g, "").trim() || (tw.author && tw.author.name) || title;
+              }
+              const vids = (tw.media && (tw.media.videos || tw.media.all)) || [];
+              const vObj = vids.find(x => x.url && x.url.includes(".mp4")) || vids[0];
+              if (vObj) {
+                playUrl = vObj.url || "";
+                thumb = vObj.thumbnail_url || (tw.author && tw.author.avatar_url) || "";
+              }
+            }
+          }
+        } catch (_e) {}
+      }
+
+      // 3. PINTEREST
+      if (!playUrl && (lower.includes("pinterest.") || lower.includes("pin.it"))) {
+        try {
+          const pinMatch = url.match(/\/pin\/(?:[\w-]+--)?(\d+)/);
+          if (pinMatch && pinMatch[1]) {
+            const pid = pinMatch[1];
+            const dataParam = JSON.stringify({ options: { id: pid, field_set_key: "unauth_react_main_pin" } });
+            const apiUrl = `https://www.pinterest.com/resource/PinResource/get/?data=${encodeURIComponent(dataParam)}`;
+            const txt = await nativeHttpGet(apiUrl, {
+              "X-Pinterest-PWS-Handler": "www/[username].js",
+              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+            });
+            const j = JSON.parse(txt);
+            const pdata = j && j.resource_response && j.resource_response.data;
+            if (pdata) {
+              if (!payload.custom_name) {
+                title = pdata.title || pdata.grid_title || pdata.seo_description || ("Pinterest_" + pid);
+              }
+              if (pdata.images && pdata.images.orig && pdata.images.orig.url) {
+                thumb = pdata.images.orig.url;
+              }
+              let vlist = (pdata.videos && pdata.videos.video_list) || null;
+              if (!vlist && pdata.story_pin_data && Array.isArray(pdata.story_pin_data.pages)) {
+                for (const pg of pdata.story_pin_data.pages) {
+                  for (const blk of (pg.blocks || [])) {
+                    if (blk.video && blk.video.video_list) {
+                      vlist = blk.video.video_list;
+                      break;
+                    }
+                  }
+                  if (vlist) break;
+                }
+              }
+              if (vlist) {
+                for (const k of Object.keys(vlist)) {
+                  const item = vlist[k];
+                  if (item && item.thumbnail && !thumb) thumb = item.thumbnail;
+                  if (item && item.url && item.url.includes(".mp4")) {
+                    playUrl = item.url;
+                    break;
+                  }
+                }
+              }
+            }
+          }
+          if (!playUrl) {
+            const pageHtml = await nativeHttpGet(url, {
+              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+            });
+            const cleanHtml = pageHtml.replace(/\\\//g, "/").replace(/\\u002F/g, "/");
+            const mp4Match = cleanHtml.match(/https:\/\/v[0-9]*\.pinimg\.com\/videos\/[^"'\s\\<>]+\.mp4/);
+            if (mp4Match) playUrl = mp4Match[0];
+            const imgMatch = cleanHtml.match(/https:\/\/i\.pinimg\.com\/[^"'\s\\<>]+\.jpg/);
+            if (imgMatch && !thumb) thumb = imgMatch[0];
+          }
+        } catch (_e) {}
+      }
+
+      // 4. YOUTUBE (прямой запрос с телефона через InnerTube + oEmbed обложка)
+      if (!playUrl && (lower.includes("youtube.com") || lower.includes("youtu.be"))) {
+        const vid = extractYoutubeId(url);
+        if (vid) {
+          thumb = `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`;
+          try {
+            const oeTxt = await nativeHttpGet(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${vid}&format=json`, {});
+            const oe = JSON.parse(oeTxt);
+            if (!payload.custom_name && oe && oe.title) title = oe.title;
+            if (oe && oe.thumbnail_url) thumb = oe.thumbnail_url;
+          } catch (_e) {}
+
+          const clients = [
+            {
+              body: {
+                videoId: vid,
+                contentCheckOk: true,
+                racyCheckOk: true,
+                context: {
+                  client: {
+                    clientName: "ANDROID_VR",
+                    clientVersion: "1.56.21",
+                    androidSdkVersion: 32,
+                    deviceMake: "Oculus",
+                    deviceModel: "Quest 3",
+                    osName: "Android",
+                    osVersion: "12L",
+                    hl: "ru",
+                    gl: "RU"
+                  }
+                }
+              },
+              ua: "com.google.android.apps.youtube.vr.oculus/1.56.21 (Linux; U; Android 12L; eureka-user Build/SQ3A.220605.009.A1) gzip"
+            },
+            {
+              body: {
+                videoId: vid,
+                contentCheckOk: true,
+                racyCheckOk: true,
+                context: {
+                  client: {
+                    clientName: "ANDROID",
+                    clientVersion: "21.26.364",
+                    androidSdkVersion: 30,
+                    osName: "Android",
+                    osVersion: "11",
+                    hl: "ru",
+                    gl: "RU"
+                  }
+                }
+              },
+              ua: "com.google.android.youtube/21.26.364 (Linux; U; Android 11) gzip"
+            }
+          ];
+
+          for (const cl of clients) {
+            try {
+              const pTxt = await nativeHttpPost(
+                "https://www.youtube.com/youtubei/v1/player?prettyPrint=false",
+                JSON.stringify(cl.body),
+                { "User-Agent": cl.ua, "Content-Type": "application/json" }
+              );
+              const pj = JSON.parse(pTxt);
+              if (pj && pj.videoDetails) {
+                if (!payload.custom_name && pj.videoDetails.title) title = pj.videoDetails.title;
+              }
+              const sd = pj && pj.streamingData;
+              if (sd) {
+                const fmts = Array.isArray(sd.formats) ? sd.formats : [];
+                const afmts = Array.isArray(sd.adaptiveFormats) ? sd.adaptiveFormats : [];
+                if (isMp3) {
+                  const aud = afmts.find(f => f.url && String(f.mimeType || "").includes("audio/mp4")) || fmts.find(f => f.url);
+                  if (aud && aud.url) {
+                    playUrl = aud.url;
+                    if (aud.contentLength) sizeStr = (Number(aud.contentLength) / 1048576).toFixed(1) + " MB";
+                    break;
+                  }
+                } else {
+                  const prog = fmts.filter(f => f.url && String(f.mimeType || "").includes("video/mp4"));
+                  if (prog.length > 0) {
+                    const chosen = prog[prog.length - 1];
+                    playUrl = chosen.url;
+                    if (chosen.contentLength) sizeStr = (Number(chosen.contentLength) / 1048576).toFixed(1) + " MB";
+                    break;
+                  }
+                }
+              }
+            } catch (_e) {}
+          }
+        }
+      }
+
+      // 5. Облачный резерв
       if (!playUrl) {
-        elProgBar.style.width = "50%";
-        elProgPct.textContent = "50%";
+        elProgBar.style.width = "45%";
+        elProgPct.textContent = "45%";
         try {
           const ir = await fetch(`${CLOUD_API}/api/info?url=${encodeURIComponent(url)}`);
           if (ir.ok) {
             const idata = await ir.json();
             if (!payload.custom_name && idata.title) title = idata.title;
-            if (idata.thumbnail) thumb = idata.thumbnail;
+            if (idata.thumbnail && !thumb) thumb = idata.thumbnail;
           }
         } catch (_e) {}
         const q = payload.quality === "best" ? "1080" : payload.quality;
         playUrl = `${CLOUD_API}/api/download?url=${encodeURIComponent(url)}&type=${isMp3 ? "audio" : "video"}&quality=${encodeURIComponent(q)}&no_watermark=${payload.no_watermark ? "1" : "0"}`;
       }
 
+      elProgText.textContent = "Сохранение в Галерею...";
       elProgBar.style.width = "75%";
       elProgPct.textContent = "75%";
 
-      const clean = String(title).replace(/[\\/:*?"<>|#]/g, "_").slice(0, 60).trim() || ("Media_" + Date.now());
+      const clean = String(title).replace(/[\\/:*?"<>|#\n\r]/g, "_").slice(0, 60).trim() || ("Media_" + Date.now());
       const filename = clean.endsWith("." + ext) ? clean : `${clean}.${ext}`;
       const blobKey = "blob_" + Date.now();
       let savedInDb = false;
       let localBlob = null;
+      let b64Data = "";
 
+      // Скачиваем байты через нативный мост Android (обходит CORS YouTube / Pinterest / Twitter)
       try {
-        const mediaRes = await fetch(playUrl, { referrerPolicy: "no-referrer" });
-        if (mediaRes.ok) {
-          localBlob = await mediaRes.blob();
-          if (localBlob.size > 10000) {
+        if (window.AndroidNative && typeof window.AndroidNative.fetchMediaBase64 === "function") {
+          const rawB64 = window.AndroidNative.fetchMediaBase64(playUrl);
+          if (rawB64 && String(rawB64).length > 1000) {
+            b64Data = String(rawB64);
+            const binStr = atob(b64Data);
+            const len = binStr.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) bytes[i] = binStr.charCodeAt(i);
+            localBlob = new Blob([bytes], { type: mimeType });
             if (!sizeStr) sizeStr = (localBlob.size / 1048576).toFixed(1) + " MB";
             savedInDb = await saveOfflineBlob(blobKey, localBlob);
           }
         }
       } catch (_e) {}
 
+      if (!localBlob) {
+        try {
+          const mediaRes = await fetch(playUrl, { referrerPolicy: "no-referrer" });
+          if (mediaRes.ok) {
+            localBlob = await mediaRes.blob();
+            if (localBlob.size > 10000) {
+              if (!sizeStr) sizeStr = (localBlob.size / 1048576).toFixed(1) + " MB";
+              savedInDb = await saveOfflineBlob(blobKey, localBlob);
+            }
+          }
+        } catch (_e) {}
+      }
+
       try {
         let savedNative = false;
-        if (localBlob && window.AndroidNative && typeof window.AndroidNative.saveBase64 === "function") {
-          const b64 = await blobToBase64(localBlob);
-          if (b64) {
-            savedNative = !!window.AndroidNative.saveBase64(b64, filename, mimeType);
+        if (window.AndroidNative && typeof window.AndroidNative.saveBase64 === "function") {
+          const b64ToSave = b64Data || (localBlob ? await blobToBase64(localBlob) : "");
+          if (b64ToSave) {
+            savedNative = !!window.AndroidNative.saveBase64(b64ToSave, filename, mimeType);
           }
         }
         if (!savedNative && window.AndroidNative && typeof window.AndroidNative.downloadUrl === "function") {
@@ -1760,7 +1998,7 @@
         filename: filename,
         play_url: playUrl,
         blob_key: savedInDb ? blobKey : null,
-        size: sizeStr || "MP4",
+        size: sizeStr || (isMp3 ? "MP3" : "MP4"),
         thumb: thumb,
         format: curFmt,
         quality: curQual,
