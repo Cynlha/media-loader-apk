@@ -14,7 +14,7 @@
       --acc: #3b82f6;
       --acc-rgb: 59, 130, 246;
       --border: rgba(59, 130, 246, 0.16);
-      --glass-dock: rgba(14, 19, 30, 0.64);
+      --glass-dock: rgba(14, 19, 30, 0.66);
       --glass-dock-border: rgba(59, 130, 246, 0.24);
       --glass-btn: rgba(59, 130, 246, 0.08);
       --glass-btn-border: rgba(255, 255, 255, 0.08);
@@ -31,7 +31,7 @@
       --acc: #e11d48;
       --acc-rgb: 225, 29, 72;
       --border: rgba(225, 29, 72, 0.18);
-      --glass-dock: rgba(28, 10, 17, 0.64);
+      --glass-dock: rgba(28, 10, 17, 0.66);
       --glass-dock-border: rgba(225, 29, 72, 0.26);
       --glass-btn: rgba(225, 29, 72, 0.08);
       --glass-btn-border: rgba(255, 210, 220, 0.08);
@@ -48,7 +48,7 @@
       --acc: #10b981;
       --acc-rgb: 16, 185, 129;
       --border: rgba(16, 185, 129, 0.18);
-      --glass-dock: rgba(10, 25, 19, 0.64);
+      --glass-dock: rgba(10, 25, 19, 0.66);
       --glass-dock-border: rgba(16, 185, 129, 0.26);
       --glass-btn: rgba(16, 185, 129, 0.08);
       --glass-btn-border: rgba(210, 255, 235, 0.08);
@@ -65,7 +65,7 @@
       --acc: #06b6d4;
       --acc-rgb: 6, 182, 212;
       --border: rgba(6, 182, 212, 0.18);
-      --glass-dock: rgba(10, 23, 33, 0.64);
+      --glass-dock: rgba(10, 23, 33, 0.66);
       --glass-dock-border: rgba(6, 182, 212, 0.26);
       --glass-btn: rgba(6, 182, 212, 0.08);
       --glass-btn-border: rgba(210, 245, 255, 0.08);
@@ -82,7 +82,7 @@
       --acc: #8b5cf6;
       --acc-rgb: 139, 92, 246;
       --border: rgba(139, 92, 246, 0.2);
-      --glass-dock: rgba(13, 13, 19, 0.70);
+      --glass-dock: rgba(13, 13, 19, 0.72);
       --glass-dock-border: rgba(139, 92, 246, 0.26);
       --glass-btn: rgba(139, 92, 246, 0.08);
       --glass-btn-border: rgba(255, 255, 255, 0.08);
@@ -109,10 +109,12 @@
       padding: 0;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
+      -webkit-touch-callout: none;
     }
 
     input {
       user-select: text;
+      -webkit-touch-callout: default;
     }
 
     body {
@@ -166,6 +168,12 @@
     .card.compact {
       padding: 12px 14px;
     }
+    .label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 9px;
+    }
     .label {
       display: block;
       font-size: 11px;
@@ -174,6 +182,16 @@
       letter-spacing: 0.6px;
       color: var(--muted);
       margin-bottom: 9px;
+    }
+    .plat-badge {
+      display: none;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--glass-active);
+      color: var(--text);
+      border: 1px solid var(--glass-active-border);
     }
 
     /* Поле ссылки */
@@ -258,6 +276,7 @@
       text-align: center;
       cursor: pointer;
       transform: translateZ(0);
+      backface-visibility: hidden;
     }
 
     .seg-btn {
@@ -279,7 +298,7 @@
 
     .act-btn {
       color: var(--text);
-      padding: 7px 12px;
+      padding: 7px 11px;
       font-size: 12px;
       flex-shrink: 0;
     }
@@ -293,6 +312,7 @@
       font-weight: 700;
       cursor: pointer;
       transform: translateZ(0);
+      backface-visibility: hidden;
     }
     .main-btn:disabled {
       opacity: 0.55;
@@ -308,8 +328,8 @@
       width: calc(100% - 28px);
       max-width: 432px;
       background: var(--glass-dock);
-      backdrop-filter: blur(18px) saturate(165%);
-      -webkit-backdrop-filter: blur(18px) saturate(165%);
+      backdrop-filter: blur(16px) saturate(160%);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
       border: 1px solid var(--glass-dock-border);
       border-radius: 999px;
       padding: 6px;
@@ -319,7 +339,7 @@
       z-index: 60;
       box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.14),
-        0 10px 28px rgba(0, 0, 0, 0.5);
+        0 10px 26px rgba(0, 0, 0, 0.48);
     }
 
     .nav-liquid-pill {
@@ -333,6 +353,7 @@
       z-index: 0;
       transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
       will-change: transform;
+      backface-visibility: hidden;
     }
 
     .nav-btn {
@@ -346,6 +367,7 @@
       text-align: center;
       cursor: pointer;
       transform: translateZ(0);
+      backface-visibility: hidden;
     }
 
     .nav-btn.active {
@@ -355,11 +377,8 @@
       box-shadow: none !important;
     }
 
-    /* ============================================================
-       4 СТИЛЯ КНОПОК (РАБОТАЮТ НА ВСЕ ВКЛАДКИ + НА НИЖНЮЮ ПАНЕЛЬ)
-       ============================================================ */
-
-    /* 1. СТЕКЛО (GLASS) */
+    /* 4 СТИЛЯ КНОПОК */
+    /* 1. Стекло */
     [data-btnstyle="glass"] .btn-paste,
     [data-btnstyle="glass"] .seg-btn,
     [data-btnstyle="glass"] .act-btn,
@@ -380,12 +399,12 @@
         0 4px 12px rgba(var(--acc-rgb), 0.18);
     }
     [data-btnstyle="glass"] .main-btn {
-      background: linear-gradient(135deg, rgba(var(--acc-rgb), 0.85), rgba(var(--acc-rgb), 0.55));
+      background: linear-gradient(135deg, rgba(var(--acc-rgb), 0.86), rgba(var(--acc-rgb), 0.56));
       border: 1px solid rgba(255, 255, 255, 0.25);
       box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3), 0 6px 16px rgba(var(--acc-rgb), 0.25);
     }
 
-    /* 2. НЕОН (NEON) */
+    /* 2. Неон */
     [data-btnstyle="neon"] .btn-paste,
     [data-btnstyle="neon"] .seg-btn,
     [data-btnstyle="neon"] .act-btn,
@@ -403,19 +422,18 @@
       border: 1px solid var(--acc);
       box-shadow:
         inset 0 0 12px rgba(var(--acc-rgb), 0.45),
-        0 0 14px rgba(var(--acc-rgb), 0.38);
+        0 0 12px rgba(var(--acc-rgb), 0.35);
     }
     [data-btnstyle="neon"] .bottom-nav {
       border-color: rgba(var(--acc-rgb), 0.45);
-      box-shadow: 0 0 18px rgba(var(--acc-rgb), 0.22), 0 10px 28px rgba(0, 0, 0, 0.5);
     }
     [data-btnstyle="neon"] .main-btn {
       background: rgba(var(--acc-rgb), 0.28);
       border: 1.5px solid var(--acc);
-      box-shadow: inset 0 0 14px rgba(var(--acc-rgb), 0.5), 0 0 16px rgba(var(--acc-rgb), 0.4);
+      box-shadow: inset 0 0 14px rgba(var(--acc-rgb), 0.5), 0 0 14px rgba(var(--acc-rgb), 0.38);
     }
 
-    /* 3. ГРАДИЕНТ (GRADIENT) */
+    /* 3. Градиент */
     [data-btnstyle="gradient"] .btn-paste,
     [data-btnstyle="gradient"] .seg-btn,
     [data-btnstyle="gradient"] .act-btn,
@@ -438,7 +456,7 @@
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
     }
 
-    /* 4. КОНТУР (OUTLINE) */
+    /* 4. Контур */
     [data-btnstyle="outline"] .btn-paste,
     [data-btnstyle="outline"] .seg-btn,
     [data-btnstyle="outline"] .act-btn,
@@ -502,7 +520,7 @@
       height: 19px;
       border-radius: 50%;
       background: var(--muted);
-      transition: transform 0.2s cubic-bezier(0.28, 1.35, 0.55, 1);
+      transition: transform 0.18s cubic-bezier(0.28, 1.35, 0.55, 1);
     }
     .switch.on {
       background: var(--glass-active);
@@ -560,16 +578,26 @@
       color: #f87171;
     }
 
-    /* Вкладки */
+    /* Вкладки (мгновенное переключение 0 мс без лагов) */
     .tab-pane {
       display: none;
-      will-change: transform, opacity;
     }
     .tab-pane.active {
       display: block;
     }
 
-    /* История */
+    /* История и статистика */
+    .hist-stats {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--rad-card);
+      padding: 11px 14px;
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
     .hist-head {
       display: flex;
       align-items: center;
@@ -589,6 +617,7 @@
       align-items: center;
       position: relative;
       contain: content;
+      touch-action: pan-y;
     }
     .hist-item.selected {
       border-color: var(--acc);
@@ -622,10 +651,12 @@
       object-fit: cover;
       flex-shrink: 0;
       border: 1px solid var(--border);
+      pointer-events: none;
     }
     .hist-info {
       flex: 1;
       min-width: 0;
+      pointer-events: none;
     }
     .hist-title {
       font-size: 13px;
@@ -656,7 +687,7 @@
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.84);
+      background: rgba(0, 0, 0, 0.85);
       z-index: 100;
       display: none;
       align-items: center;
@@ -701,7 +732,7 @@
     }
   </style>
 </head>
-<body data-theme="crimson" data-shape="rounded" data-btnstyle="glass" data-blur="soft" data-fps="120">
+<body data-theme="crimson" data-shape="rounded" data-btnstyle="glass" data-fps="120">
   <div class="app-wrap">
     <!-- Шапка -->
     <div class="header">
@@ -712,7 +743,10 @@
     <!-- ВКЛАДКА 1: ЗАГРУЗЧИК -->
     <div id="tab-loader" class="tab-pane active">
       <div class="card">
-        <span class="label" data-i18n="lblUrl">Ссылка на медиа</span>
+        <div class="label-row">
+          <span class="label" data-i18n="lblUrl" style="margin-bottom:0;">Ссылка на медиа</span>
+          <span id="platBadge" class="plat-badge">Web</span>
+        </div>
         <div class="url-row">
           <div class="input-wrap">
             <input
@@ -721,7 +755,7 @@
               class="inp"
               placeholder="Вставьте ссылку..."
               autocomplete="off"
-              oninput="toggleClearBtn()"
+              oninput="onUrlInput()"
             />
             <button id="clearBtn" type="button" class="clear-btn" onclick="clearUrl()">×</button>
           </div>
@@ -787,10 +821,21 @@
 
     <!-- ВКЛАДКА 2: ИСТОРИЯ -->
     <div id="tab-history" class="tab-pane">
+      <!-- Статистика скачанных файлов и быстрый фильтр -->
+      <div class="hist-stats">
+        <span id="histStatText" style="color:var(--muted);font-weight:600;">Файлов: 0</span>
+        <div style="display:flex;gap:5px;" id="histFilterGroup">
+          <button type="button" class="fps-btn active" data-flt="all" onclick="setHistFilter('all', this)">Все</button>
+          <button type="button" class="fps-btn" data-flt="mp4" onclick="setHistFilter('mp4', this)">MP4</button>
+          <button type="button" class="fps-btn" data-flt="mp3" onclick="setHistFilter('mp3', this)">MP3</button>
+        </div>
+      </div>
+
       <div class="hist-head">
         <span class="label" data-i18n="lblHistory" style="margin-bottom: 0;">История загрузок</span>
 
         <div id="histNormalBar" style="display: flex; gap: 6px;">
+          <button type="button" class="act-btn" data-i18n="btnSelectMode" onclick="enterSelectMode()">Выбрать</button>
           <button type="button" class="act-btn" data-i18n="btnClearAll" onclick="clearHistory()">Очистить всё</button>
         </div>
 
@@ -802,7 +847,7 @@
       </div>
 
       <div id="histHint" style="font-size: 11px; color: var(--muted); margin-bottom: 10px;">
-        Зажмите карточку пальцем, чтобы выбрать несколько записей для удаления :)
+        Зажмите карточку пальцем или нажмите «Выбрать» для удаления нескольких видео :)
       </div>
 
       <div id="historyList"></div>
@@ -821,7 +866,6 @@
         </div>
       </div>
 
-      <!-- СТИЛЬ КНОПОК ПОД ТЕМУ (РАБОТАЕТ И НА НИЖНЮЮ ПАНЕЛЬ, И НА ВСЕ ВКЛАДКИ) -->
       <div class="card">
         <span class="label" data-i18n="lblBtnStyle">Стиль кнопок под тему</span>
         <div class="seg-grid-4" id="btnStyleGroup">
@@ -833,30 +877,16 @@
       </div>
 
       <div class="card">
-        <span class="label" data-i18n="lblAnim">Анимация переходов</span>
-        <div class="seg-grid-4" id="animGroup">
-          <button type="button" class="seg-btn active" data-val="slide" data-i18n="animSlide" onclick="setPref('anim', 'slide')">Сдвиг</button>
-          <button type="button" class="seg-btn" data-val="scale" data-i18n="animScale" onclick="setPref('anim', 'scale')">Масштаб</button>
-          <button type="button" class="seg-btn" data-val="spring" data-i18n="animSpring" onclick="setPref('anim', 'spring')">Пружина</button>
-          <button type="button" class="seg-btn" data-val="none" data-i18n="optOff" onclick="setPref('anim', 'none')">Выкл</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <span class="label" data-i18n="lblBlur">Размытие при переходах (Blur)</span>
-        <div class="seg-grid-3" id="blurGroup">
-          <button type="button" class="seg-btn" data-val="none" data-i18n="optOff" onclick="setPref('blur', 'none')">Выкл</button>
-          <button type="button" class="seg-btn active" data-val="soft" data-i18n="blurSoft" onclick="setPref('blur', 'soft')">Лёгкое</button>
-          <button type="button" class="seg-btn" data-val="strong" data-i18n="blurStrong" onclick="setPref('blur', 'strong')">Сильное</button>
-        </div>
-      </div>
-
-      <div class="card">
         <span class="label" data-i18n="lblShape">Форма интерфейса</span>
         <div class="seg-grid-3" id="shapeGroup">
           <button type="button" class="seg-btn active" data-val="rounded" data-i18n="shapeRound" onclick="setPref('shape', 'rounded')">Мягкая</button>
           <button type="button" class="seg-btn" data-val="pill" data-i18n="shapePill" onclick="setPref('shape', 'pill')">Капсула</button>
           <button type="button" class="seg-btn" data-val="sharp" data-i18n="shapeSharp" onclick="setPref('shape', 'sharp')">Строгая</button>
+        </div>
+
+        <div class="opt-row" onclick="toggleHaptic()">
+          <span data-i18n="optHaptic">Тактильный вибро-отклик</span>
+          <div id="swHaptic" class="switch on"></div>
         </div>
       </div>
 
@@ -907,16 +937,16 @@
     const API = "http://127.0.0.1:8080";
     let curFmt = "mp4";
     let curQual = "best";
+    let histFilter = "all";
     let pollTimer = null;
 
     let prefs = {
       lang: "ru",
       theme: "crimson",
       btnstyle: "glass",
-      anim: "slide",
-      blur: "soft",
       shape: "rounded",
-      fps: "120"
+      fps: "120",
+      haptic: true
     };
 
     const I18N = {
@@ -935,13 +965,15 @@
         optBitrate: "Максимальный аудио-битрейт",
         btnDownload: "Скачать",
         lblHistory: "История загрузок",
+        btnSelectMode: "Выбрать",
         btnClearAll: "Очистить всё",
         btnSelectAll: "Все",
         btnCancel: "Отмена",
-        histHint: "Зажмите карточку пальцем, чтобы выбрать несколько записей для удаления :)",
+        histHint: "Зажмите карточку пальцем или нажмите «Выбрать» для удаления нескольких видео :)",
         histEmpty: "История пока пуста :)",
         btnWatch: "Смотреть",
         btnDeleteCount: "Удалить",
+        statFiles: "Файлов",
         lblLang: "Язык / Language",
         lblTheme: "Тема оформления",
         lblBtnStyle: "Стиль кнопок под тему",
@@ -949,18 +981,11 @@
         bsNeon: "Неон",
         bsGrad: "Градиент",
         bsOutline: "Контур",
-        lblAnim: "Анимация переходов",
-        animSlide: "Сдвиг",
-        animScale: "Масштаб",
-        animSpring: "Пружина",
-        optOff: "Выкл",
-        lblBlur: "Размытие при переходах (Blur)",
-        blurSoft: "Лёгкое",
-        blurStrong: "Сильное",
         lblShape: "Форма интерфейса",
         shapeRound: "Мягкая",
         shapePill: "Капсула",
         shapeSharp: "Строгая",
+        optHaptic: "Тактильный вибро-отклик",
         lblFps: "Частота кадров (Герцовка)",
         fps30: "30 фпс",
         fps60: "60 фпс",
@@ -991,13 +1016,15 @@
         optBitrate: "Max audio bitrate",
         btnDownload: "Download",
         lblHistory: "Download History",
+        btnSelectMode: "Select",
         btnClearAll: "Clear All",
         btnSelectAll: "All",
         btnCancel: "Cancel",
-        histHint: "Long-press any card to select multiple items for deletion :)",
+        histHint: "Long-press any card or tap 'Select' to delete multiple videos :)",
         histEmpty: "History is empty :)",
         btnWatch: "Watch",
         btnDeleteCount: "Delete",
+        statFiles: "Files",
         lblLang: "Language / Язык",
         lblTheme: "App Theme",
         lblBtnStyle: "Theme Button Style",
@@ -1005,18 +1032,11 @@
         bsNeon: "Neon",
         bsGrad: "Gradient",
         bsOutline: "Outline",
-        lblAnim: "Tab Animation",
-        animSlide: "Slide",
-        animScale: "Scale",
-        animSpring: "Spring",
-        optOff: "Off",
-        lblBlur: "Transition Blur",
-        blurSoft: "Soft",
-        blurStrong: "Strong",
         lblShape: "Interface Shape",
         shapeRound: "Rounded",
         shapePill: "Capsule",
         shapeSharp: "Sharp",
+        optHaptic: "Haptic Vibration",
         lblFps: "Frame Rate (Refresh Rate)",
         fps30: "30 FPS",
         fps60: "60 FPS",
@@ -1036,16 +1056,16 @@
 
     let selectMode = false;
     let selectedIndices = new Set();
-    let longPressTimer = null;
-    let longPressTriggered = false;
+    let lpTimer = null;
+    let lpTriggered = false;
+    let startX = 0;
+    let startY = 0;
 
-    // Состояние покадрового движка герцовки
-    let curTabIdx = 0;
     let pillPos = 0;
     let pillAnimRaf = null;
-    let tabAnimRaf = null;
 
     const elUrl = document.getElementById("urlInp");
+    const elPlatBadge = document.getElementById("platBadge");
     const elCustomName = document.getElementById("customName");
     const elClear = document.getElementById("clearBtn");
     const elQualWrap = document.getElementById("qualWrap");
@@ -1058,6 +1078,12 @@
     const elNavPill = document.getElementById("navPill");
     const elHistList = document.getElementById("historyList");
     const elFpsBadge = document.getElementById("fpsLiveBadge");
+
+    function vibrate(ms) {
+      if (prefs.haptic && navigator.vibrate) {
+        try { navigator.vibrate(ms || 12); } catch (_e) {}
+      }
+    }
 
     function t(key) {
       const dict = I18N[prefs.lang] || I18N.ru;
@@ -1074,9 +1100,35 @@
       elCustomName.placeholder = t("phCustomName");
       document.getElementById("histHint").textContent = t("histHint");
       document.getElementById("delSelectedBtn").textContent = `${t("btnDeleteCount")} (${selectedIndices.size})`;
+      updateHistStats();
     }
 
-    // Покадровый движок (строго держит 30 / 60 / 90 / 120 FPS и всегда доводит анимацию до 100%)
+    // Авто-определение платформы по ссылке
+    function detectPlatformBadge(val) {
+      const u = val.toLowerCase().trim();
+      if (!u) {
+        elPlatBadge.style.display = "none";
+        return;
+      }
+      let name = "Web Media";
+      if (u.includes("tiktok.com")) name = "TikTok";
+      else if (u.includes("youtube.com") || u.includes("youtu.be")) name = "YouTube";
+      else if (u.includes("instagram.com")) name = "Instagram";
+      else if (u.includes("pinterest.") || u.includes("pin.it")) name = "Pinterest";
+      else if (u.includes("twitter.com") || u.includes("x.com")) name = "X / Twitter";
+      else if (u.includes("vk.com") || u.includes("vkvideo.ru")) name = "VK Video";
+
+      elPlatBadge.textContent = name;
+      elPlatBadge.style.display = "inline-block";
+    }
+
+    function onUrlInput() {
+      const val = elUrl.value.trim();
+      elClear.style.display = val ? "flex" : "none";
+      detectPlatformBadge(val);
+    }
+
+    // Покадровый движок (30 / 60 / 90 / 120 FPS)
     function runFpsAnimation(durationMs, onStep, onDone) {
       const targetFps = Number(prefs.fps) || 120;
       const minFrameDelta = targetFps >= 120 ? 0 : (1000 / targetFps) * 0.92;
@@ -1109,23 +1161,16 @@
       };
     }
 
-    // Пружинная кривая для жидкой капсулы
     function easeOutBack(x) {
       const c1 = 1.70158;
       const c3 = c1 + 1;
       return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
     }
 
-    function easeOutCubic(x) {
-      return 1 - Math.pow(1 - x, 3);
-    }
-
-    // Движение нижней капсулы с реальной герцовкой 30/60/90/120 FPS
     function animateLiquidPill(toIdx, immediate) {
       if (pillAnimRaf) pillAnimRaf();
       const fromPos = pillPos;
       const toPos = toIdx;
-      curTabIdx = toIdx;
 
       if (immediate || fromPos === toPos) {
         pillPos = toPos;
@@ -1133,11 +1178,10 @@
         return;
       }
 
-      pillAnimRaf = runFpsAnimation(340, (p) => {
+      pillAnimRaf = runFpsAnimation(310, (p) => {
         const eased = easeOutBack(p);
         const cur = fromPos + (toPos - fromPos) * eased;
         pillPos = cur;
-        // Растяжение капли в середине движения и возврат к 1 в конце
         const stretch = Math.sin(p * Math.PI);
         const sx = 1 + stretch * 0.14;
         const sy = 1 - stretch * 0.10;
@@ -1148,59 +1192,15 @@
       });
     }
 
-    // Анимация смены вкладки с реальной герцовкой 30/60/90/120 FPS
-    function animateTabPane(paneEl) {
-      if (tabAnimRaf) tabAnimRaf();
-      if (prefs.anim === "none" && prefs.blur === "none") {
-        paneEl.style.opacity = "";
-        paneEl.style.transform = "";
-        paneEl.style.filter = "";
-        return;
-      }
-
-      const maxBlur = prefs.blur === "strong" ? 5 : (prefs.blur === "soft" ? 2.5 : 0);
-      const mode = prefs.anim;
-      const dur = mode === "spring" ? 260 : 200;
-
-      tabAnimRaf = runFpsAnimation(dur, (p) => {
-        const e = mode === "spring" ? easeOutBack(p) : easeOutCubic(p);
-        const inv = Math.max(0, 1 - e);
-        paneEl.style.opacity = Math.min(1, p * 1.35).toFixed(3);
-
-        if (mode === "slide") {
-          paneEl.style.transform = `translate3d(${(inv * 16).toFixed(1)}px, 0, 0)`;
-        } else if (mode === "scale") {
-          const s = 0.95 + 0.05 * e;
-          paneEl.style.transform = `scale3d(${s.toFixed(3)}, ${s.toFixed(3)}, 1)`;
-        } else if (mode === "spring") {
-          const s = 0.96 + 0.04 * e;
-          paneEl.style.transform = `translate3d(0, ${(inv * 14).toFixed(1)}px, 0) scale3d(${s.toFixed(3)}, ${s.toFixed(3)}, 1)`;
-        } else {
-          paneEl.style.transform = "none";
-        }
-
-        if (maxBlur > 0) {
-          const b = (1 - p) * maxBlur;
-          paneEl.style.filter = b > 0.15 ? `blur(${b.toFixed(2)}px)` : "none";
-        } else {
-          paneEl.style.filter = "none";
-        }
-      }, () => {
-        paneEl.style.opacity = "";
-        paneEl.style.transform = "";
-        paneEl.style.filter = "";
-      });
-    }
-
-    // Покадровый жидкий отклик при нажатии на любую кнопку
     document.addEventListener("pointerdown", (e) => {
       const btn = e.target.closest(".seg-btn, .btn-paste, .act-btn, .fps-btn, .main-btn, .nav-btn");
       if (!btn || btn.disabled) return;
+      vibrate(10);
       const isMain = btn.classList.contains("main-btn");
       const minScaleX = isMain ? 0.95 : 0.90;
       const minScaleY = isMain ? 0.91 : 0.85;
 
-      runFpsAnimation(220, (p) => {
+      runFpsAnimation(190, (p) => {
         const dip = Math.sin(p * Math.PI);
         const sx = 1 - dip * (1 - minScaleX);
         const sy = 1 - dip * (1 - minScaleY);
@@ -1210,6 +1210,7 @@
       });
     }, { passive: true });
 
+    // Переключение вкладок без анимации переходов (0 мс, максимальная оптимизация)
     function switchTab(tabName, idx, btnEl) {
       const target = document.getElementById("tab-" + tabName);
       if (!target || target.classList.contains("active")) return;
@@ -1218,15 +1219,8 @@
       btnEl.classList.add("active");
       animateLiquidPill(idx, false);
 
-      document.querySelectorAll(".tab-pane").forEach(p => {
-        p.classList.remove("active");
-        p.style.opacity = "";
-        p.style.transform = "";
-        p.style.filter = "";
-      });
-
+      document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
       target.classList.add("active");
-      animateTabPane(target);
 
       if (tabName === "history") {
         renderHistory();
@@ -1235,13 +1229,9 @@
       }
     }
 
-    function toggleClearBtn() {
-      elClear.style.display = elUrl.value.trim() ? "flex" : "none";
-    }
-
     function clearUrl() {
       elUrl.value = "";
-      elClear.style.display = "none";
+      onUrlInput();
       elUrl.focus();
     }
 
@@ -1250,7 +1240,7 @@
         const text = await navigator.clipboard.readText();
         if (text) {
           elUrl.value = text.trim();
-          toggleClearBtn();
+          onUrlInput();
         }
       } catch (_e) {
         elUrl.focus();
@@ -1271,7 +1261,15 @@
     }
 
     function toggleSwitch(id) {
+      vibrate(12);
       document.getElementById(id).classList.toggle("on");
+    }
+
+    function toggleHaptic() {
+      prefs.haptic = !prefs.haptic;
+      document.getElementById("swHaptic").classList.toggle("on", prefs.haptic);
+      vibrate(18);
+      try { localStorage.setItem("ml_prefs_v9", JSON.stringify(prefs)); } catch (_e) {}
     }
 
     function showMsg(text, type) {
@@ -1290,7 +1288,7 @@
       if (prefs[key] === val) return;
       prefs[key] = val;
       try {
-        localStorage.setItem("ml_prefs_v7", JSON.stringify(prefs));
+        localStorage.setItem("ml_prefs_v9", JSON.stringify(prefs));
       } catch (_e) {}
 
       if (key === "theme") {
@@ -1299,11 +1297,6 @@
       } else if (key === "btnstyle") {
         document.body.setAttribute("data-btnstyle", val);
         syncGroup("btnStyleGroup", val);
-      } else if (key === "anim") {
-        syncGroup("animGroup", val);
-      } else if (key === "blur") {
-        document.body.setAttribute("data-blur", val);
-        syncGroup("blurGroup", val);
       } else if (key === "shape") {
         document.body.setAttribute("data-shape", val);
         syncGroup("shapeGroup", val);
@@ -1319,22 +1312,20 @@
 
     function loadPrefs() {
       try {
-        const saved = JSON.parse(localStorage.getItem("ml_prefs_v7") || "{}");
+        const saved = JSON.parse(localStorage.getItem("ml_prefs_v9") || "{}");
         prefs = Object.assign(prefs, saved);
       } catch (_e) {}
 
       document.body.setAttribute("data-theme", prefs.theme);
       document.body.setAttribute("data-btnstyle", prefs.btnstyle);
-      document.body.setAttribute("data-blur", prefs.blur);
       document.body.setAttribute("data-shape", prefs.shape);
       document.body.setAttribute("data-fps", prefs.fps);
+      document.getElementById("swHaptic").classList.toggle("on", !!prefs.haptic);
       elFpsBadge.textContent = prefs.fps + " Hz";
 
       syncGroup("langGroup", prefs.lang);
       syncGroup("themeGroup", prefs.theme);
       syncGroup("btnStyleGroup", prefs.btnstyle);
-      syncGroup("animGroup", prefs.anim);
-      syncGroup("blurGroup", prefs.blur);
       syncGroup("shapeGroup", prefs.shape);
       syncGroup("fpsGroup", prefs.fps);
 
@@ -1356,6 +1347,29 @@
       } catch (_e) {}
     }
 
+    function updateHistStats() {
+      const list = getHistory();
+      let totalMb = 0;
+      list.forEach(it => {
+        const s = (it.size || "").toUpperCase();
+        const num = parseFloat(s) || 0;
+        if (s.includes("GB")) totalMb += num * 1024;
+        else if (s.includes("MB")) totalMb += num;
+        else if (s.includes("KB")) totalMb += num / 1024;
+      });
+      const statEl = document.getElementById("histStatText");
+      if (statEl) {
+        statEl.textContent = `${t("statFiles")}: ${list.length} • ${totalMb.toFixed(1)} MB`;
+      }
+    }
+
+    function setHistFilter(flt, btn) {
+      histFilter = flt;
+      document.querySelectorAll("#histFilterGroup .fps-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      renderHistory();
+    }
+
     function formatBadge(item) {
       const f = (item.format || "mp4").toUpperCase();
       if (f === "MP3") return "MP3";
@@ -1365,20 +1379,25 @@
 
     function renderHistory() {
       const list = getHistory();
+      updateHistStats();
       elHistList.classList.toggle("select-mode", selectMode);
 
       document.getElementById("histNormalBar").style.display = selectMode ? "none" : "flex";
       document.getElementById("histSelectBar").style.display = selectMode ? "flex" : "none";
       document.getElementById("delSelectedBtn").textContent = `${t("btnDeleteCount")} (${selectedIndices.size})`;
 
-      if (!list.length) {
+      const filtered = list
+        .map((item, realIdx) => ({ item, realIdx }))
+        .filter(x => histFilter === "all" || (x.item.format || "mp4").toLowerCase() === histFilter);
+
+      if (!filtered.length) {
         elHistList.innerHTML = `<div class="card" style="text-align:center;color:var(--muted);font-size:13px;">${t("histEmpty")}</div>`;
         return;
       }
 
       let html = "";
-      for (let i = 0; i < list.length; i++) {
-        const it = list[i];
+      for (let k = 0; k < filtered.length; k++) {
+        const { item: it, realIdx: i } = filtered[k];
         const isSel = selectedIndices.has(i);
         const thumbSrc = it.thumb || "";
         const safeTitle = (it.title || it.saved_to || "Media").replace(/"/g, "&quot;");
@@ -1404,31 +1423,54 @@
       elHistList.innerHTML = html;
     }
 
+    // Надежное зажатие карточки (не сбивается от микродвижений пальца на 120 Гц)
     elHistList.addEventListener("pointerdown", (e) => {
       const card = e.target.closest(".hist-item");
       if (!card || e.target.closest("[data-play]")) return;
       const idx = Number(card.getAttribute("data-idx"));
-      longPressTriggered = false;
-      clearTimeout(longPressTimer);
-      longPressTimer = setTimeout(() => {
-        longPressTriggered = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      lpTriggered = false;
+      clearTimeout(lpTimer);
+
+      lpTimer = setTimeout(() => {
+        lpTriggered = true;
         if (!selectMode) {
           selectMode = true;
           selectedIndices.clear();
         }
         selectedIndices.add(idx);
-        if (navigator.vibrate) navigator.vibrate(25);
+        vibrate(30);
         renderHistory();
-      }, 420);
+      }, 380);
     }, { passive: true });
 
-    elHistList.addEventListener("pointerup", () => clearTimeout(longPressTimer), { passive: true });
-    elHistList.addEventListener("pointercancel", () => clearTimeout(longPressTimer), { passive: true });
-    elHistList.addEventListener("pointermove", () => clearTimeout(longPressTimer), { passive: true });
+    elHistList.addEventListener("pointermove", (e) => {
+      if (!lpTimer) return;
+      if (Math.hypot(e.clientX - startX, e.clientY - startY) > 15) {
+        clearTimeout(lpTimer);
+        lpTimer = null;
+      }
+    }, { passive: true });
+
+    elHistList.addEventListener("pointerup", () => {
+      clearTimeout(lpTimer);
+      lpTimer = null;
+    }, { passive: true });
+
+    elHistList.addEventListener("pointercancel", () => {
+      clearTimeout(lpTimer);
+      lpTimer = null;
+    }, { passive: true });
+
+    elHistList.addEventListener("contextmenu", (e) => {
+      const card = e.target.closest(".hist-item");
+      if (card) e.preventDefault();
+    });
 
     elHistList.addEventListener("click", (e) => {
-      if (longPressTriggered) {
-        longPressTriggered = false;
+      if (lpTriggered) {
+        lpTriggered = false;
         return;
       }
       const playBtn = e.target.closest("[data-play]");
@@ -1443,9 +1485,16 @@
       if (selectMode) {
         if (selectedIndices.has(idx)) selectedIndices.delete(idx);
         else selectedIndices.add(idx);
+        vibrate(10);
         renderHistory();
       }
     });
+
+    function enterSelectMode() {
+      selectMode = true;
+      selectedIndices.clear();
+      renderHistory();
+    }
 
     function selectAllHistory() {
       const list = getHistory();
@@ -1562,6 +1611,7 @@
               elDlBtn.disabled = false;
               elProgBar.style.width = "100%";
               elProgPct.textContent = "100%";
+              vibrate(35);
 
               const hist = getHistory();
               hist.unshift({
