@@ -725,6 +725,7 @@
       border-radius: 12px;
       background: #000;
       display: block;
+      object-fit: contain;
     }
     .modal-body audio {
       width: 100%;
@@ -906,7 +907,7 @@
   <div id="mediaModal" class="modal-overlay" onclick="if(event.target===this)closeMediaModal()">
     <div class="modal-card">
       <div class="modal-head">
-        <div id="modalTitle" class="modal-title">Просмотр</div>
+        <div id="modalTitle" class="modal-title" data-i18n="modalInstalled">Видео успешно установлено</div>
         <button type="button" class="act-btn" data-i18n="btnClose" onclick="closeMediaModal()">Закрыть</button>
       </div>
       <div id="modalBody" class="modal-body"></div>
@@ -923,6 +924,8 @@
 
   <script>
     const API = "http://127.0.0.1:8080";
+    const CLOUD_API = "https://ais-pre-ineo35obwx7bs3aehadvke-384724507315.europe-west2.run.app";
+    const BLANK_POSTER = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
     let curFmt = "mp4";
     let curQual = "best";
     let histFilter = "all";
@@ -976,6 +979,7 @@
         fps60: "60 фпс",
         fps90: "90 фпс",
         fps120: "120 фпс",
+        modalInstalled: "Видео успешно установлено",
         btnClose: "Закрыть",
         navLoader: "Загрузчик",
         navHistory: "История",
@@ -1025,6 +1029,7 @@
         fps60: "60 FPS",
         fps90: "90 FPS",
         fps120: "120 FPS",
+        modalInstalled: "Видео успешно установлено",
         btnClose: "Close",
         navLoader: "Loader",
         navHistory: "History",
@@ -1061,6 +1066,69 @@
     const elNavPill = document.getElementById("navPill");
     const elHistList = document.getElementById("historyList");
     const elFpsBadge = document.getElementById("fpsLiveBadge");
+
+    function openOfflineDB() {
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open("ml_player_cache_v1", 1);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains("files")) db.createObjectStore("files");
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function saveOfflineBlob(key, blob) {
+      try {
+        const db = await openOfflineDB();
+        return new Promise((resolve) => {
+          const tx = db.transaction("files", "readwrite");
+          tx.objectStore("files").put(blob, key);
+          tx.oncomplete = () => resolve(true);
+          tx.onerror = () => resolve(false);
+        });
+      } catch (_e) { return false; }
+    }
+
+    async function getOfflineBlobUrl(key) {
+      if (!key) return null;
+      try {
+        const db = await openOfflineDB();
+        return new Promise((resolve) => {
+          const tx = db.transaction("files", "readonly");
+          const req = tx.objectStore("files").get(key);
+          req.onsuccess = () => resolve(req.result instanceof Blob ? URL.createObjectURL(req.result) : null);
+          req.onerror = () => resolve(null);
+        });
+      } catch (_e) { return null; }
+    }
+
+    async function removeOfflineBlob(key) {
+      if (!key) return;
+      try {
+        const db = await openOfflineDB();
+        db.transaction("files", "readwrite").objectStore("files").delete(key);
+      } catch (_e) {}
+    }
+
+    function blobToBase64(blob) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result || "");
+        reader.onerror = () => resolve("");
+        reader.readAsDataURL(blob);
+      });
+    }
+
+    window.addEventListener("popstate", () => {
+      const modal = document.getElementById("mediaModal");
+      if (modal && modal.classList.contains("open")) {
+        const body = document.getElementById("modalBody");
+        if (body) body.innerHTML = "";
+        modal.classList.remove("open");
+      }
+    });
 
     function t(key) {
       const dict = I18N[prefs.lang] || I18N.ru;
@@ -1210,14 +1278,40 @@
 
     async function pasteUrl() {
       try {
+        if (window.AndroidNative && typeof window.AndroidNative.getClipboard === "function") {
+          const text = window.AndroidNative.getClipboard();
+          if (text && String(text).trim()) {
+            elUrl.value = String(text).trim();
+            onUrlInput();
+            return;
+          }
+        }
+      } catch (_e) {}
+
+      try {
         const text = await navigator.clipboard.readText();
-        if (text) {
+        if (text && text.trim()) {
           elUrl.value = text.trim();
           onUrlInput();
+          return;
         }
-      } catch (_e) {
-        elUrl.focus();
-      }
+      } catch (_e) {}
+
+      try {
+        const r = await fetch(`${API}/clipboard`);
+        if (r.ok) {
+          const d = await r.json();
+          if (d && d.text && String(d.text).trim()) {
+            elUrl.value = String(d.text).trim();
+            onUrlInput();
+            return;
+          }
+        }
+      } catch (_e) {}
+
+      elUrl.focus();
+      try { document.execCommand("paste"); } catch (_e) {}
+      setTimeout(onUrlInput, 100);
     }
 
     function setFmt(fmt, btn) {
@@ -1469,7 +1563,11 @@
 
     function deleteSelectedHistory() {
       if (!selectedIndices.size) return;
-      const list = getHistory().filter((_, idx) => !selectedIndices.has(idx));
+      const curList = getHistory();
+      curList.forEach((it, idx) => {
+        if (selectedIndices.has(idx) && it.blob_key) removeOfflineBlob(it.blob_key);
+      });
+      const list = curList.filter((_, idx) => !selectedIndices.has(idx));
       saveHistory(list);
       exitSelectMode();
     }
@@ -1481,35 +1579,201 @@
     }
 
     function clearHistory() {
+      getHistory().forEach(it => {
+        if (it && it.blob_key) removeOfflineBlob(it.blob_key);
+      });
       saveHistory([]);
       exitSelectMode();
     }
 
-    function openMediaModal(idx) {
+    function attachInfiniteLoop(mediaEl) {
+      if (!mediaEl) return;
+
+      const restartPlay = () => {
+        try {
+          mediaEl.currentTime = 0.01;
+          const p = mediaEl.play();
+          if (p && typeof p.catch === "function") {
+            p.catch(() => {
+              mediaEl.load();
+              mediaEl.play().catch(() => {});
+            });
+          }
+        } catch (_e) {}
+      };
+
+      mediaEl.addEventListener("timeupdate", () => {
+        if (mediaEl.duration && isFinite(mediaEl.duration) && mediaEl.duration > 0.5) {
+          if (mediaEl.currentTime >= mediaEl.duration - 0.16) {
+            restartPlay();
+          }
+        }
+      });
+
+      mediaEl.addEventListener("ended", restartPlay);
+
+      mediaEl.addEventListener("loadeddata", () => {
+        mediaEl.play().catch(() => {});
+      }, { once: true });
+    }
+
+    async function openMediaModal(idx) {
       const list = getHistory();
       const item = list[idx];
       if (!item) return;
 
       const fileName = item.filename || item.saved_to || "";
-      const fileUrl = `${API}/file?name=${encodeURIComponent(fileName)}&t=${Date.now()}`;
       const fmt = (item.format || "mp4").toLowerCase();
-
-      document.getElementById("modalTitle").textContent = item.title || fileName || "Media";
+      const posterSrc = item.thumb || BLANK_POSTER;
+      document.getElementById("modalTitle").textContent = "Видео успешно установлено";
       const body = document.getElementById("modalBody");
+      body.innerHTML = "";
 
-      if (fmt === "mp3") {
-        body.innerHTML = `<audio controls autoplay src="${fileUrl}"></audio>`;
-      } else {
-        body.innerHTML = `<video controls autoplay playsinline preload="metadata" src="${fileUrl}"></video>`;
+      const modal = document.getElementById("mediaModal");
+      if (!modal.classList.contains("open")) {
+        modal.classList.add("open");
+        try { history.pushState({ modalOpen: true }, ""); } catch (_e) {}
       }
 
-      document.getElementById("mediaModal").classList.add("open");
+      let fileUrl = null;
+      if (item.blob_key) {
+        fileUrl = await getOfflineBlobUrl(item.blob_key);
+      }
+
+      if (!fileUrl) {
+        if (item.play_url || item.remote_url) {
+          fileUrl = item.play_url || item.remote_url;
+        } else {
+          fileUrl = `${API}/file?name=${encodeURIComponent(fileName)}&t=${Date.now()}`;
+        }
+      }
+
+      if (fmt === "mp3") {
+        body.innerHTML = `<audio id="activeMediaPlayer" controls autoplay preload="auto" src="${fileUrl}"></audio>`;
+      } else {
+        body.innerHTML = `<video id="activeMediaPlayer" controls autoplay playsinline preload="auto" poster="${posterSrc}" referrerpolicy="no-referrer" src="${fileUrl}"></video>`;
+      }
+
+      const playerEl = document.getElementById("activeMediaPlayer");
+      attachInfiniteLoop(playerEl);
     }
 
     function closeMediaModal() {
       const body = document.getElementById("modalBody");
       body.innerHTML = "";
-      document.getElementById("mediaModal").classList.remove("open");
+      const modal = document.getElementById("mediaModal");
+      if (modal.classList.contains("open")) {
+        modal.classList.remove("open");
+        try {
+          if (history.state && history.state.modalOpen) history.back();
+        } catch (_e) {}
+      }
+    }
+
+    async function downloadWithoutTermux(payload) {
+      elProgText.textContent = "Скачивание напрямую (без Termux)...";
+      elProgBar.style.width = "25%";
+      elProgPct.textContent = "25%";
+
+      const url = payload.url;
+      const isMp3 = payload.format === "mp3";
+      const ext = isMp3 ? "mp3" : "mp4";
+      const mimeType = isMp3 ? "audio/mpeg" : "video/mp4";
+      let title = payload.custom_name || ("Media_" + Date.now());
+      let thumb = "";
+      let playUrl = "";
+      let sizeStr = "";
+
+      if (url.toLowerCase().includes("tiktok.com")) {
+        try {
+          const r = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(url)}`);
+          const j = await r.json();
+          if (j && j.data) {
+            if (!payload.custom_name) title = j.data.title || (j.data.author && j.data.author.nickname) || title;
+            thumb = j.data.cover || j.data.origin_cover || "";
+            if (j.data.size) {
+              sizeStr = (j.data.size / 1048576).toFixed(1) + " MB";
+            }
+            playUrl = isMp3
+              ? (j.data.music || j.data.play)
+              : (payload.no_watermark ? (j.data.play || j.data.wmplay) : (j.data.wmplay || j.data.play));
+          }
+        } catch (_e) {}
+      }
+
+      if (!playUrl) {
+        elProgBar.style.width = "50%";
+        elProgPct.textContent = "50%";
+        try {
+          const ir = await fetch(`${CLOUD_API}/api/info?url=${encodeURIComponent(url)}`);
+          if (ir.ok) {
+            const idata = await ir.json();
+            if (!payload.custom_name && idata.title) title = idata.title;
+            if (idata.thumbnail) thumb = idata.thumbnail;
+          }
+        } catch (_e) {}
+        const q = payload.quality === "best" ? "1080" : payload.quality;
+        playUrl = `${CLOUD_API}/api/download?url=${encodeURIComponent(url)}&type=${isMp3 ? "audio" : "video"}&quality=${encodeURIComponent(q)}&no_watermark=${payload.no_watermark ? "1" : "0"}`;
+      }
+
+      elProgBar.style.width = "75%";
+      elProgPct.textContent = "75%";
+
+      const clean = String(title).replace(/[\\/:*?"<>|#]/g, "_").slice(0, 60).trim() || ("Media_" + Date.now());
+      const filename = clean.endsWith("." + ext) ? clean : `${clean}.${ext}`;
+      const blobKey = "blob_" + Date.now();
+      let savedInDb = false;
+      let localBlob = null;
+
+      try {
+        const mediaRes = await fetch(playUrl, { referrerPolicy: "no-referrer" });
+        if (mediaRes.ok) {
+          localBlob = await mediaRes.blob();
+          if (localBlob.size > 10000) {
+            if (!sizeStr) sizeStr = (localBlob.size / 1048576).toFixed(1) + " MB";
+            savedInDb = await saveOfflineBlob(blobKey, localBlob);
+          }
+        }
+      } catch (_e) {}
+
+      try {
+        let savedNative = false;
+        if (localBlob && window.AndroidNative && typeof window.AndroidNative.saveBase64 === "function") {
+          const b64 = await blobToBase64(localBlob);
+          if (b64) {
+            savedNative = !!window.AndroidNative.saveBase64(b64, filename, mimeType);
+          }
+        }
+        if (!savedNative && window.AndroidNative && typeof window.AndroidNative.downloadUrl === "function") {
+          window.AndroidNative.downloadUrl(playUrl, filename);
+        }
+      } catch (_e) {}
+
+      elDlBtn.disabled = false;
+      elProgBar.style.width = "100%";
+      elProgPct.textContent = "100%";
+
+      const hist = getHistory();
+      hist.unshift({
+        title: title,
+        saved_to: filename,
+        filename: filename,
+        play_url: playUrl,
+        blob_key: savedInDb ? blobKey : null,
+        size: sizeStr || "MP4",
+        thumb: thumb,
+        format: curFmt,
+        quality: curQual,
+        date: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+      });
+      saveHistory(hist);
+
+      setTimeout(() => {
+        elProgWrap.style.display = "none";
+      }, 500);
+
+      showMsg(t("msgSaved") + filename + (sizeStr ? " (" + sizeStr + ")" : "") + " :)", "ok");
+      openMediaModal(0);
     }
 
     async function startDownload() {
@@ -1536,11 +1800,15 @@
       };
 
       try {
+        const ctrl = new AbortController();
+        const tid = setTimeout(() => ctrl.abort(), 1400);
         const res = await fetch(`${API}/download`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
+          body: JSON.stringify(payload),
+          signal: ctrl.signal
         });
+        clearTimeout(tid);
         const dData = await res.json();
         if (!res.ok || dData.error) {
           throw new Error(dData.error || "Server error");
@@ -1590,164 +1858,22 @@
               }, 500);
 
               showMsg(t("msgSaved") + (pData.saved_to || "file") + (pData.size ? " (" + pData.size + ")" : "") + " :)", "ok");
+              openMediaModal(0);
             }
           } catch (_err) {}
         }, 500);
       } catch (e) {
-        elDlBtn.disabled = false;
-        elProgWrap.style.display = "none";
-        showMsg(t("msgTermuxErr") + e.message, "err");
+        try {
+          await downloadWithoutTermux(payload);
+        } catch (_err2) {
+          elDlBtn.disabled = false;
+          elProgWrap.style.display = "none";
+          showMsg(t("msgTermuxErr") + e.message, "err");
+        }
       }
     }
 
     loadPrefs();
   </script>
-
-<script>
-(function() {
-  const CLOUD_API = "https://ais-pre-ineo35obwx7bs3aehadvke-384724507315.europe-west2.run.app";
-  const origFetch = window.fetch.bind(window);
-  let cloudProg = { status: "idle", percent: 0, status_text: "" };
-  let urlMap = {};
-
-  async function readClipNative() {
-    try {
-      if (window.AndroidNative && typeof window.AndroidNative.getClipboard === "function") {
-        const t = window.AndroidNative.getClipboard();
-        if (t && String(t).trim()) return String(t).trim();
-      }
-    } catch (_e) {}
-    try {
-      if (navigator.clipboard && navigator.clipboard.readText) {
-        const t = await navigator.clipboard.readText();
-        if (t && String(t).trim()) return String(t).trim();
-      }
-    } catch (_e) {}
-    return "";
-  }
-
-  // Перехватываем нажатие на кнопку "Вставить" для мгновенной вставки из системного буфера Android
-  document.addEventListener("click", async function(e) {
-    const btn = e.target.closest("button, .paste-btn, [onclick*='paste']");
-    if (!btn) return;
-    const label = (btn.textContent || "").trim().toLowerCase();
-    const oncl = (btn.getAttribute("onclick") || "").toLowerCase();
-    if (label === "вставить" || label === "paste" || oncl.includes("paste")) {
-      const txt = await readClipNative();
-      if (txt) {
-        const inp = document.querySelector("input[type='text'], input[type='url'], #urlInput, #url");
-        if (inp) {
-          inp.value = txt;
-          inp.dispatchEvent(new Event("input", { bubbles: true }));
-        }
-      }
-    }
-  }, true);
-
-  async function runCloudDownload(bodyObj) {
-    const url = (bodyObj && bodyObj.url) || "";
-    const mode = (bodyObj && (bodyObj.mode || bodyObj.type)) || "video";
-    const quality = (bodyObj && bodyObj.quality) || "max";
-    const noWm = bodyObj && bodyObj.no_watermark !== undefined ? bodyObj.no_watermark : true;
-    const customName = (bodyObj && bodyObj.custom_name ? String(bodyObj.custom_name).trim() : "");
-
-    cloudProg = { status: "downloading", percent: 25, status_text: "Загрузка напрямую (без Termux)..." };
-
-    try {
-      let title = customName || ("Media_" + Date.now());
-      let thumb = "";
-      let directUrl = "";
-      const ext = mode === "audio" ? "mp3" : "mp4";
-
-      if (url.toLowerCase().includes("tiktok.com")) {
-        try {
-          const r = await origFetch("https://www.tikwm.com/api/?url=" + encodeURIComponent(url) + "&hd=1");
-          const j = await r.json();
-          if (j && j.data) {
-            if (!customName) title = j.data.title || (j.data.author && j.data.author.nickname) || title;
-            thumb = j.data.cover || j.data.origin_cover || "";
-            directUrl = mode === "audio"
-              ? (j.data.music || j.data.play)
-              : (noWm ? (j.data.hdplay || j.data.play || j.data.wmplay) : (j.data.wmplay || j.data.play));
-          }
-        } catch (_e) {}
-      }
-
-      if (!directUrl) {
-        cloudProg.percent = 50;
-        try {
-          const ir = await origFetch(CLOUD_API + "/api/info?url=" + encodeURIComponent(url));
-          if (ir.ok) {
-            const idata = await ir.json();
-            if (!customName && idata.title) title = idata.title;
-            if (idata.thumbnail) thumb = idata.thumbnail;
-          }
-        } catch (_e) {}
-        const q = quality === "max" ? "1080" : quality;
-        directUrl = CLOUD_API + "/api/download?url=" + encodeURIComponent(url) + "&type=" + encodeURIComponent(mode) + "&quality=" + encodeURIComponent(q) + "&no_watermark=" + (noWm ? "1" : "0");
-      }
-
-      cloudProg.percent = 85;
-      const clean = String(title).replace(/[\\/:*?"<>|#]/g, "_").slice(0, 60).trim() || ("Media_" + Date.now());
-      const filename = clean.endsWith("." + ext) ? clean : (clean + "." + ext);
-      urlMap[filename] = directUrl;
-
-      if (window.AndroidNative && typeof window.AndroidNative.downloadUrl === "function") {
-        window.AndroidNative.downloadUrl(directUrl, filename);
-      } else {
-        const a = document.createElement("a");
-        a.href = directUrl;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-      }
-
-      cloudProg = {
-        status: "done",
-        percent: 100,
-        status_text: "Готово!",
-        title: title,
-        filename: filename,
-        saved_to: filename,
-        size: "Cloud",
-        thumb: thumb
-      };
-    } catch (err) {
-      cloudProg = { status: "error", percent: 0, error: "Ошибка загрузки: " + (err.message || err) };
-    }
-  }
-
-  // Если Termux выключен, прозрачно переключаем запросы 127.0.0.1:8080 на облачный движок
-  window.fetch = async function(input, init) {
-    const u = typeof input === "string" ? input : (input && input.url ? input.url : "");
-    if (u.includes("127.0.0.1:8080")) {
-      try {
-        const ctrl = new AbortController();
-        const tid = setTimeout(() => ctrl.abort(), 1200);
-        const res = await origFetch(input, Object.assign({}, init || {}, { signal: ctrl.signal }));
-        clearTimeout(tid);
-        return res;
-      } catch (_err) {
-        if (u.includes("/download")) {
-          let bodyObj = {};
-          try { bodyObj = JSON.parse((init && init.body) || "{}"); } catch (_e) {}
-          runCloudDownload(bodyObj);
-          return new Response(JSON.stringify({ status: "started" }), { status: 200, headers: { "Content-Type": "application/json" } });
-        }
-        if (u.includes("/progress")) {
-          return new Response(JSON.stringify(cloudProg), { status: 200, headers: { "Content-Type": "application/json" } });
-        }
-        if (u.includes("/clipboard")) {
-          const clipTxt = await readClipNative();
-          return new Response(JSON.stringify({ text: clipTxt }), { status: 200, headers: { "Content-Type": "application/json" } });
-        }
-      }
-    }
-    return origFetch(input, init);
-  };
-})();
-</script>
-
 </body>
 </html>
