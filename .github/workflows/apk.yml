@@ -1,112 +1,83 @@
-name: Build MediaLoader APK
+name: Build Android APK
+
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Set up JDK 17
+      - name: Setup Java 17
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: 17
 
-      - name: Build Capacitor Android APK
+      - name: Generate Android project
         run: |
-          npm init -y
-          npm install @capacitor/core @capacitor/cli @capacitor/android @capacitor/clipboard
-          npx cap init "Media Loader" "com.termux.medialoader" --web-dir www
+          npm install
           npx cap add android
-
-          # Версия 0.11 BETA в настройках Android
           sed -i 's/versionName "1.0"/versionName "0.11 BETA"/g' android/app/build.gradle
 
-          # Разрешаем работу с сетью и загрузками
-          sed -i 's/<application/<application android:usesCleartextTraffic="true"/g' android/app/src/main/AndroidManifest.xml
-
-          # Добавляем нативный мост в MainActivity.java для мгновенного буфера обмена и прямых загрузок без Termux
-          MAIN_JAVA=$(find android/app/src/main/java -name "MainActivity.java" | head -n 1)
-          cat << 'JAVAEOF' > "$MAIN_JAVA"
-          package com.termux.medialoader;
-
-          import android.app.DownloadManager;
-          import android.content.ClipData;
-          import android.content.ClipboardManager;
-          import android.content.Context;
-          import android.net.Uri;
-          import android.os.Bundle;
-          import android.os.Environment;
-          import android.webkit.JavascriptInterface;
-          import com.getcapacitor.BridgeActivity;
-
-          public class MainActivity extends BridgeActivity {
-              @Override
-              public void onCreate(Bundle savedInstanceState) {
-                  super.onCreate(savedInstanceState);
-                  if (this.bridge != null && this.bridge.getWebView() != null) {
-                      this.bridge.getWebView().addJavascriptInterface(new AndroidNativeBridge(this), "AndroidNative");
-                  }
-              }
-
-              public class AndroidNativeBridge {
-                  private Context ctx;
-                  AndroidNativeBridge(Context c) { this.ctx = c; }
-
-                  @JavascriptInterface
-                  public String getClipboard() {
-                      try {
-                          ClipboardManager cm = (ClipboardManager) ctx.getSystemService(Context.CLIPBOARD_SERVICE);
-                          if (cm != null && cm.hasPrimaryClip()) {
-                              ClipData clip = cm.getPrimaryClip();
-                              if (clip != null && clip.getItemCount() > 0) {
-                                  CharSequence txt = clip.getItemAt(0).coerceToText(ctx);
-                                  if (txt != null) return txt.toString();
-                              }
-                          }
-                      } catch (Exception e) {}
-                      return "";
-                  }
-
-                  @JavascriptInterface
-                  public void downloadUrl(String url, String filename) {
-                      try {
-                          DownloadManager.Request req = new DownloadManager.Request(Uri.parse(url));
-                          req.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                          req.setTitle(filename);
-                          req.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "MediaLoader/" + filename);
-                          DownloadManager dm = (DownloadManager) ctx.getSystemService(Context.DOWNLOAD_SERVICE);
-                          if (dm != null) dm.enqueue(req);
-                      } catch (Exception e) {}
-                  }
-              }
-          }
-          JAVAEOF
-
-          # Иконка приложения
           if [ -f "icon.png" ]; then
             sudo apt-get update && sudo apt-get install -y imagemagick
-            for dir in android/app/src/main/res/mipmap-*; do
-              convert icon.png -resize 192x192 "$dir/ic_launcher.png" 2>/dev/null || true
-              convert icon.png -resize 192x192 "$dir/ic_launcher_round.png" 2>/dev/null || true
-              convert icon.png -resize 192x192 "$dir/ic_launcher_foreground.png" 2>/dev/null || true
-            done
+            RES="android/app/src/main/res"
+
+            # Красим подложку иконки в #121212 под цвет круга, чтобы не было белых углов
+            cat << 'XML' > "$RES/values/ic_launcher_background.xml"
+          <?xml version="1.0" encoding="utf-8"?>
+          <resources>
+              <color name="ic_launcher_background">#121212</color>
+          </resources>
+          XML
+
+            # Подготавливаем иконку без белых полей по краям
+            convert icon.png -gravity center -crop 82%x82%+0+0 +repage -background "#121212" -flatten icon_clean.png
+
+            convert icon_clean.png -resize 48x48 "$RES/mipmap-mdpi/ic_launcher.png"
+            convert icon_clean.png -resize 48x48 "$RES/mipmap-mdpi/ic_launcher_round.png"
+            convert icon_clean.png -resize 108x108 "$RES/mipmap-mdpi/ic_launcher_foreground.png"
+
+            convert icon_clean.png -resize 72x72 "$RES/mipmap-hdpi/ic_launcher.png"
+            convert icon_clean.png -resize 72x72 "$RES/mipmap-hdpi/ic_launcher_round.png"
+            convert icon_clean.png -resize 162x162 "$RES/mipmap-hdpi/ic_launcher_foreground.png"
+
+            convert icon_clean.png -resize 96x96 "$RES/mipmap-xhdpi/ic_launcher.png"
+            convert icon_clean.png -resize 96x96 "$RES/mipmap-xhdpi/ic_launcher_round.png"
+            convert icon_clean.png -resize 216x216 "$RES/mipmap-xhdpi/ic_launcher_foreground.png"
+
+            convert icon_clean.png -resize 144x144 "$RES/mipmap-xxhdpi/ic_launcher.png"
+            convert icon_clean.png -resize 144x144 "$RES/mipmap-xxhdpi/ic_launcher_round.png"
+            convert icon_clean.png -resize 324x324 "$RES/mipmap-xxhdpi/ic_launcher_foreground.png"
+
+            convert icon_clean.png -resize 192x192 "$RES/mipmap-xxxhdpi/ic_launcher.png"
+            convert icon_clean.png -resize 192x192 "$RES/mipmap-xxxhdpi/ic_launcher_round.png"
+            convert icon_clean.png -resize 432x432 "$RES/mipmap-xxxhdpi/ic_launcher_foreground.png"
+
+            rm -f "$RES/drawable/ic_launcher_foreground.xml" "$RES/drawable-v24/ic_launcher_foreground.xml"
           fi
 
-          npx cap sync android
-          cd android && chmod +x gradlew && ./gradlew assembleDebug
+          npx cap copy android
 
-      - name: Upload APK
+      - name: Build APK
+        run: |
+          cd android
+          chmod +x gradlew
+          python3 "$GITHUB_WORKSPACE/patch_android.py"
+          ./gradlew assembleDebug
+
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug
+          name: MediaLoader-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
