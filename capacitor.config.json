@@ -1,0 +1,10 @@
+{
+  "appId": "com.termux.medialoader",
+  "appName": "Media Loader",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "http",
+    "cleartext": true,
+    "allowNavigation": ["*"]
+  }
+}

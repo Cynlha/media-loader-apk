@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Media Loader</title>
+  <style>
+    * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+    body { background: #0b0b0b; color: #f0f0f0; margin: 0; padding: 16px; }
+    .wrap { max-width: 460px; margin: 0 auto; }
+    .top {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-bottom: 12px; margin-bottom: 14px; border-bottom: 1px solid #222;
+    }
+    .top-title { font-size: 16px; font-weight: 700; }
+    .top-sub {
+      font-size: 11px; font-family: monospace; color: #10b981;
+      background: #07291e; border: 1px solid #0f4c36; padding: 3px 8px; border-radius: 4px;
+    }
+    .bar { display: flex; gap: 6px; margin-bottom: 10px; }
+    .bar input {
+      flex: 1; min-width: 0; padding: 12px; border-radius: 6px;
+      border: 1px solid #2a2a2a; background: #141414; color: #fff; font-size: 14px; outline: none;
+    }
+    .bar input:focus { border-color: #555; }
+    .btn-sm {
+      padding: 0 12px; border-radius: 6px; border: 1px solid #2a2a2a;
+      background: #181818; color: #ddd; font-size: 12px; font-weight: 500; cursor: pointer;
+    }
+    .btn-check {
+      width: 100%; padding: 12px; border-radius: 6px; border: none;
+      background: #f0f0f0; color: #0b0b0b; font-size: 14px; font-weight: 600; cursor: pointer;
+    }
+    .btn-check:disabled { opacity: 0.45; }
+    .panel {
+      background: #131313; border: 1px solid #262626;
+      border-radius: 8px; padding: 14px; margin-top: 14px;
+    }
+    .media-head { display: flex; gap: 12px; margin-bottom: 14px; }
+    .thumb {
+      width: 78px; height: 78px; border-radius: 6px; object-fit: cover;
+      background: #080808; border: 1px solid #262626; flex-shrink: 0;
+    }
+    .info { min-width: 0; flex: 1; }
+    .badges { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 6px; }
+    .b-item {
+      font-size: 10px; font-family: monospace; padding: 2px 6px;
+      border-radius: 4px; background: #202020; color: #ccc; border: 1px solid #2e2e2e;
+    }
+    .m-title {
+      font-size: 13px; font-weight: 600; line-height: 1.35; margin-bottom: 4px;
+      display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .m-author { font-size: 12px; color: #888; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .mode-switch {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+      background: #0b0b0b; padding: 4px; border-radius: 6px; border: 1px solid #242424;
+      margin-bottom: 14px;
+    }
+    .mode-btn {
+      padding: 8px; border: none; border-radius: 4px; background: transparent;
+      color: #888; font-size: 12px; font-weight: 600; cursor: pointer;
+    }
+    .mode-btn.active { background: #242424; color: #fff; }
+    .section-label {
+      display: flex; justify-content: space-between;
+      font-size: 11px; color: #999; margin-bottom: 6px;
+    }
+    .chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 12px; }
+    .chip {
+      padding: 9px 6px; text-align: center; border-radius: 6px;
+      border: 1px solid #2a2a2a; background: #0e0e0e; color: #bbb;
+      font-size: 12px; font-weight: 500; cursor: pointer;
+    }
+    .chip.active {
+      background: #ededed; color: #0b0b0b; border-color: #ededed; font-weight: 700;
+    }
+    .chip small { display: block; font-size: 9px; opacity: 0.7; margin-top: 2px; }
+    .summary {
+      font-size: 11px; font-family: monospace; color: #aaa;
+      background: #0b0b0b; border: 1px solid #222; padding: 8px 10px;
+      border-radius: 6px; margin-bottom: 12px;
+    }
+    .btn-dl {
+      width: 100%; padding: 13px; border-radius: 6px; border: none;
+      background: #10b981; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer;
+    }
+    .btn-dl:disabled { opacity: 0.5; }
+    .prog-wrap {
+      margin-top: 12px; padding: 12px; border-radius: 8px;
+      background: #131313; border: 1px solid #262626; display: none;
+    }
+    .prog-top {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 12px; margin-bottom: 8px;
+    }
+    .prog-stage { color: #ddd; font-weight: 500; }
+    .prog-pct { font-family: monospace; font-weight: 700; color: #10b981; }
+    .prog-track {
+      width: 100%; height: 8px; background: #090909;
+      border-radius: 4px; overflow: hidden; border: 1px solid #222;
+    }
+    .prog-fill {
+      height: 100%; width: 0%; background: #10b981;
+      transition: width 0.25s ease;
+    }
+    .prog-stats {
+      display: flex; justify-content: space-between;
+      font-size: 11px; font-family: monospace; color: #888; margin-top: 8px;
+    }
+    .msg {
+      margin-top: 12px; padding: 11px 12px; border-radius: 6px;
+      font-size: 12px; line-height: 1.4; word-break: break-word; display: none;
+    }
+    .msg.info { display: block; background: #161616; border: 1px solid #2a2a2a; color: #ccc; }
+    .msg.ok { display: block; background: #07291e; border: 1px solid #0f5138; color: #a7f3d0; }
+    .msg.err { display: block; background: #2c0b0e; border: 1px solid #58151c; color: #f8d7da; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="top-title">Media Loader</div>
+      <div class="top-sub">MAX BITRATE</div>
+    </div>
+    <div class="bar">
+      <input type="url" id="urlInput" placeholder="Ссылка на TikTok, YouTube, Pinterest, X...">
+      <button class="btn-sm" onclick="pasteUrl()">Вставить</button>
+      <button class="btn-sm" onclick="clearAll()">X</button>
+    </div>
+    <button class="btn-check" id="checkBtn" onclick="checkInfo()">1. Проверить ссылку</button>
+    <div id="card" class="panel" style="display:none;">
+      <div class="media-head">
+        <img id="thumb" class="thumb" src="" alt="preview" style="display:none;">
+        <div class="info">
+          <div class="badges">
+            <span class="b-item" id="bPlatform">MEDIA</span>
+            <span class="b-item" id="bDuration">0:00</span>
+            <span class="b-item" id="bBitrate" style="display:none;"></span>
+          </div>
+          <div class="m-title" id="mTitle"></div>
+          <div class="m-author" id="mAuthor"></div>
+        </div>
+      </div>
+      <div class="mode-switch">
+        <button class="mode-btn active" id="btnModeVideo" onclick="setMode('video')">Видео (MP4)</button>
+        <button class="mode-btn" id="btnModeAudio" onclick="setMode('audio')">Аудио (MP3 320k)</button>
+      </div>
+      <div id="videoSettings">
+        <div class="section-label">
+          <span>Разрешение (Качество):</span>
+          <span id="nativeResHint"></span>
+        </div>
+        <div class="chips" id="resChips"></div>
+        <div class="section-label">
+          <span>Частота кадров (FPS):</span>
+          <span id="nativeFpsHint"></span>
+        </div>
+        <div class="chips" id="fpsChips"></div>
+      </div>
+      <div class="summary" id="summaryBox"></div>
+      <button class="btn-dl" id="dlBtn" onclick="downloadMedia()">2. Скачать в Загрузки</button>
+    </div>
+    <div id="progWrap" class="prog-wrap">
+      <div class="prog-top">
+        <span class="prog-stage" id="progStage">Подготовка...</span>
+        <span class="prog-pct" id="progPct">0%</span>
+      </div>
+      <div class="prog-track">
+        <div class="prog-fill" id="progFill"></div>
+      </div>
+      <div class="prog-stats">
+        <span id="progSize">0 MB</span>
+        <span id="progSpeed">-- MB/s</span>
+      </div>
+    </div>
+    <div id="msgBox" class="msg"></div>
+  </div>
+  <script>
+    const API = "http://127.0.0.1:5000";
+    const ALL_RES = [
+      { val: "best", label: "MAX", sub: "Лучшее" },
+      { val: "2160", label: "4K", sub: "2160p" },
+      { val: "1440", label: "2K", sub: "1440p" },
+      { val: "1080", label: "1080p", sub: "Full HD" },
+      { val: "720",  label: "720p",  sub: "HD" },
+      { val: "480",  label: "480p",  sub: "SD" }
+    ];
+    const ALL_FPS = [
+      { val: "best", label: "Макс FPS", sub: "Оригинал" },
+      { val: "60",   label: "60 FPS",   sub: "Плавное" },
+      { val: "30",   label: "30 FPS",   sub: "Стандарт" }
+    ];
+    let mode = "video";
+    let selectedRes = "best";
+    let selectedFps = "best";
+    let nativeRes = [];
+    let nativeFps = [];
+    let pollTimer = null;
+
+    function showMsg(text = "", type = "info") {
+      const b = document.getElementById("msgBox");
+      b.className = "msg " + type;
+      b.textContent = text;
+    }
+    function hideMsg() {
+      document.getElementById("msgBox").className = "msg";
+    }
+    async function pasteUrl() {
+      try {
+        const t = await navigator.clipboard.readText();
+        if (t) document.getElementById("urlInput").value = t;
+      } catch (_e) {
+        showMsg("Вставьте ссылку долгим нажатием в поле ввода", "info");
+      }
+    }
+    function clearAll() {
+      if (pollTimer) clearInterval(pollTimer);
+      document.getElementById("urlInput").value = "";
+      document.getElementById("card").style.display = "none";
+      document.getElementById("progWrap").style.display = "none";
+      hideMsg();
+    }
+    function fmtTime(sec = 0) {
+      if (!sec || sec <= 0) return "--:--";
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return m + ":" + (s < 10 ? "0" : "") + s;
+    }
+    function setMode(m = "video") {
+      mode = m;
+      document.getElementById("btnModeVideo").className = "mode-btn" + (m === "video" ? " active" : "");
+      document.getElementById("btnModeAudio").className = "mode-btn" + (m === "audio" ? " active" : "");
+      document.getElementById("videoSettings").style.display = m === "video" ? "block" : "none";
+      updateSummary();
+    }
+    function renderChips() {
+      const resBox = document.getElementById("resChips");
+      resBox.innerHTML = "";
+      const maxNative = nativeRes.length > 0 ? Math.max(...nativeRes) : null;
+      ALL_RES.forEach((item) => {
+        if (item.val !== "best" && maxNative && Number(item.val) > maxNative && Number(item.val) > 1080) return;
+        const isNative = item.val !== "best" && nativeRes.includes(Number(item.val));
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "chip" + (selectedRes === item.val ? " active" : "");
+        btn.innerHTML = item.label + "<small>" + (isNative ? "исходник" : item.sub) + "</small>";
+        btn.onclick = () => { selectedRes = item.val; renderChips(); updateSummary(); };
+        resBox.appendChild(btn);
+      });
+      const fpsBox = document.getElementById("fpsChips");
+      fpsBox.innerHTML = "";
+      ALL_FPS.forEach((item) => {
+        const isNative = item.val !== "best" && nativeFps.includes(Number(item.val));
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "chip" + (selectedFps === item.val ? " active" : "");
+        btn.innerHTML = item.label + "<small>" + (isNative ? "исходник" : item.sub) + "</small>";
+        btn.onclick = () => { selectedFps = item.val; renderChips(); updateSummary(); };
+        fpsBox.appendChild(btn);
+      });
+    }
+    function updateSummary() {
+      const s = document.getElementById("summaryBox");
+      if (mode === "audio") {
+        s.textContent = "Аудио: MP3 | 320 kbps (максимальный битрейт)";
+      } else {
+        const rText = selectedRes === "best" ? "Максимальное" : selectedRes + "p";
+        const fText = selectedFps === "best" ? "Макс. FPS" : "до " + selectedFps + " FPS";
+        s.textContent = "Видео: MP4 | Качество: " + rText + " | " + fText + " | Макс. битрейт";
+      }
+    }
+    async function checkInfo() {
+      const url = document.getElementById("urlInput").value.trim();
+      const btn = document.getElementById("checkBtn");
+      const card = document.getElementById("card");
+      if (!url) return;
+      btn.disabled = true;
+      card.style.display = "none";
+      document.getElementById("progWrap").style.display = "none";
+      showMsg("Получаем данные о видео...", "info");
+      try {
+        const res = await fetch(API + "/info", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Ошибка проверки");
+        document.getElementById("mTitle").textContent = data.title;
+        document.getElementById("mAuthor").textContent = "Автор: " + data.uploader;
+        document.getElementById("bPlatform").textContent = data.platform;
+        document.getElementById("bDuration").textContent = fmtTime(data.duration);
+        const bBit = document.getElementById("bBitrate");
+        if (data.max_kbps) {
+          bBit.style.display = "inline-block";
+          bBit.textContent = data.max_kbps + " kbps";
+        } else {
+          bBit.style.display = "none";
+        }
+        const thumb = document.getElementById("thumb");
+        if (data.thumbnail) {
+          thumb.src = data.thumbnail;
+          thumb.style.display = "block";
+        } else {
+          thumb.style.display = "none";
+        }
+        nativeRes = data.available_res || [];
+        nativeFps = data.available_fps || [];
+        document.getElementById("nativeResHint").textContent = nativeRes.length ? "Исходник: " + nativeRes[0] + "p" : "";
+        document.getElementById("nativeFpsHint").textContent = nativeFps.length ? "Исходник: " + nativeFps[0] + " FPS" : "";
+        selectedRes = "best";
+        selectedFps = "best";
+        setMode("video");
+        renderChips();
+        card.style.display = "block";
+        hideMsg();
+      } catch (e) {
+        showMsg("Ошибка: " + e.message + " (Проверьте, запущен ли server.py в Termux)", "err");
+      } finally {
+        btn.disabled = false;
+      }
+    }
+    async function downloadMedia() {
+      const url = document.getElementById("urlInput").value.trim();
+      const btn = document.getElementById("dlBtn");
+      const progWrap = document.getElementById("progWrap");
+      if (pollTimer) clearInterval(pollTimer);
+      btn.disabled = true;
+      hideMsg();
+      document.getElementById("progStage").textContent = "Запуск загрузки...";
+      document.getElementById("progPct").textContent = "0%";
+      document.getElementById("progFill").style.width = "0%";
+      document.getElementById("progSize").textContent = "0 MB";
+      document.getElementById("progSpeed").textContent = "-- MB/s";
+      progWrap.style.display = "block";
+      try {
+        const res = await fetch(API + "/download", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url, mode, res: selectedRes, fps: selectedFps })
+        });
+        const startData = await res.json();
+        if (!res.ok) throw new Error(startData.error || "Ошибка старта загрузки");
+        const jobId = startData.job_id;
+        pollTimer = setInterval(async () => {
+          try {
+            const pRes = await fetch(API + "/progress/" + jobId);
+            const pData = await pRes.json();
+            if (!pRes.ok || pData.state === "error") {
+              clearInterval(pollTimer);
+              btn.disabled = false;
+              progWrap.style.display = "none";
+              showMsg("Ошибка: " + (pData.error || "сбой загрузки"), "err");
+              return;
+            }
+            const pct = pData.percent || 0;
+            document.getElementById("progStage").textContent = pData.stage || "Загрузка...";
+            document.getElementById("progPct").textContent = pct + "%";
+            document.getElementById("progFill").style.width = pct + "%";
+            if (pData.size) document.getElementById("progSize").textContent = pData.size;
+            if (pData.speed) document.getElementById("progSpeed").textContent = pData.speed;
+            if (pData.state === "done") {
+              clearInterval(pollTimer);
+              btn.disabled = false;
+              document.getElementById("progSpeed").textContent = "В Галерее :)";
+              showMsg("Сохранено и добавлено в Галерею: " + pData.saved_to + " (" + pData.size + ") :)", "ok");
+            }
+          } catch (_err) {}
+        }, 600);
+      } catch (e) {
+        btn.disabled = false;
+        progWrap.style.display = "none";
+        showMsg("Ошибка: " + e.message, "err");
+      }
+    }
+  </script>
+</body>
+</html>
