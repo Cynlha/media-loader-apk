@@ -22,11 +22,21 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Generate Android project
+      - name: Generate Android project & Set Custom App Icon
         run: |
+          sudo apt-get update && sudo apt-get install -y imagemagick
           npm install
           npx cap add android
           sed -i 's/<application/<application android:usesCleartextTraffic="true"/g' android/app/src/main/AndroidManifest.xml
+          if [ -f icon.jpg ]; then
+            for dir in android/app/src/main/res/mipmap-*; do
+              rm -f "$dir"/ic_launcher*.webp "$dir"/ic_launcher*.xml
+              convert icon.jpg -resize 512x512^ -gravity center -extent 512x512 "$dir/ic_launcher.png"
+              convert icon.jpg -resize 512x512^ -gravity center -extent 512x512 "$dir/ic_launcher_round.png"
+              convert icon.jpg -resize 512x512^ -gravity center -extent 512x512 "$dir/ic_launcher_foreground.png"
+            done
+            rm -rf android/app/src/main/res/mipmap-anydpi-v26
+          fi
           npx cap sync android
 
       - name: Build APK
