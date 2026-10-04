@@ -5,102 +5,106 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Media Loader</title>
   <style>
-    :root, [data-theme="midnight"] {
-      --bg: #090c12;
-      --card: #121722;
-      --card-2: #192132;
+    :root {
+      --bg: #0f0a0c;
+      --card: #1a1114;
+      --card-2: #24171b;
+      --text: #f9ecef;
+      --muted: #b08d96;
+      --acc: #f43f5e;
+      --acc-rgb: 244, 63, 94;
+      --border: rgba(244, 63, 94, 0.22);
+
+      --glass-dock: rgba(26, 17, 20, 0.78);
+      --glass-dock-border: rgba(244, 63, 94, 0.28);
+      --glass-btn: rgba(244, 63, 94, 0.08);
+      --glass-btn-border: rgba(244, 63, 94, 0.18);
+      --glass-active: rgba(244, 63, 94, 0.24);
+      --glass-active-border: rgba(244, 63, 94, 0.55);
+
+      --rad-card: 18px;
+      --rad-btn: 12px;
+    }
+
+    body[data-theme="midnight"] {
+      --bg: #090d16;
+      --card: #111827;
+      --card-2: #1e293b;
       --text: #f1f5f9;
-      --muted: #7e8fa6;
-      --acc: #3b82f6;
-      --acc-rgb: 59, 130, 246;
-      --border: rgba(59, 130, 246, 0.16);
-      --glass-dock: rgba(14, 19, 30, 0.66);
-      --glass-dock-border: rgba(59, 130, 246, 0.24);
-      --glass-btn: rgba(59, 130, 246, 0.08);
-      --glass-btn-border: rgba(255, 255, 255, 0.08);
-      --glass-active: rgba(59, 130, 246, 0.28);
-      --glass-active-border: rgba(59, 130, 246, 0.56);
+      --muted: #8b9bb4;
+      --acc: #6366f1;
+      --acc-rgb: 99, 102, 241;
+      --border: rgba(99, 102, 241, 0.22);
+      --glass-dock: rgba(17, 24, 39, 0.78);
+      --glass-dock-border: rgba(99, 102, 241, 0.28);
+      --glass-btn: rgba(99, 102, 241, 0.08);
+      --glass-btn-border: rgba(99, 102, 241, 0.18);
+      --glass-active: rgba(99, 102, 241, 0.24);
+      --glass-active-border: rgba(99, 102, 241, 0.55);
     }
 
-    [data-theme="crimson"] {
-      --bg: #12070b;
-      --card: #1c0b12;
-      --card-2: #2b121c;
-      --text: #fdf2f5;
-      --muted: #b48694;
-      --acc: #e11d48;
-      --acc-rgb: 225, 29, 72;
-      --border: rgba(225, 29, 72, 0.18);
-      --glass-dock: rgba(28, 10, 17, 0.66);
-      --glass-dock-border: rgba(225, 29, 72, 0.26);
-      --glass-btn: rgba(225, 29, 72, 0.08);
-      --glass-btn-border: rgba(255, 210, 220, 0.08);
-      --glass-active: rgba(225, 29, 72, 0.30);
-      --glass-active-border: rgba(225, 29, 72, 0.58);
-    }
-
-    [data-theme="emerald"] {
-      --bg: #06110c;
-      --card: #0d1d16;
+    body[data-theme="emerald"] {
+      --bg: #07120e;
+      --card: #0d1f18;
       --card-2: #152e24;
       --text: #ecfdf5;
-      --muted: #7ca694;
+      --muted: #82a898;
       --acc: #10b981;
       --acc-rgb: 16, 185, 129;
-      --border: rgba(16, 185, 129, 0.18);
-      --glass-dock: rgba(10, 25, 19, 0.66);
-      --glass-dock-border: rgba(16, 185, 129, 0.26);
+      --border: rgba(16, 185, 129, 0.22);
+      --glass-dock: rgba(13, 31, 24, 0.78);
+      --glass-dock-border: rgba(16, 185, 129, 0.28);
       --glass-btn: rgba(16, 185, 129, 0.08);
-      --glass-btn-border: rgba(210, 255, 235, 0.08);
-      --glass-active: rgba(16, 185, 129, 0.28);
-      --glass-active-border: rgba(16, 185, 129, 0.56);
+      --glass-btn-border: rgba(16, 185, 129, 0.18);
+      --glass-active: rgba(16, 185, 129, 0.24);
+      --glass-active-border: rgba(16, 185, 129, 0.55);
     }
 
-    [data-theme="ocean"] {
-      --bg: #060f16;
-      --card: #0c1b26;
-      --card-2: #142b3c;
-      --text: #ecfeff;
-      --muted: #7ba2b8;
+    body[data-theme="ocean"] {
+      --bg: #071118;
+      --card: #0c1d29;
+      --card-2: #132b3b;
+      --text: #f0f9ff;
+      --muted: #82a4b8;
       --acc: #06b6d4;
       --acc-rgb: 6, 182, 212;
-      --border: rgba(6, 182, 212, 0.18);
-      --glass-dock: rgba(10, 23, 33, 0.66);
-      --glass-dock-border: rgba(6, 182, 212, 0.26);
+      --border: rgba(6, 182, 212, 0.22);
+      --glass-dock: rgba(12, 29, 41, 0.78);
+      --glass-dock-border: rgba(6, 182, 212, 0.28);
       --glass-btn: rgba(6, 182, 212, 0.08);
-      --glass-btn-border: rgba(210, 245, 255, 0.08);
-      --glass-active: rgba(6, 182, 212, 0.28);
-      --glass-active-border: rgba(6, 182, 212, 0.56);
+      --glass-btn-border: rgba(6, 182, 212, 0.18);
+      --glass-active: rgba(6, 182, 212, 0.24);
+      --glass-active-border: rgba(6, 182, 212, 0.55);
     }
 
-    [data-theme="amoled"] {
+    body[data-theme="amoled"] {
       --bg: #000000;
-      --card: #0c0c10;
-      --card-2: #17171f;
-      --text: #f5f5f7;
-      --muted: #868690;
-      --acc: #8b5cf6;
-      --acc-rgb: 139, 92, 246;
-      --border: rgba(139, 92, 246, 0.2);
-      --glass-dock: rgba(13, 13, 19, 0.72);
-      --glass-dock-border: rgba(139, 92, 246, 0.26);
-      --glass-btn: rgba(139, 92, 246, 0.08);
-      --glass-btn-border: rgba(255, 255, 255, 0.08);
-      --glass-active: rgba(139, 92, 246, 0.30);
-      --glass-active-border: rgba(139, 92, 246, 0.58);
+      --card: #0c0c0e;
+      --card-2: #18181b;
+      --text: #fafafa;
+      --muted: #8e8e96;
+      --acc: #a855f7;
+      --acc-rgb: 168, 85, 247;
+      --border: rgba(168, 85, 247, 0.24);
+      --glass-dock: rgba(12, 12, 14, 0.84);
+      --glass-dock-border: rgba(168, 85, 247, 0.30);
+      --glass-btn: rgba(168, 85, 247, 0.09);
+      --glass-btn-border: rgba(168, 85, 247, 0.20);
+      --glass-active: rgba(168, 85, 247, 0.26);
+      --glass-active-border: rgba(168, 85, 247, 0.58);
     }
 
-    :root {
-      --rad-card: 20px;
-      --rad-btn: 13px;
+    body[data-shape="rounded"] {
+      --rad-card: 18px;
+      --rad-btn: 12px;
     }
-    [data-shape="pill"] {
-      --rad-card: 24px;
+    body[data-shape="pill"] {
+      --rad-card: 26px;
       --rad-btn: 999px;
     }
-    [data-shape="sharp"] {
-      --rad-card: 10px;
-      --rad-btn: 7px;
+    body[data-shape="sharp"] {
+      --rad-card: 6px;
+      --rad-btn: 4px;
     }
 
     * {
@@ -109,20 +113,18 @@
       padding: 0;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
-      -webkit-touch-callout: none;
     }
 
     input {
       user-select: text;
-      -webkit-touch-callout: default;
     }
 
     body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       min-height: 100vh;
-      padding: calc(env(safe-area-inset-top, 12px) + 10px) 14px 124px;
+      padding: calc(env(safe-area-inset-top, 12px) + 12px) 14px 124px;
       overflow-x: hidden;
     }
 
@@ -131,7 +133,6 @@
       margin: 0 auto;
     }
 
-    /* Шапка */
     .header {
       display: flex;
       align-items: center;
@@ -139,12 +140,14 @@
       margin-bottom: 16px;
       padding: 4px 2px;
     }
+
     .brand-title {
       font-size: 20px;
       font-weight: 800;
       letter-spacing: -0.4px;
       color: var(--text);
     }
+
     .ver-badge {
       font-size: 11px;
       font-weight: 700;
@@ -156,7 +159,6 @@
       letter-spacing: 0.4px;
     }
 
-    /* Карточки */
     .card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -165,15 +167,18 @@
       margin-bottom: 12px;
       contain: content;
     }
+
     .card.compact {
       padding: 12px 14px;
     }
+
     .label-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 9px;
     }
+
     .label {
       display: block;
       font-size: 11px;
@@ -183,6 +188,7 @@
       color: var(--muted);
       margin-bottom: 9px;
     }
+
     .plat-badge {
       display: none;
       font-size: 10px;
@@ -194,16 +200,17 @@
       border: 1px solid var(--glass-active-border);
     }
 
-    /* Поле ссылки */
     .url-row {
       display: flex;
       gap: 8px;
     }
+
     .input-wrap {
       position: relative;
       flex: 1;
       min-width: 0;
     }
+
     .inp {
       width: 100%;
       background: var(--bg);
@@ -214,13 +221,16 @@
       font-size: 14px;
       outline: none;
     }
+
     .inp:focus {
       border-color: var(--acc);
     }
+
     .inp::placeholder {
       color: var(--muted);
       opacity: 0.7;
     }
+
     .clear-btn {
       position: absolute;
       right: 8px;
@@ -239,21 +249,28 @@
       cursor: pointer;
     }
 
-    /* Сетки кнопок */
     .seg-grid-2 {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 8px;
     }
+
     .seg-grid-3 {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
     }
+
     .seg-grid-4 {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 7px;
+    }
+
+    .seg-grid-5 {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
     }
 
     .theme-flex {
@@ -261,12 +278,12 @@
       flex-wrap: wrap;
       gap: 8px;
     }
+
     .theme-flex .seg-btn {
       flex: 1 1 calc(33.333% - 8px);
       min-width: 92px;
     }
 
-    /* ОБЩИЕ КНОПКИ */
     .btn-paste, .seg-btn, .act-btn, .fps-btn {
       position: relative;
       color: var(--muted);
@@ -280,7 +297,7 @@
     }
 
     .seg-btn {
-      padding: 11px 8px;
+      padding: 11px 6px;
     }
 
     .fps-btn {
@@ -314,12 +331,19 @@
       transform: translateZ(0);
       backface-visibility: hidden;
     }
+
     .main-btn:disabled {
       opacity: 0.55;
       pointer-events: none;
     }
 
-    /* НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ */
+    .main-btn.stop-mode {
+      background: linear-gradient(135deg, #ef4444, #b91c1c) !important;
+      border: 1px solid rgba(255, 255, 255, 0.32) !important;
+      color: #ffffff !important;
+      box-shadow: 0 6px 16px rgba(239, 68, 68, 0.32) !important;
+    }
+
     .bottom-nav {
       position: fixed;
       left: 50%;
@@ -377,8 +401,6 @@
       box-shadow: none !important;
     }
 
-    /* 4 СТИЛЯ КНОПОК */
-    /* 1. Стекло */
     [data-btnstyle="glass"] .btn-paste,
     [data-btnstyle="glass"] .seg-btn,
     [data-btnstyle="glass"] .act-btn,
@@ -388,6 +410,7 @@
       border: 1px solid var(--glass-btn-border);
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.09);
     }
+
     [data-btnstyle="glass"] .seg-btn.active,
     [data-btnstyle="glass"] .fps-btn.active,
     [data-btnstyle="glass"] .nav-liquid-pill {
@@ -398,13 +421,13 @@
         inset 0 1px 1px rgba(255, 255, 255, 0.26),
         0 4px 12px rgba(var(--acc-rgb), 0.18);
     }
+
     [data-btnstyle="glass"] .main-btn {
       background: linear-gradient(135deg, rgba(var(--acc-rgb), 0.86), rgba(var(--acc-rgb), 0.56));
       border: 1px solid rgba(255, 255, 255, 0.25);
       box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3), 0 6px 16px rgba(var(--acc-rgb), 0.25);
     }
 
-    /* 2. Неон */
     [data-btnstyle="neon"] .btn-paste,
     [data-btnstyle="neon"] .seg-btn,
     [data-btnstyle="neon"] .act-btn,
@@ -414,6 +437,7 @@
       border: 1px solid rgba(var(--acc-rgb), 0.28);
       box-shadow: inset 0 0 6px rgba(var(--acc-rgb), 0.12);
     }
+
     [data-btnstyle="neon"] .seg-btn.active,
     [data-btnstyle="neon"] .fps-btn.active,
     [data-btnstyle="neon"] .nav-liquid-pill {
@@ -424,16 +448,17 @@
         inset 0 0 12px rgba(var(--acc-rgb), 0.45),
         0 0 12px rgba(var(--acc-rgb), 0.35);
     }
+
     [data-btnstyle="neon"] .bottom-nav {
       border-color: rgba(var(--acc-rgb), 0.45);
     }
+
     [data-btnstyle="neon"] .main-btn {
       background: rgba(var(--acc-rgb), 0.28);
       border: 1.5px solid var(--acc);
       box-shadow: inset 0 0 14px rgba(var(--acc-rgb), 0.5), 0 0 14px rgba(var(--acc-rgb), 0.38);
     }
 
-    /* 3. Градиент */
     [data-btnstyle="gradient"] .btn-paste,
     [data-btnstyle="gradient"] .seg-btn,
     [data-btnstyle="gradient"] .act-btn,
@@ -442,6 +467,7 @@
       background: linear-gradient(160deg, var(--card-2), var(--bg));
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
+
     [data-btnstyle="gradient"] .seg-btn.active,
     [data-btnstyle="gradient"] .fps-btn.active,
     [data-btnstyle="gradient"] .nav-liquid-pill {
@@ -450,13 +476,13 @@
       border: 1px solid rgba(255, 255, 255, 0.32);
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
     }
+
     [data-btnstyle="gradient"] .main-btn {
       background: linear-gradient(135deg, var(--acc) 0%, rgba(var(--acc-rgb), 0.5) 100%);
       border: 1px solid rgba(255, 255, 255, 0.3);
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
     }
 
-    /* 4. Контур */
     [data-btnstyle="outline"] .btn-paste,
     [data-btnstyle="outline"] .seg-btn,
     [data-btnstyle="outline"] .act-btn,
@@ -466,6 +492,7 @@
       border: 1.5px solid var(--border);
       box-shadow: none;
     }
+
     [data-btnstyle="outline"] .seg-btn.active,
     [data-btnstyle="outline"] .fps-btn.active,
     [data-btnstyle="outline"] .nav-liquid-pill {
@@ -474,9 +501,11 @@
       border: 1.5px solid var(--acc);
       box-shadow: none;
     }
+
     [data-btnstyle="outline"] .nav-btn.active {
       color: var(--acc);
     }
+
     [data-btnstyle="outline"] .main-btn {
       background: rgba(var(--acc-rgb), 0.16);
       color: var(--acc);
@@ -490,48 +519,6 @@
       background: rgba(248, 113, 113, 0.12) !important;
     }
 
-    /* Тумблер опций */
-    .opt-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 0 4px;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      margin-top: 9px;
-      font-size: 13px;
-      color: var(--text);
-      cursor: pointer;
-    }
-    .switch {
-      width: 44px;
-      height: 25px;
-      border-radius: 999px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      position: relative;
-      flex-shrink: 0;
-    }
-    .switch::after {
-      content: "";
-      position: absolute;
-      top: 2px;
-      left: 2px;
-      width: 19px;
-      height: 19px;
-      border-radius: 50%;
-      background: var(--muted);
-      transition: transform 0.18s cubic-bezier(0.28, 1.35, 0.55, 1);
-    }
-    .switch.on {
-      background: var(--glass-active);
-      border-color: var(--glass-active-border);
-    }
-    .switch.on::after {
-      transform: translate3d(19px, 0, 0);
-      background: var(--acc);
-    }
-
-    /* Прогресс и уведомления */
     .prog-wrap {
       display: none;
       margin-top: 12px;
@@ -540,6 +527,7 @@
       border-radius: var(--rad-card);
       padding: 13px;
     }
+
     .prog-top {
       display: flex;
       justify-content: space-between;
@@ -547,18 +535,21 @@
       margin-bottom: 7px;
       color: var(--muted);
     }
+
     .prog-track {
       height: 7px;
       background: var(--bg);
       border-radius: 999px;
       overflow: hidden;
     }
+
     .prog-fill {
       height: 100%;
       width: 0%;
       background: var(--acc);
       transition: width 0.2s linear;
     }
+
     .msg-box {
       display: none;
       margin-top: 10px;
@@ -569,24 +560,25 @@
       border: 1px solid var(--border);
       background: var(--card);
     }
+
     .msg-box.ok {
       border-color: rgba(16, 185, 129, 0.45);
       color: #34d399;
     }
+
     .msg-box.err {
       border-color: rgba(239, 68, 68, 0.45);
       color: #f87171;
     }
 
-    /* Вкладки */
     .tab-pane {
       display: none;
     }
+
     .tab-pane.active {
       display: block;
     }
 
-    /* История и статистика */
     .hist-stats {
       display: flex;
       align-items: center;
@@ -598,155 +590,166 @@
       margin-bottom: 10px;
       font-size: 12px;
     }
+
     .hist-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 10px;
-      gap: 6px;
-      flex-wrap: wrap;
+      margin-bottom: 8px;
+      min-height: 32px;
     }
+
     .hist-item {
+      position: relative;
       display: flex;
+      align-items: center;
       gap: 11px;
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--rad-card);
-      padding: 10px;
+      padding: 10px 12px;
       margin-bottom: 9px;
-      align-items: center;
-      position: relative;
       contain: content;
-      touch-action: pan-y;
+      cursor: pointer;
     }
+
     .hist-item.selected {
       border-color: var(--acc);
       background: var(--glass-btn);
     }
+
     .hist-check {
       width: 22px;
       height: 22px;
       border-radius: 50%;
-      border: 2px solid var(--muted);
+      border: 1.5px solid var(--muted);
       display: none;
       align-items: center;
       justify-content: center;
       font-size: 12px;
-      font-weight: 700;
-      flex-shrink: 0;
+      font-weight: 800;
       color: #fff;
+      flex-shrink: 0;
     }
+
     .select-mode .hist-check {
       display: flex;
     }
+
     .hist-item.selected .hist-check {
       background: var(--acc);
       border-color: var(--acc);
     }
+
     .hist-thumb {
-      width: 68px;
-      height: 52px;
+      width: 54px;
+      height: 54px;
       border-radius: 10px;
       background: var(--bg);
       object-fit: cover;
       flex-shrink: 0;
       border: 1px solid var(--border);
-      pointer-events: none;
     }
+
     .hist-info {
       flex: 1;
       min-width: 0;
-      pointer-events: none;
     }
+
     .hist-title {
       font-size: 13px;
       font-weight: 600;
+      color: var(--text);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       margin-bottom: 4px;
     }
+
     .hist-meta {
       font-size: 11px;
       color: var(--muted);
       display: flex;
-      gap: 6px;
       align-items: center;
-    }
-    .badge-fmt {
-      padding: 2px 6px;
-      border-radius: 5px;
-      background: var(--glass-btn);
-      color: var(--acc);
-      border: 1px solid var(--glass-dock-border);
-      font-weight: 700;
-      font-size: 10px;
+      gap: 6px;
     }
 
-    /* Модальное окно плеера */
+    .badge-fmt {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: var(--glass-btn);
+      color: var(--acc);
+      border: 1px solid var(--glass-btn-border);
+    }
+
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.85);
-      z-index: 100;
+      background: rgba(0, 0, 0, 0.84);
       display: none;
       align-items: center;
       justify-content: center;
       padding: 16px;
+      z-index: 120;
     }
+
     .modal-overlay.open {
       display: flex;
     }
+
     .modal-card {
       width: 100%;
       max-width: 440px;
       background: var(--card);
-      border: 1px solid var(--glass-dock-border);
+      border: 1px solid var(--border);
       border-radius: var(--rad-card);
       padding: 14px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
     }
+
     .modal-head {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
-      gap: 8px;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 11px;
     }
+
     .modal-title {
       font-size: 13px;
       font-weight: 700;
+      color: var(--text);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .modal-body video {
-      width: 100%;
-      max-height: 66vh;
-      border-radius: 12px;
-      background: #000;
-      display: block;
-      object-fit: contain;
-    }
+
+    .modal-body video,
     .modal-body audio {
       width: 100%;
-      margin: 12px 0;
+      max-height: 70vh;
+      border-radius: 12px;
+      background: #000;
+      outline: none;
+      display: block;
     }
   </style>
 </head>
-<body data-theme="crimson" data-shape="rounded" data-btnstyle="glass" data-fps="120">
+<body data-theme="crimson" data-btnstyle="glass" data-shape="rounded" data-fps="120">
   <div class="app-wrap">
-    <!-- Шапка -->
-    <div class="header">
-      <span class="brand-title">Media Loader</span>
-      <span class="ver-badge">0.11 BETA</span>
-    </div>
+    <header class="header">
+      <div class="brand-title">Media Loader</div>
+      <div class="ver-badge">0.12 BETA</div>
+    </header>
 
     <!-- ВКЛАДКА 1: ЗАГРУЗЧИК -->
     <div id="tab-loader" class="tab-pane active">
       <div class="card">
         <div class="label-row">
           <span class="label" data-i18n="lblUrl" style="margin-bottom:0;">Ссылка на медиа</span>
-          <span id="platBadge" class="plat-badge">Web</span>
+          <span id="platBadge" class="plat-badge">TikTok</span>
         </div>
         <div class="url-row">
           <div class="input-wrap">
@@ -773,8 +776,9 @@
 
         <div id="qualWrap" style="margin-top: 13px;">
           <span class="label" data-i18n="lblQuality">Качество видео</span>
-          <div class="seg-grid-4" id="qualGroup">
+          <div class="seg-grid-5" id="qualGroup">
             <button type="button" class="seg-btn active" data-i18n="qBest" onclick="setQual('best', this)">Макс.</button>
+            <button type="button" class="seg-btn" onclick="setQual('1440', this)">2K</button>
             <button type="button" class="seg-btn" onclick="setQual('1080', this)">1080p</button>
             <button type="button" class="seg-btn" onclick="setQual('720', this)">720p</button>
             <button type="button" class="seg-btn" onclick="setQual('480', this)">480p</button>
@@ -782,23 +786,7 @@
         </div>
       </div>
 
-      <div class="card">
-        <span class="label" data-i18n="lblCustomName">Своё имя файла (необязательно)</span>
-        <input
-          id="customName"
-          type="text"
-          class="inp"
-          placeholder="Оставьте пустым для авто-имени"
-          style="padding-right: 12px;"
-        />
-
-        <div class="opt-row" onclick="toggleSwitch('swWatermark')">
-          <span data-i18n="optWatermark">Без водяного знака</span>
-          <div id="swWatermark" class="switch on"></div>
-        </div>
-      </div>
-
-      <button id="dlBtn" type="button" class="main-btn" data-i18n="btnDownload" onclick="startDownload()">
+      <button id="dlBtn" type="button" class="main-btn" onclick="onMainBtnClick()">
         Скачать
       </button>
 
@@ -820,7 +808,7 @@
       <div class="hist-stats">
         <span id="histStatText" style="color:var(--muted);font-weight:600;">Файлов: 0</span>
         <div style="display:flex;gap:5px;" id="histFilterGroup">
-          <button type="button" class="fps-btn active" data-flt="all" onclick="setHistFilter('all', this)">Все</button>
+          <button type="button" class="fps-btn active" data-flt="all" data-i18n="fltAll" onclick="setHistFilter('all', this)">Все</button>
           <button type="button" class="fps-btn" data-flt="mp4" onclick="setHistFilter('mp4', this)">MP4</button>
           <button type="button" class="fps-btn" data-flt="mp3" onclick="setHistFilter('mp3', this)">MP3</button>
         </div>
@@ -828,12 +816,10 @@
 
       <div class="hist-head">
         <span class="label" data-i18n="lblHistory" style="margin-bottom: 0;">История загрузок</span>
-
         <div id="histNormalBar" style="display: flex; gap: 6px;">
           <button type="button" class="act-btn" data-i18n="btnSelectMode" onclick="enterSelectMode()">Выбрать</button>
           <button type="button" class="act-btn" data-i18n="btnClearAll" onclick="clearHistory()">Очистить всё</button>
         </div>
-
         <div id="histSelectBar" style="display: none; gap: 6px; align-items: center;">
           <button type="button" class="act-btn" data-i18n="btnSelectAll" onclick="selectAllHistory()">Все</button>
           <button type="button" class="act-btn danger" id="delSelectedBtn" onclick="deleteSelectedHistory()">Удалить (0)</button>
@@ -924,12 +910,16 @@
 
   <script>
     const API = "http://127.0.0.1:8080";
-    const CLOUD_API = "https://ais-dev-ineo35obwx7bs3aehadvke-384724507315.europe-west2.run.app";
+    const CLOUD_API = "https://ais-pre-ineo35obwx7bs3aehadvke-384724507315.europe-west2.run.app";
     const BLANK_POSTER = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+
     let curFmt = "mp4";
     let curQual = "best";
     let histFilter = "all";
     let pollTimer = null;
+    let isDownloading = false;
+    let currentAbortCtrl = null;
+    let currentDlSession = 0;
 
     let prefs = {
       lang: "ru",
@@ -949,11 +939,10 @@
         fmtMp3: "Аудио MP3",
         lblQuality: "Качество видео",
         qBest: "Макс.",
-        lblCustomName: "Своё имя файла (необязательно)",
-        phCustomName: "Оставьте пустым для авто-имени",
-        optWatermark: "Без водяного знака",
         btnDownload: "Скачать",
+        btnStop: "Остановить загрузку",
         lblHistory: "История загрузок",
+        fltAll: "Все",
         btnSelectMode: "Выбрать",
         btnClearAll: "Очистить всё",
         btnSelectAll: "Все",
@@ -986,9 +975,14 @@
         navSettings: "Настройки",
         msgPasteFirst: "Сначала вставьте ссылку :)",
         msgStartDl: "Запуск загрузки...",
+        msgDirectDl: "Скачивание медиа...",
+        msgMuxing: "Склейка видео и звука в высоком качестве...",
+        msgDownloadingItem: "Скачивание видео",
+        msgStopped: "Загрузка остановлена :)",
         msgSaved: "Сохранено в Галерею: ",
+        msgSavedMultiple: "Сохранено видео в Галерею: ",
         msgErr: "Ошибка: ",
-        msgTermuxErr: "Ошибка скачивания: "
+        msgTermuxErr: "Не удалось скачать по ссылке: "
       },
       en: {
         lblUrl: "Media Link",
@@ -999,11 +993,10 @@
         fmtMp3: "Audio MP3",
         lblQuality: "Video Quality",
         qBest: "Max",
-        lblCustomName: "Custom file name (optional)",
-        phCustomName: "Leave empty for auto-name",
-        optWatermark: "No watermark",
         btnDownload: "Download",
+        btnStop: "Stop Download",
         lblHistory: "Download History",
+        fltAll: "All",
         btnSelectMode: "Select",
         btnClearAll: "Clear All",
         btnSelectAll: "All",
@@ -1029,16 +1022,21 @@
         fps60: "60 FPS",
         fps90: "90 FPS",
         fps120: "120 FPS",
-        modalInstalled: "Видео успешно установлено",
+        modalInstalled: "Video Installed Successfully",
         btnClose: "Close",
         navLoader: "Loader",
         navHistory: "History",
         navSettings: "Settings",
         msgPasteFirst: "Please paste a link first :)",
         msgStartDl: "Starting download...",
+        msgDirectDl: "Downloading media...",
+        msgMuxing: "Merging high-quality video & audio...",
+        msgDownloadingItem: "Downloading video",
+        msgStopped: "Download stopped :)",
         msgSaved: "Saved to Gallery: ",
+        msgSavedMultiple: "Videos saved to Gallery: ",
         msgErr: "Error: ",
-        msgTermuxErr: "Download error: "
+        msgTermuxErr: "Failed to download link: "
       }
     };
 
@@ -1054,7 +1052,6 @@
 
     const elUrl = document.getElementById("urlInp");
     const elPlatBadge = document.getElementById("platBadge");
-    const elCustomName = document.getElementById("customName");
     const elClear = document.getElementById("clearBtn");
     const elQualWrap = document.getElementById("qualWrap");
     const elDlBtn = document.getElementById("dlBtn");
@@ -1135,6 +1132,16 @@
       return dict[key] || key;
     }
 
+    function updateMainBtnState() {
+      if (isDownloading) {
+        elDlBtn.textContent = t("btnStop");
+        elDlBtn.classList.add("stop-mode");
+      } else {
+        elDlBtn.textContent = t("btnDownload");
+        elDlBtn.classList.remove("stop-mode");
+      }
+    }
+
     function applyLang() {
       document.documentElement.lang = prefs.lang;
       document.querySelectorAll("[data-i18n]").forEach(el => {
@@ -1142,10 +1149,14 @@
         el.textContent = t(key);
       });
       elUrl.placeholder = t("phUrl");
-      elCustomName.placeholder = t("phCustomName");
       document.getElementById("histHint").textContent = t("histHint");
       document.getElementById("delSelectedBtn").textContent = `${t("btnDeleteCount")} (${selectedIndices.size})`;
+      document.getElementById("modalTitle").textContent = t("modalInstalled");
+      updateMainBtnState();
       updateHistStats();
+      if (document.getElementById("tab-history").classList.contains("active")) {
+        renderHistory();
+      }
     }
 
     function detectPlatformBadge(val) {
@@ -1161,7 +1172,6 @@
       else if (u.includes("pinterest.") || u.includes("pin.it")) name = "Pinterest";
       else if (u.includes("twitter.com") || u.includes("x.com")) name = "X / Twitter";
       else if (u.includes("vk.com") || u.includes("vkvideo.ru")) name = "VK Video";
-
       elPlatBadge.textContent = name;
       elPlatBadge.style.display = "inline-block";
     }
@@ -1182,18 +1192,15 @@
       function loop(now) {
         const elapsed = now - startTime;
         const progress = Math.min(1, elapsed / durationMs);
-
         if (progress >= 1) {
           onStep(1);
           if (onDone) onDone();
           return;
         }
-
         if (now - lastFrameTime >= minFrameDelta) {
           lastFrameTime = now;
           onStep(progress);
         }
-
         rafId = requestAnimationFrame(loop);
       }
 
@@ -1214,13 +1221,11 @@
       if (pillAnimRaf) pillAnimRaf();
       const fromPos = pillPos;
       const toPos = toIdx;
-
       if (immediate || fromPos === toPos) {
         pillPos = toPos;
         elNavPill.style.transform = `translate3d(calc(${toPos * 100}% + ${toPos * 6}px), 0, 0) scale3d(1, 1, 1)`;
         return;
       }
-
       pillAnimRaf = runFpsAnimation(310, (p) => {
         const eased = easeOutBack(p);
         const cur = fromPos + (toPos - fromPos) * eased;
@@ -1241,7 +1246,6 @@
       const isMain = btn.classList.contains("main-btn");
       const minScaleX = isMain ? 0.95 : 0.90;
       const minScaleY = isMain ? 0.91 : 0.85;
-
       runFpsAnimation(190, (p) => {
         const dip = Math.sin(p * Math.PI);
         const sx = 1 - dip * (1 - minScaleX);
@@ -1255,14 +1259,11 @@
     function switchTab(tabName, idx, btnEl) {
       const target = document.getElementById("tab-" + tabName);
       if (!target || target.classList.contains("active")) return;
-
       document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
       btnEl.classList.add("active");
       animateLiquidPill(idx, false);
-
       document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
       target.classList.add("active");
-
       if (tabName === "history") {
         renderHistory();
       } else if (selectMode) {
@@ -1287,7 +1288,6 @@
           }
         }
       } catch (_e) {}
-
       try {
         const text = await navigator.clipboard.readText();
         if (text && text.trim()) {
@@ -1296,7 +1296,6 @@
           return;
         }
       } catch (_e) {}
-
       try {
         const r = await fetch(`${API}/clipboard`);
         if (r.ok) {
@@ -1308,7 +1307,6 @@
           }
         }
       } catch (_e) {}
-
       elUrl.focus();
       try { document.execCommand("paste"); } catch (_e) {}
       setTimeout(onUrlInput, 100);
@@ -1325,10 +1323,6 @@
       curQual = q;
       document.querySelectorAll("#qualGroup .seg-btn").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
-    }
-
-    function toggleSwitch(id) {
-      document.getElementById(id).classList.toggle("on");
     }
 
     function showMsg(text, type) {
@@ -1349,7 +1343,6 @@
       try {
         localStorage.setItem("ml_prefs_v10", JSON.stringify(prefs));
       } catch (_e) {}
-
       if (key === "theme") {
         document.body.setAttribute("data-theme", val);
         syncGroup("themeGroup", val);
@@ -1374,19 +1367,16 @@
         const saved = JSON.parse(localStorage.getItem("ml_prefs_v10") || "{}");
         prefs = Object.assign(prefs, saved);
       } catch (_e) {}
-
       document.body.setAttribute("data-theme", prefs.theme);
       document.body.setAttribute("data-btnstyle", prefs.btnstyle);
       document.body.setAttribute("data-shape", prefs.shape);
       document.body.setAttribute("data-fps", prefs.fps);
       elFpsBadge.textContent = prefs.fps + " Hz";
-
       syncGroup("langGroup", prefs.lang);
       syncGroup("themeGroup", prefs.theme);
       syncGroup("btnStyleGroup", prefs.btnstyle);
       syncGroup("shapeGroup", prefs.shape);
       syncGroup("fpsGroup", prefs.fps);
-
       applyLang();
       animateLiquidPill(0, true);
     }
@@ -1431,15 +1421,15 @@
     function formatBadge(item) {
       const f = (item.format || "mp4").toUpperCase();
       if (f === "MP3") return "MP3";
-      const q = item.quality === "best" ? "MAX" : (item.quality + "p");
-      return `MP4 ${q}`;
+      if (item.quality === "best") return "MP4 MAX";
+      if (item.quality === "1440") return "MP4 2K";
+      return `MP4 ${item.quality}p`;
     }
 
     function renderHistory() {
       const list = getHistory();
       updateHistStats();
       elHistList.classList.toggle("select-mode", selectMode);
-
       document.getElementById("histNormalBar").style.display = selectMode ? "none" : "flex";
       document.getElementById("histSelectBar").style.display = selectMode ? "flex" : "none";
       document.getElementById("delSelectedBtn").textContent = `${t("btnDeleteCount")} (${selectedIndices.size})`;
@@ -1489,7 +1479,6 @@
       startY = e.clientY;
       lpTriggered = false;
       clearTimeout(lpTimer);
-
       lpTimer = setTimeout(() => {
         lpTriggered = true;
         if (!selectMode) {
@@ -1588,7 +1577,6 @@
 
     function attachInfiniteLoop(mediaEl) {
       if (!mediaEl) return;
-
       const restartPlay = () => {
         try {
           mediaEl.currentTime = 0.01;
@@ -1601,7 +1589,6 @@
           }
         } catch (_e) {}
       };
-
       mediaEl.addEventListener("timeupdate", () => {
         if (mediaEl.duration && isFinite(mediaEl.duration) && mediaEl.duration > 0.5) {
           if (mediaEl.currentTime >= mediaEl.duration - 0.16) {
@@ -1609,9 +1596,7 @@
           }
         }
       });
-
       mediaEl.addEventListener("ended", restartPlay);
-
       mediaEl.addEventListener("loadeddata", () => {
         mediaEl.play().catch(() => {});
       }, { once: true });
@@ -1621,25 +1606,21 @@
       const list = getHistory();
       const item = list[idx];
       if (!item) return;
-
       const fileName = item.filename || item.saved_to || "";
       const fmt = (item.format || "mp4").toLowerCase();
       const posterSrc = item.thumb || BLANK_POSTER;
-      document.getElementById("modalTitle").textContent = "Видео успешно установлено";
+      document.getElementById("modalTitle").textContent = t("modalInstalled");
       const body = document.getElementById("modalBody");
       body.innerHTML = "";
-
       const modal = document.getElementById("mediaModal");
       if (!modal.classList.contains("open")) {
         modal.classList.add("open");
         try { history.pushState({ modalOpen: true }, ""); } catch (_e) {}
       }
-
       let fileUrl = null;
       if (item.blob_key) {
         fileUrl = await getOfflineBlobUrl(item.blob_key);
       }
-
       if (!fileUrl) {
         if (item.play_url || item.remote_url) {
           fileUrl = item.play_url || item.remote_url;
@@ -1647,13 +1628,11 @@
           fileUrl = `${API}/file?name=${encodeURIComponent(fileName)}&t=${Date.now()}`;
         }
       }
-
       if (fmt === "mp3") {
         body.innerHTML = `<audio id="activeMediaPlayer" controls autoplay preload="auto" src="${fileUrl}"></audio>`;
       } else {
         body.innerHTML = `<video id="activeMediaPlayer" controls autoplay playsinline preload="auto" poster="${posterSrc}" referrerpolicy="no-referrer" src="${fileUrl}"></video>`;
       }
-
       const playerEl = document.getElementById("activeMediaPlayer");
       attachInfiniteLoop(playerEl);
     }
@@ -1671,346 +1650,518 @@
     }
 
     async function nativeHttpGet(url, headersObj) {
-      try {
-        if (window.AndroidNative && typeof window.AndroidNative.httpGet === "function") {
-          const res = window.AndroidNative.httpGet(url, JSON.stringify(headersObj || {}));
-          if (res && String(res).trim()) return String(res);
-        }
-      } catch (_e) {}
-      const r = await fetch(url, { headers: headersObj || {}, referrerPolicy: "no-referrer" });
+      if (window.AndroidNative && typeof window.AndroidNative.httpGet === "function") {
+        const raw = window.AndroidNative.httpGet(url, JSON.stringify(headersObj || {}));
+        if (raw) return raw;
+      }
+      const r = await fetch(url, {
+        headers: headersObj || {},
+        signal: currentAbortCtrl ? currentAbortCtrl.signal : undefined
+      });
       return await r.text();
     }
 
     async function nativeHttpPost(url, bodyStr, headersObj) {
-      try {
-        if (window.AndroidNative && typeof window.AndroidNative.httpPost === "function") {
-          const res = window.AndroidNative.httpPost(url, bodyStr, JSON.stringify(headersObj || {}));
-          if (res && String(res).trim()) return String(res);
-        }
-      } catch (_e) {}
+      if (window.AndroidNative && typeof window.AndroidNative.httpPost === "function") {
+        const raw = window.AndroidNative.httpPost(url, bodyStr, JSON.stringify(headersObj || {}));
+        if (raw) return raw;
+      }
       const r = await fetch(url, {
         method: "POST",
-        headers: Object.assign({ "Content-Type": "application/json" }, headersObj || {}),
+        headers: headersObj || { "Content-Type": "application/json" },
         body: bodyStr,
-        referrerPolicy: "no-referrer"
+        signal: currentAbortCtrl ? currentAbortCtrl.signal : undefined
       });
       return await r.text();
     }
 
-    function extractYoutubeId(rawUrl) {
-      const m = rawUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|shorts\/|embed\/|live\/))([a-zA-Z0-9_-]{11})/);
+    async function resolveThumbBase64(thumbUrl) {
+      if (!thumbUrl) return "";
+      if (thumbUrl.startsWith("data:")) return thumbUrl;
+      try {
+        if (window.AndroidNative && typeof window.AndroidNative.fetchImageBase64 === "function") {
+          const b64 = window.AndroidNative.fetchImageBase64(thumbUrl);
+          if (b64 && b64.startsWith("data:image")) return b64;
+        }
+      } catch (_e) {}
+      try {
+        const r = await fetch(thumbUrl, {
+          referrerPolicy: "no-referrer",
+          signal: currentAbortCtrl ? currentAbortCtrl.signal : undefined
+        });
+        if (r.ok) {
+          const b = await r.blob();
+          if (b.size > 200) {
+            return await blobToBase64(b);
+          }
+        }
+      } catch (_e) {}
+      return thumbUrl;
+    }
+
+    function extractYouTubeId(url) {
+      const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?.*v=|shorts\/|embed\/|v\/))([a-zA-Z0-9_-]{11})/);
       return m ? m[1] : null;
     }
 
-    async function downloadWithoutTermux(payload) {
-      elProgText.textContent = "Получение прямой ссылки...";
-      elProgBar.style.width = "20%";
-      elProgPct.textContent = "20%";
+    async function resolveYouTubeItems(url, isMp3, quality) {
+      const vid = extractYouTubeId(url);
+      if (!vid) return null;
+      let title = "YouTube_" + vid;
+      let thumb = `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`;
 
-      let url = payload.url.trim();
+      const clients = [
+        {
+          name: "ANDROID_VR",
+          version: "1.56.21",
+          ua: "com.google.android.apps.youtube.vr.oculus/1.56.21 (Linux; U; Android 12L; eureka-user Build/SQ3A.220605.009.A1) gzip",
+          extra: { androidSdkVersion: 32, osName: "Android", osVersion: "12L", deviceMake: "Oculus", deviceModel: "Quest 3" }
+        },
+        {
+          name: "ANDROID",
+          version: "19.30.36",
+          ua: "com.google.android.youtube/19.30.36 (Linux; U; Android 14) gzip",
+          extra: { androidSdkVersion: 34 }
+        }
+      ];
+
+      for (const c of clients) {
+        try {
+          const bodyObj = {
+            videoId: vid,
+            context: {
+              client: Object.assign({
+                clientName: c.name,
+                clientVersion: c.version,
+                hl: "en",
+                gl: "US"
+              }, c.extra)
+            }
+          };
+          const raw = await nativeHttpPost(
+            "https://www.youtube.com/youtubei/v1/player?prettyPrint=false",
+            JSON.stringify(bodyObj),
+            { "Content-Type": "application/json", "User-Agent": c.ua }
+          );
+          const data = JSON.parse(raw);
+          if (data.videoDetails && data.videoDetails.title) {
+            title = data.videoDetails.title;
+          }
+          const thumbs = data.videoDetails && data.videoDetails.thumbnail && data.videoDetails.thumbnail.thumbnails;
+          if (Array.isArray(thumbs) && thumbs.length) {
+            thumb = thumbs[thumbs.length - 1].url || thumb;
+          }
+          const sd = data.streamingData;
+          if (!sd) continue;
+
+          const progFormats = (sd.formats || []).filter(f => f.url);
+          const adapFormats = (sd.adaptiveFormats || []).filter(f => f.url);
+
+          const audioFormats = adapFormats.filter(f => {
+            const mt = (f.mimeType || "").toLowerCase();
+            return mt.includes("audio/mp4") || mt.includes("mp4a");
+          }).sort((a, b) => (b.bitrate || 0) - (a.bitrate || 0));
+
+          const bestAudio = audioFormats[0] || adapFormats.find(f => (f.mimeType || "").includes("audio"));
+
+          if (isMp3 && bestAudio && bestAudio.url) {
+            const cl = Number(bestAudio.contentLength || 0);
+            return [{
+              title,
+              thumb,
+              playUrl: bestAudio.url,
+              audioUrl: "",
+              ua: c.ua,
+              sizeStr: cl > 0 ? (cl / 1048576).toFixed(1) + " MB" : ""
+            }];
+          }
+
+          const targetH = quality === "best" ? 4320 : (parseInt(quality, 10) || 1080);
+
+          // Подбираем видеопоток MP4 (предпочитаем H.264 avc1 для 100% совместимости с Android MediaMuxer, либо любой mp4)
+          const mp4Videos = adapFormats.filter(f => {
+            const mt = (f.mimeType || "").toLowerCase();
+            return mt.includes("video/mp4") && f.height;
+          });
+
+          mp4Videos.sort((a, b) => {
+            const ah = a.height || 0;
+            const bh = b.height || 0;
+            if (bh !== ah) return bh - ah;
+            const aAvc = (a.mimeType || "").includes("avc1") ? 1 : 0;
+            const bAvc = (b.mimeType || "").includes("avc1") ? 1 : 0;
+            if (bAvc !== aAvc) return bAvc - aAvc;
+            return (b.bitrate || 0) - (a.bitrate || 0);
+          });
+
+          let chosenVideo = mp4Videos.find(f => (f.height || 0) <= targetH) || mp4Videos[0];
+          let chosenProg = progFormats.sort((a, b) => (b.height || 0) - (a.height || 0)).find(f => (f.height || 0) <= targetH) || progFormats[0];
+
+          // Если в adaptiveFormats есть высокое качество (720p/1080p/2K/4K) и есть аудиопоток — склеиваем через нативный MediaMuxer
+          if (chosenVideo && bestAudio && (chosenVideo.height || 0) > ((chosenProg && chosenProg.height) || 360)) {
+            const vLen = Number(chosenVideo.contentLength || 0);
+            const aLen = Number(bestAudio.contentLength || 0);
+            const totalMb = (vLen + aLen) > 0 ? ((vLen + aLen) / 1048576).toFixed(1) + " MB" : "";
+            return [{
+              title,
+              thumb,
+              playUrl: chosenVideo.url,
+              audioUrl: bestAudio.url,
+              ua: c.ua,
+              sizeStr: totalMb
+            }];
+          }
+
+          if (chosenProg && chosenProg.url) {
+            const cl = Number(chosenProg.contentLength || 0);
+            return [{
+              title,
+              thumb,
+              playUrl: chosenProg.url,
+              audioUrl: "",
+              ua: c.ua,
+              sizeStr: cl > 0 ? (cl / 1048576).toFixed(1) + " MB" : ""
+            }];
+          }
+        } catch (_e) {}
+      }
+      return null;
+    }
+
+    async function resolveTwitterItems(url) {
+      const m = url.match(/(?:twitter\.com|x\.com)\/[^/]+\/status\/(\d+)/i) || url.match(/status\/(\d+)/i);
+      if (!m) return null;
+      const statusId = m[1];
       try {
-        if (window.AndroidNative && typeof window.AndroidNative.resolveRedirect === "function" && (url.includes("pin.it") || url.includes("t.co") || url.includes("vm.tiktok") || url.includes("vt.tiktok"))) {
-          const resolved = window.AndroidNative.resolveRedirect(url);
-          if (resolved && String(resolved).startsWith("http")) url = String(resolved);
+        const raw = await nativeHttpGet(`https://api.fxtwitter.com/i/status/${statusId}`, {
+          "User-Agent": "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/124.0.0.0 Mobile Safari/537.36"
+        });
+        const data = JSON.parse(raw);
+        const tweet = data && data.tweet;
+        if (!tweet) return null;
+
+        const baseTitle = (tweet.text || ("X_" + statusId)).split("\n")[0].slice(0, 55).trim() || ("X_" + statusId);
+        const media = tweet.media || {};
+        const allMedia = Array.isArray(media.all) && media.all.length
+          ? media.all
+          : (Array.isArray(media.videos) ? media.videos : []);
+
+        const videoEntries = allMedia.filter(item =>
+          item && (item.type === "video" || item.type === "gif" || (item.url && item.url.includes(".mp4")) || Array.isArray(item.formats) || Array.isArray(item.variants))
+        );
+
+        if (!videoEntries.length) return null;
+
+        const results = [];
+        for (let i = 0; i < videoEntries.length; i++) {
+          const v = videoEntries[i];
+          let bestUrl = v.url || "";
+          const fmts = Array.isArray(v.formats) ? v.formats : (Array.isArray(v.variants) ? v.variants : []);
+          const mp4s = fmts.filter(f => f && f.url && (f.container === "mp4" || (f.content_type || "").includes("mp4") || f.url.includes(".mp4")));
+          if (mp4s.length) {
+            mp4s.sort((a, b) => (b.bitrate || 0) - (a.bitrate || 0));
+            bestUrl = mp4s[0].url;
+          }
+          if (!bestUrl) continue;
+
+          const itemThumb = v.thumbnail_url || tweet.author?.avatar_url || "";
+          const itemTitle = videoEntries.length > 1 ? `${baseTitle} (${i + 1}/${videoEntries.length})` : baseTitle;
+          results.push({
+            title: itemTitle,
+            thumb: itemThumb,
+            playUrl: bestUrl,
+            audioUrl: "",
+            ua: "Mozilla/5.0",
+            sizeStr: ""
+          });
+        }
+        return results.length ? results : null;
+      } catch (_e) {
+        return null;
+      }
+    }
+
+    async function resolvePinterestItems(url) {
+      try {
+        let html = await nativeHttpGet(url, {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0.0.0 Safari/537.36"
+        });
+        const cleanHtml = html.replace(/\\u002F/g, "/").replace(/\\\//g, "/");
+        const mp4Matches = cleanHtml.match(/https:\/\/v[0-9]*\.pinimg\.com\/videos\/[^\s"'<>\\]+\.mp4/g);
+        if (!mp4Matches || !mp4Matches.length) return null;
+
+        const bestMp4 = mp4Matches.find(u => u.includes("/720p/") || u.includes("/1080p/")) || mp4Matches[0];
+        const imgMatches = cleanHtml.match(/https:\/\/i\.pinimg\.com\/(?:originals|736x|564x)\/[^\s"'<>\\]+\.(?:jpg|png|webp)/g);
+        const thumb = imgMatches && imgMatches.length ? imgMatches[0] : "";
+        const titleMatch = cleanHtml.match(/<title[^>]*>([^<]+)<\/title>/i);
+        const title = titleMatch ? titleMatch[1].replace(/\s*\|\s*Pinterest.*$/i, "").trim() : ("Pinterest_" + Date.now());
+
+        return [{
+          title,
+          thumb,
+          playUrl: bestMp4,
+          audioUrl: "",
+          ua: "Mozilla/5.0",
+          sizeStr: ""
+        }];
+      } catch (_e) {
+        return null;
+      }
+    }
+
+    async function resolveTikTokItems(url, isMp3) {
+      try {
+        const raw = await nativeHttpGet(`https://www.tikwm.com/api/?url=${encodeURIComponent(url)}`, {
+          "User-Agent": "Mozilla/5.0"
+        });
+        const j = JSON.parse(raw);
+        if (j && j.data) {
+          const d = j.data;
+          const title = d.title || (d.author && d.author.nickname) || ("TikTok_" + Date.now());
+          const thumb = d.cover || d.origin_cover || "";
+          const sizeStr = d.size ? (d.size / 1048576).toFixed(1) + " MB" : "";
+          const playUrl = isMp3 ? (d.music || d.play) : (d.play || d.wmplay);
+          if (playUrl) {
+            return [{
+              title,
+              thumb,
+              playUrl,
+              audioUrl: "",
+              ua: "Mozilla/5.0",
+              sizeStr
+            }];
+          }
         }
       } catch (_e) {}
+      return null;
+    }
 
-      const lower = url.toLowerCase();
+    function stopDownload() {
+      currentDlSession++;
+      isDownloading = false;
+      if (pollTimer) {
+        clearInterval(pollTimer);
+        pollTimer = null;
+      }
+      if (currentAbortCtrl) {
+        try { currentAbortCtrl.abort(); } catch (_e) {}
+        currentAbortCtrl = null;
+      }
+      try {
+        if (window.AndroidNative && typeof window.AndroidNative.cancelDownload === "function") {
+          window.AndroidNative.cancelDownload();
+        }
+      } catch (_e) {}
+      updateMainBtnState();
+      elProgWrap.style.display = "none";
+      showMsg(t("msgStopped"), "err");
+    }
+
+    function onMainBtnClick() {
+      if (isDownloading) {
+        stopDownload();
+      } else {
+        startDownload();
+      }
+    }
+
+    async function saveAndRecordSingleItem(item, index, total, payload, session) {
+      if (session !== currentDlSession) throw new Error("aborted");
+
       const isMp3 = payload.format === "mp3";
       const ext = isMp3 ? "mp3" : "mp4";
       const mimeType = isMp3 ? "audio/mpeg" : "video/mp4";
-      let title = payload.custom_name || ("Media_" + Date.now());
-      let thumb = "";
-      let playUrl = "";
-      let sizeStr = "";
 
-      // 1. TIKTOK
-      if (lower.includes("tiktok.com")) {
-        try {
-          const txt = await nativeHttpGet(`https://www.tikwm.com/api/?url=${encodeURIComponent(url)}`, {});
-          const j = JSON.parse(txt);
-          if (j && j.data) {
-            if (!payload.custom_name) title = j.data.title || (j.data.author && j.data.author.nickname) || title;
-            thumb = j.data.cover || j.data.origin_cover || "";
-            if (j.data.size) {
-              sizeStr = (j.data.size / 1048576).toFixed(1) + " MB";
-            }
-            playUrl = isMp3
-              ? (j.data.music || j.data.play)
-              : (payload.no_watermark ? (j.data.play || j.data.wmplay) : (j.data.wmplay || j.data.play));
-          }
-        } catch (_e) {}
-      }
+      const stepPrefix = total > 1 ? `${t("msgDownloadingItem")} (${index + 1}/${total})...` : t("msgDirectDl");
+      elProgText.textContent = stepPrefix;
+      const basePct = Math.round((index / total) * 80) + 15;
+      elProgBar.style.width = basePct + "%";
+      elProgPct.textContent = basePct + "%";
 
-      // 2. TWITTER / X
-      if (!playUrl && (lower.includes("twitter.com") || lower.includes("x.com"))) {
-        try {
-          const m = url.match(/status(?:es)?\/(\d+)/);
-          if (m && m[1]) {
-            const txt = await nativeHttpGet(`https://api.fxtwitter.com/i/status/${m[1]}`, {
-              "User-Agent": "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/124.0.0.0 Mobile Safari/537.36"
-            });
-            const j = JSON.parse(txt);
-            if (j && j.tweet) {
-              const tw = j.tweet;
-              if (!payload.custom_name && tw.text) {
-                title = tw.text.replace(/https?:\/\/\S+/g, "").trim() || (tw.author && tw.author.name) || title;
-              }
-              const vids = (tw.media && (tw.media.videos || tw.media.all)) || [];
-              const vObj = vids.find(x => x.url && x.url.includes(".mp4")) || vids[0];
-              if (vObj) {
-                playUrl = vObj.url || "";
-                thumb = vObj.thumbnail_url || (tw.author && tw.author.avatar_url) || "";
-              }
-            }
-          }
-        } catch (_e) {}
-      }
+      const thumbData = await resolveThumbBase64(item.thumb || "");
+      if (session !== currentDlSession) throw new Error("aborted");
 
-      // 3. PINTEREST
-      if (!playUrl && (lower.includes("pinterest.") || lower.includes("pin.it"))) {
-        try {
-          const pinMatch = url.match(/\/pin\/(?:[\w-]+--)?(\d+)/);
-          if (pinMatch && pinMatch[1]) {
-            const pid = pinMatch[1];
-            const dataParam = JSON.stringify({ options: { id: pid, field_set_key: "unauth_react_main_pin" } });
-            const apiUrl = `https://www.pinterest.com/resource/PinResource/get/?data=${encodeURIComponent(dataParam)}`;
-            const txt = await nativeHttpGet(apiUrl, {
-              "X-Pinterest-PWS-Handler": "www/[username].js",
-              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
-            });
-            const j = JSON.parse(txt);
-            const pdata = j && j.resource_response && j.resource_response.data;
-            if (pdata) {
-              if (!payload.custom_name) {
-                title = pdata.title || pdata.grid_title || pdata.seo_description || ("Pinterest_" + pid);
-              }
-              if (pdata.images && pdata.images.orig && pdata.images.orig.url) {
-                thumb = pdata.images.orig.url;
-              }
-              let vlist = (pdata.videos && pdata.videos.video_list) || null;
-              if (!vlist && pdata.story_pin_data && Array.isArray(pdata.story_pin_data.pages)) {
-                for (const pg of pdata.story_pin_data.pages) {
-                  for (const blk of (pg.blocks || [])) {
-                    if (blk.video && blk.video.video_list) {
-                      vlist = blk.video.video_list;
-                      break;
-                    }
-                  }
-                  if (vlist) break;
-                }
-              }
-              if (vlist) {
-                for (const k of Object.keys(vlist)) {
-                  const item = vlist[k];
-                  if (item && item.thumbnail && !thumb) thumb = item.thumbnail;
-                  if (item && item.url && item.url.includes(".mp4")) {
-                    playUrl = item.url;
-                    break;
-                  }
-                }
-              }
-            }
-          }
-          if (!playUrl) {
-            const pageHtml = await nativeHttpGet(url, {
-              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
-            });
-            const cleanHtml = pageHtml.replace(/\\\//g, "/").replace(/\\u002F/g, "/");
-            const mp4Match = cleanHtml.match(/https:\/\/v[0-9]*\.pinimg\.com\/videos\/[^"'\s\\<>]+\.mp4/);
-            if (mp4Match) playUrl = mp4Match[0];
-            const imgMatch = cleanHtml.match(/https:\/\/i\.pinimg\.com\/[^"'\s\\<>]+\.jpg/);
-            if (imgMatch && !thumb) thumb = imgMatch[0];
-          }
-        } catch (_e) {}
-      }
-
-      // 4. YOUTUBE (прямой запрос с телефона через InnerTube + oEmbed обложка)
-      if (!playUrl && (lower.includes("youtube.com") || lower.includes("youtu.be"))) {
-        const vid = extractYoutubeId(url);
-        if (vid) {
-          thumb = `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`;
-          try {
-            const oeTxt = await nativeHttpGet(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${vid}&format=json`, {});
-            const oe = JSON.parse(oeTxt);
-            if (!payload.custom_name && oe && oe.title) title = oe.title;
-            if (oe && oe.thumbnail_url) thumb = oe.thumbnail_url;
-          } catch (_e) {}
-
-          const clients = [
-            {
-              body: {
-                videoId: vid,
-                contentCheckOk: true,
-                racyCheckOk: true,
-                context: {
-                  client: {
-                    clientName: "ANDROID_VR",
-                    clientVersion: "1.56.21",
-                    androidSdkVersion: 32,
-                    deviceMake: "Oculus",
-                    deviceModel: "Quest 3",
-                    osName: "Android",
-                    osVersion: "12L",
-                    hl: "ru",
-                    gl: "RU"
-                  }
-                }
-              },
-              ua: "com.google.android.apps.youtube.vr.oculus/1.56.21 (Linux; U; Android 12L; eureka-user Build/SQ3A.220605.009.A1) gzip"
-            },
-            {
-              body: {
-                videoId: vid,
-                contentCheckOk: true,
-                racyCheckOk: true,
-                context: {
-                  client: {
-                    clientName: "ANDROID",
-                    clientVersion: "21.26.364",
-                    androidSdkVersion: 30,
-                    osName: "Android",
-                    osVersion: "11",
-                    hl: "ru",
-                    gl: "RU"
-                  }
-                }
-              },
-              ua: "com.google.android.youtube/21.26.364 (Linux; U; Android 11) gzip"
-            }
-          ];
-
-          for (const cl of clients) {
-            try {
-              const pTxt = await nativeHttpPost(
-                "https://www.youtube.com/youtubei/v1/player?prettyPrint=false",
-                JSON.stringify(cl.body),
-                { "User-Agent": cl.ua, "Content-Type": "application/json" }
-              );
-              const pj = JSON.parse(pTxt);
-              if (pj && pj.videoDetails) {
-                if (!payload.custom_name && pj.videoDetails.title) title = pj.videoDetails.title;
-              }
-              const sd = pj && pj.streamingData;
-              if (sd) {
-                const fmts = Array.isArray(sd.formats) ? sd.formats : [];
-                const afmts = Array.isArray(sd.adaptiveFormats) ? sd.adaptiveFormats : [];
-                if (isMp3) {
-                  const aud = afmts.find(f => f.url && String(f.mimeType || "").includes("audio/mp4")) || fmts.find(f => f.url);
-                  if (aud && aud.url) {
-                    playUrl = aud.url;
-                    if (aud.contentLength) sizeStr = (Number(aud.contentLength) / 1048576).toFixed(1) + " MB";
-                    break;
-                  }
-                } else {
-                  const prog = fmts.filter(f => f.url && String(f.mimeType || "").includes("video/mp4"));
-                  if (prog.length > 0) {
-                    const chosen = prog[prog.length - 1];
-                    playUrl = chosen.url;
-                    if (chosen.contentLength) sizeStr = (Number(chosen.contentLength) / 1048576).toFixed(1) + " MB";
-                    break;
-                  }
-                }
-              }
-            } catch (_e) {}
-          }
-        }
-      }
-
-      // 5. Облачный резерв
-      if (!playUrl) {
-        elProgBar.style.width = "45%";
-        elProgPct.textContent = "45%";
-        try {
-          const ir = await fetch(`${CLOUD_API}/api/info?url=${encodeURIComponent(url)}`);
-          if (ir.ok) {
-            const idata = await ir.json();
-            if (!payload.custom_name && idata.title) title = idata.title;
-            if (idata.thumbnail && !thumb) thumb = idata.thumbnail;
-          }
-        } catch (_e) {}
-        const q = payload.quality === "best" ? "1080" : payload.quality;
-        playUrl = `${CLOUD_API}/api/download?url=${encodeURIComponent(url)}&type=${isMp3 ? "audio" : "video"}&quality=${encodeURIComponent(q)}&no_watermark=${payload.no_watermark ? "1" : "0"}`;
-      }
-
-      elProgText.textContent = "Сохранение в Галерею...";
-      elProgBar.style.width = "75%";
-      elProgPct.textContent = "75%";
-
-      const clean = String(title).replace(/[\\/:*?"<>|#\n\r]/g, "_").slice(0, 60).trim() || ("Media_" + Date.now());
+      const clean = String(item.title || ("Media_" + Date.now()))
+        .replace(/[\\/:*?"<>|#]/g, "_")
+        .slice(0, 60)
+        .trim() || ("Media_" + Date.now());
       const filename = clean.endsWith("." + ext) ? clean : `${clean}.${ext}`;
-      const blobKey = "blob_" + Date.now();
+      const blobKey = "blob_" + Date.now() + "_" + index;
+
+      let savedNative = false;
       let savedInDb = false;
-      let localBlob = null;
-      let b64Data = "";
+      let sizeStr = item.sizeStr || "";
+      let playUrlForPlayer = item.playUrl;
 
-      // Скачиваем байты через нативный мост Android (обходит CORS YouTube / Pinterest / Twitter)
-      try {
-        if (window.AndroidNative && typeof window.AndroidNative.fetchMediaBase64 === "function") {
-          const rawB64 = window.AndroidNative.fetchMediaBase64(playUrl);
-          if (rawB64 && String(rawB64).length > 1000) {
-            b64Data = String(rawB64);
-            const binStr = atob(b64Data);
-            const len = binStr.length;
-            const bytes = new Uint8Array(len);
-            for (let i = 0; i < len; i++) bytes[i] = binStr.charCodeAt(i);
-            localBlob = new Blob([bytes], { type: mimeType });
-            if (!sizeStr) sizeStr = (localBlob.size / 1048576).toFixed(1) + " MB";
-            savedInDb = await saveOfflineBlob(blobKey, localBlob);
-          }
+      // Если есть отдельный видеопоток высокой чёткости (2K/4K/1080p) и аудиопоток — склеиваем через нативный MediaMuxer
+      if (!isMp3 && item.audioUrl && window.AndroidNative && typeof window.AndroidNative.muxVideoAudioToGallery === "function") {
+        elProgText.textContent = t("msgMuxing");
+        const muxResRaw = await new Promise((resolve) => {
+          setTimeout(() => {
+            try {
+              resolve(window.AndroidNative.muxVideoAudioToGallery(item.playUrl, item.audioUrl, filename, item.ua || "Mozilla/5.0"));
+            } catch (_e) {
+              resolve("");
+            }
+          }, 30);
+        });
+        if (session !== currentDlSession) throw new Error("aborted");
+        if (muxResRaw) {
+          try {
+            const muxRes = JSON.parse(muxResRaw);
+            if (muxRes && muxRes.ok) {
+              savedNative = true;
+              if (muxRes.sizeMb) sizeStr = muxRes.sizeMb + " MB";
+              if (muxRes.b64) {
+                const resB = await fetch(muxRes.b64);
+                const blob = await resB.blob();
+                if (blob.size > 10000) {
+                  savedInDb = await saveOfflineBlob(blobKey, blob);
+                }
+              }
+            }
+          } catch (_e) {}
         }
-      } catch (_e) {}
+      }
 
-      if (!localBlob) {
+      // Стандартное нативное сохранение одиночного потока
+      if (!savedNative && window.AndroidNative && typeof window.AndroidNative.downloadMediaToGallery === "function") {
+        const dlResRaw = await new Promise((resolve) => {
+          setTimeout(() => {
+            try {
+              resolve(window.AndroidNative.downloadMediaToGallery(item.playUrl, filename, mimeType, item.ua || "Mozilla/5.0"));
+            } catch (_e) {
+              resolve("");
+            }
+          }, 30);
+        });
+        if (session !== currentDlSession) throw new Error("aborted");
+        if (dlResRaw) {
+          try {
+            const dlRes = JSON.parse(dlResRaw);
+            if (dlRes && dlRes.ok) {
+              savedNative = true;
+              if (dlRes.sizeMb) sizeStr = dlRes.sizeMb + " MB";
+              if (dlRes.b64) {
+                const resB = await fetch(dlRes.b64);
+                const blob = await resB.blob();
+                if (blob.size > 10000) {
+                  savedInDb = await saveOfflineBlob(blobKey, blob);
+                }
+              }
+            }
+          } catch (_e) {}
+        }
+      }
+
+      // Браузерный / WebView фоллбэк
+      if (!savedInDb) {
         try {
-          const mediaRes = await fetch(playUrl, { referrerPolicy: "no-referrer" });
+          const mediaRes = await fetch(item.playUrl, {
+            referrerPolicy: "no-referrer",
+            signal: currentAbortCtrl ? currentAbortCtrl.signal : undefined
+          });
           if (mediaRes.ok) {
-            localBlob = await mediaRes.blob();
+            const localBlob = await mediaRes.blob();
             if (localBlob.size > 10000) {
               if (!sizeStr) sizeStr = (localBlob.size / 1048576).toFixed(1) + " MB";
               savedInDb = await saveOfflineBlob(blobKey, localBlob);
+              if (!savedNative && window.AndroidNative && typeof window.AndroidNative.saveBase64 === "function") {
+                const b64 = await blobToBase64(localBlob);
+                if (b64) savedNative = !!window.AndroidNative.saveBase64(b64, filename, mimeType);
+              }
             }
           }
-        } catch (_e) {}
+        } catch (err) {
+          if (err && err.name === "AbortError") throw new Error("aborted");
+        }
       }
 
-      try {
-        let savedNative = false;
-        if (window.AndroidNative && typeof window.AndroidNative.saveBase64 === "function") {
-          const b64ToSave = b64Data || (localBlob ? await blobToBase64(localBlob) : "");
-          if (b64ToSave) {
-            savedNative = !!window.AndroidNative.saveBase64(b64ToSave, filename, mimeType);
-          }
-        }
-        if (!savedNative && window.AndroidNative && typeof window.AndroidNative.downloadUrl === "function") {
-          window.AndroidNative.downloadUrl(playUrl, filename);
-        }
-      } catch (_e) {}
+      if (!savedNative && window.AndroidNative && typeof window.AndroidNative.downloadUrl === "function") {
+        window.AndroidNative.downloadUrl(item.playUrl, filename);
+        savedNative = true;
+      }
 
-      elDlBtn.disabled = false;
-      elProgBar.style.width = "100%";
-      elProgPct.textContent = "100%";
+      if (session !== currentDlSession) throw new Error("aborted");
 
       const hist = getHistory();
       hist.unshift({
-        title: title,
+        title: item.title || filename,
         saved_to: filename,
         filename: filename,
-        play_url: playUrl,
+        play_url: playUrlForPlayer,
         blob_key: savedInDb ? blobKey : null,
         size: sizeStr || (isMp3 ? "MP3" : "MP4"),
-        thumb: thumb,
-        format: curFmt,
-        quality: curQual,
+        thumb: thumbData || "",
+        format: payload.format,
+        quality: payload.quality,
         date: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
       });
       saveHistory(hist);
+      return { filename, sizeStr };
+    }
 
+    async function downloadWithoutTermux(payload, session) {
+      elProgText.textContent = t("msgDirectDl");
+      elProgBar.style.width = "12%";
+      elProgPct.textContent = "12%";
+
+      const url = payload.url;
+      const uLower = url.toLowerCase();
+      const isMp3 = payload.format === "mp3";
+
+      let items = null;
+      if (uLower.includes("tiktok.com")) {
+        items = await resolveTikTokItems(url, isMp3);
+      } else if (uLower.includes("twitter.com") || uLower.includes("x.com")) {
+        items = await resolveTwitterItems(url);
+      } else if (uLower.includes("youtube.com") || uLower.includes("youtu.be")) {
+        items = await resolveYouTubeItems(url, isMp3, payload.quality);
+      } else if (uLower.includes("pinterest.") || uLower.includes("pin.it")) {
+        items = await resolvePinterestItems(url);
+      }
+
+      if (session !== currentDlSession) throw new Error("aborted");
+
+      if (!items || !items.length) {
+        let title = "Media_" + Date.now();
+        let thumb = "";
+        try {
+          const ir = await fetch(`${CLOUD_API}/api/info?url=${encodeURIComponent(url)}`, {
+            signal: currentAbortCtrl ? currentAbortCtrl.signal : undefined
+          });
+          if (ir.ok) {
+            const idata = await ir.json();
+            if (idata.title) title = idata.title;
+            if (idata.thumbnail) thumb = idata.thumbnail;
+          }
+        } catch (_e) {}
+        const q = payload.quality === "best" ? "1440" : payload.quality;
+        const playUrl = `${CLOUD_API}/api/download?url=${encodeURIComponent(url)}&type=${isMp3 ? "audio" : "video"}&quality=${encodeURIComponent(q)}&no_watermark=1`;
+        items = [{ title, thumb, playUrl, audioUrl: "", ua: "Mozilla/5.0", sizeStr: "" }];
+      }
+
+      let lastSaved = null;
+      for (let i = 0; i < items.length; i++) {
+        if (session !== currentDlSession) throw new Error("aborted");
+        lastSaved = await saveAndRecordSingleItem(items[i], i, items.length, payload, session);
+      }
+
+      if (session !== currentDlSession) throw new Error("aborted");
+
+      isDownloading = false;
+      updateMainBtnState();
+      elProgBar.style.width = "100%";
+      elProgPct.textContent = "100%";
       setTimeout(() => {
-        elProgWrap.style.display = "none";
+        if (!isDownloading) elProgWrap.style.display = "none";
       }, 500);
 
-      showMsg(t("msgSaved") + filename + (sizeStr ? " (" + sizeStr + ")" : "") + " :)", "ok");
+      if (items.length > 1) {
+        showMsg(`${t("msgSavedMultiple")}${items.length} :)`, "ok");
+      } else if (lastSaved) {
+        showMsg(t("msgSaved") + lastSaved.filename + (lastSaved.sizeStr ? " (" + lastSaved.sizeStr + ")" : "") + " :)", "ok");
+      }
       openMediaModal(0);
     }
 
@@ -2022,92 +2173,39 @@
       }
 
       if (pollTimer) clearInterval(pollTimer);
-      elDlBtn.disabled = true;
+      if (currentAbortCtrl) {
+        try { currentAbortCtrl.abort(); } catch (_e) {}
+      }
+
+      currentDlSession++;
+      const mySession = currentDlSession;
+      currentAbortCtrl = new AbortController();
+      isDownloading = true;
+      updateMainBtnState();
+
       elMsgBox.style.display = "none";
       elProgWrap.style.display = "block";
-      elProgBar.style.width = "3%";
-      elProgPct.textContent = "0%";
+      elProgBar.style.width = "5%";
+      elProgPct.textContent = "5%";
       elProgText.textContent = t("msgStartDl");
 
       const payload = {
         url: url,
         format: curFmt,
         quality: curQual,
-        custom_name: elCustomName.value.trim(),
-        no_watermark: document.getElementById("swWatermark").classList.contains("on")
+        no_watermark: true
       };
 
       try {
-        const ctrl = new AbortController();
-        const tid = setTimeout(() => ctrl.abort(), 1400);
-        const res = await fetch(`${API}/download`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-          signal: ctrl.signal
-        });
-        clearTimeout(tid);
-        const dData = await res.json();
-        if (!res.ok || dData.error) {
-          throw new Error(dData.error || "Server error");
+        await downloadWithoutTermux(payload, mySession);
+      } catch (err) {
+        if (mySession !== currentDlSession || (err && err.message === "aborted")) {
+          return;
         }
-
-        const taskId = dData.task_id || "";
-        pollTimer = setInterval(async () => {
-          try {
-            const pRes = await fetch(`${API}/progress?id=${encodeURIComponent(taskId)}`);
-            const pData = await pRes.json();
-
-            if (pData.percent !== undefined) {
-              const pct = Math.min(100, Math.max(0, Math.round(pData.percent)));
-              elProgBar.style.width = pct + "%";
-              elProgPct.textContent = pct + "%";
-            }
-            if (pData.step) {
-              elProgText.textContent = pData.step;
-            }
-
-            if (pData.status === "error") {
-              clearInterval(pollTimer);
-              elDlBtn.disabled = false;
-              elProgWrap.style.display = "none";
-              showMsg(t("msgErr") + (pData.error || "Failed"), "err");
-            } else if (pData.status === "done") {
-              clearInterval(pollTimer);
-              elDlBtn.disabled = false;
-              elProgBar.style.width = "100%";
-              elProgPct.textContent = "100%";
-
-              const hist = getHistory();
-              hist.unshift({
-                title: pData.title || pData.saved_to || "Media",
-                saved_to: pData.saved_to || "",
-                filename: pData.filename || pData.saved_to || "",
-                size: pData.size || "",
-                thumb: pData.thumb || "",
-                format: curFmt,
-                quality: curQual,
-                date: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-              });
-              saveHistory(hist);
-
-              setTimeout(() => {
-                elProgWrap.style.display = "none";
-              }, 500);
-
-              showMsg(t("msgSaved") + (pData.saved_to || "file") + (pData.size ? " (" + pData.size + ")" : "") + " :)", "ok");
-              openMediaModal(0);
-            }
-          } catch (_err) {}
-        }, 500);
-      } catch (e) {
-        try {
-          await downloadWithoutTermux(payload);
-        } catch (_err2) {
-          elDlBtn.disabled = false;
-          elProgWrap.style.display = "none";
-          showMsg(t("msgTermuxErr") + e.message, "err");
-        }
+        isDownloading = false;
+        updateMainBtnState();
+        elProgWrap.style.display = "none";
+        showMsg(t("msgTermuxErr") + (err.message || "Error"), "err");
       }
     }
 
