@@ -2,7 +2,6 @@ import os, re, glob
 
 root = os.environ.get("GITHUB_WORKSPACE", ".")
 
-# 1. Версия 0.11 BETA в build.gradle
 gradle_path = os.path.join(root, "android/app/build.gradle")
 if os.path.exists(gradle_path):
     with open(gradle_path, "r", encoding="utf-8") as f:
@@ -11,7 +10,6 @@ if os.path.exists(gradle_path):
     with open(gradle_path, "w", encoding="utf-8") as f:
         f.write(g)
 
-# 2. Разрешаем трафик в AndroidManifest.xml
 manifest_path = os.path.join(root, "android/app/src/main/AndroidManifest.xml")
 if os.path.exists(manifest_path):
     with open(manifest_path, "r", encoding="utf-8") as f:
@@ -21,7 +19,6 @@ if os.path.exists(manifest_path):
     with open(manifest_path, "w", encoding="utf-8") as f:
         f.write(m)
 
-# 3. Прописываем нативный буфер обмена и загрузчик в MainActivity.java
 java_files = glob.glob(os.path.join(root, "android/app/src/main/java/**/MainActivity.java"), recursive=True)
 if java_files:
     jpath = java_files[0]
@@ -103,4 +100,3 @@ public class MainActivity extends BridgeActivity {{
 """
     with open(jpath, "w", encoding="utf-8") as f:
         f.write(new_java)
-print("Android native patch applied successfully")

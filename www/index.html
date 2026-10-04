@@ -6,86 +6,102 @@
   <title>Media Loader</title>
   <style>
     :root, [data-theme="midnight"] {
-      --bg: #080b12;
-      --bg-grad: radial-gradient(circle at 50% 0%, #131b2e 0%, #080b12 72%);
-      --card: #101624;
-      --card-border: rgba(255, 255, 255, 0.08);
-      --text: #f3f6fc;
-      --muted: #7e8ba3;
-      --accent: #3b82f6;
-      --accent-2: #60a5fa;
-      --accent-rgb: 59, 130, 246;
-      --accent-glow: rgba(59, 130, 246, 0.28);
-      --danger: #ef4444;
-      --success: #10b981;
-      --input-bg: #0a0f1a;
-      --nav-bg: rgba(13, 19, 32, 0.96);
+      --bg: #090c12;
+      --card: #121722;
+      --card-2: #192132;
+      --text: #f1f5f9;
+      --muted: #7e8fa6;
+      --acc: #3b82f6;
+      --acc-rgb: 59, 130, 246;
+      --border: rgba(59, 130, 246, 0.16);
+      --glass-dock: rgba(14, 19, 30, 0.66);
+      --glass-dock-border: rgba(59, 130, 246, 0.24);
+      --glass-btn: rgba(59, 130, 246, 0.08);
+      --glass-btn-border: rgba(255, 255, 255, 0.08);
+      --glass-active: rgba(59, 130, 246, 0.28);
+      --glass-active-border: rgba(59, 130, 246, 0.56);
     }
+
     [data-theme="crimson"] {
-      --bg: #11070a;
-      --bg-grad: radial-gradient(circle at 50% 0%, #2b1019 0%, #11070a 72%);
-      --card: #1c0d13;
-      --card-border: rgba(244, 63, 94, 0.16);
-      --text: #fff1f2;
-      --muted: #b88691;
-      --accent: #f43f5e;
-      --accent-2: #fb7185;
-      --accent-rgb: 244, 63, 94;
-      --accent-glow: rgba(244, 63, 94, 0.28);
-      --input-bg: #14080c;
-      --nav-bg: rgba(24, 10, 15, 0.96);
+      --bg: #12070b;
+      --card: #1c0b12;
+      --card-2: #2b121c;
+      --text: #fdf2f5;
+      --muted: #b48694;
+      --acc: #e11d48;
+      --acc-rgb: 225, 29, 72;
+      --border: rgba(225, 29, 72, 0.18);
+      --glass-dock: rgba(28, 10, 17, 0.66);
+      --glass-dock-border: rgba(225, 29, 72, 0.26);
+      --glass-btn: rgba(225, 29, 72, 0.08);
+      --glass-btn-border: rgba(255, 210, 220, 0.08);
+      --glass-active: rgba(225, 29, 72, 0.30);
+      --glass-active-border: rgba(225, 29, 72, 0.58);
     }
+
     [data-theme="emerald"] {
-      --bg: #06110d;
-      --bg-grad: radial-gradient(circle at 50% 0%, #0d2b20 0%, #06110d 72%);
-      --card: #0c1f17;
-      --card-border: rgba(16, 185, 129, 0.16);
+      --bg: #06110c;
+      --card: #0d1d16;
+      --card-2: #152e24;
       --text: #ecfdf5;
-      --muted: #7fa998;
-      --accent: #10b981;
-      --accent-2: #34d399;
-      --accent-rgb: 16, 185, 129;
-      --accent-glow: rgba(16, 185, 129, 0.28);
-      --input-bg: #071510;
-      --nav-bg: rgba(10, 25, 19, 0.96);
+      --muted: #7ca694;
+      --acc: #10b981;
+      --acc-rgb: 16, 185, 129;
+      --border: rgba(16, 185, 129, 0.18);
+      --glass-dock: rgba(10, 25, 19, 0.66);
+      --glass-dock-border: rgba(16, 185, 129, 0.26);
+      --glass-btn: rgba(16, 185, 129, 0.08);
+      --glass-btn-border: rgba(210, 255, 235, 0.08);
+      --glass-active: rgba(16, 185, 129, 0.28);
+      --glass-active-border: rgba(16, 185, 129, 0.56);
     }
+
     [data-theme="ocean"] {
-      --bg: #061017;
-      --bg-grad: radial-gradient(circle at 50% 0%, #0c2738 0%, #061017 72%);
-      --card: #0b1c29;
-      --card-border: rgba(6, 182, 212, 0.16);
+      --bg: #060f16;
+      --card: #0c1b26;
+      --card-2: #142b3c;
       --text: #ecfeff;
-      --muted: #7fa4b5;
-      --accent: #06b6d4;
-      --accent-2: #22d3ee;
-      --accent-rgb: 6, 182, 212;
-      --accent-glow: rgba(6, 182, 212, 0.28);
-      --input-bg: #07131c;
-      --nav-bg: rgba(9, 23, 34, 0.96);
+      --muted: #7ba2b8;
+      --acc: #06b6d4;
+      --acc-rgb: 6, 182, 212;
+      --border: rgba(6, 182, 212, 0.18);
+      --glass-dock: rgba(10, 23, 33, 0.66);
+      --glass-dock-border: rgba(6, 182, 212, 0.26);
+      --glass-btn: rgba(6, 182, 212, 0.08);
+      --glass-btn-border: rgba(210, 245, 255, 0.08);
+      --glass-active: rgba(6, 182, 212, 0.28);
+      --glass-active-border: rgba(6, 182, 212, 0.56);
     }
+
     [data-theme="amoled"] {
       --bg: #000000;
-      --bg-grad: none;
-      --card: #0b0b0e;
-      --card-border: rgba(255, 255, 255, 0.11);
-      --text: #ffffff;
-      --muted: #8a8a93;
-      --accent: #8b5cf6;
-      --accent-2: #a78bfa;
-      --accent-rgb: 139, 92, 246;
-      --accent-glow: rgba(139, 92, 246, 0.3);
-      --input-bg: #050507;
-      --nav-bg: rgba(10, 10, 14, 0.98);
+      --card: #0c0c10;
+      --card-2: #17171f;
+      --text: #f5f5f7;
+      --muted: #868690;
+      --acc: #8b5cf6;
+      --acc-rgb: 139, 92, 246;
+      --border: rgba(139, 92, 246, 0.2);
+      --glass-dock: rgba(13, 13, 19, 0.72);
+      --glass-dock-border: rgba(139, 92, 246, 0.26);
+      --glass-btn: rgba(139, 92, 246, 0.08);
+      --glass-btn-border: rgba(255, 255, 255, 0.08);
+      --glass-active: rgba(139, 92, 246, 0.30);
+      --glass-active-border: rgba(139, 92, 246, 0.58);
     }
 
     :root {
-      --spring-dur: 0.24s;
-      --pill-dur: 0.26s;
+      --rad-card: 20px;
+      --rad-btn: 13px;
     }
-    body[data-fps="30"] { --spring-dur: 0.34s; --pill-dur: 0.36s; }
-    body[data-fps="60"] { --spring-dur: 0.24s; --pill-dur: 0.26s; }
-    body[data-fps="90"] { --spring-dur: 0.18s; --pill-dur: 0.20s; }
-    body[data-fps="120"] { --spring-dur: 0.14s; --pill-dur: 0.16s; }
+    [data-shape="pill"] {
+      --rad-card: 24px;
+      --rad-btn: 999px;
+    }
+    [data-shape="sharp"] {
+      --rad-card: 10px;
+      --rad-btn: 7px;
+    }
 
     * {
       box-sizing: border-box;
@@ -93,183 +109,137 @@
       padding: 0;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
+      -webkit-touch-callout: none;
     }
 
-    html, body {
-      min-height: 100%;
-      background-color: var(--bg);
-      background-image: var(--bg-grad);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      overflow-x: hidden;
+    input {
+      user-select: text;
+      -webkit-touch-callout: default;
     }
 
     body {
-      padding: calc(env(safe-area-inset-top, 16px) + 12px) 16px 132px 16px;
-      max-width: 480px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      padding: calc(env(safe-area-inset-top, 12px) + 10px) 14px 124px;
+      overflow-x: hidden;
+    }
+
+    .app-wrap {
+      max-width: 460px;
       margin: 0 auto;
     }
 
+    /* Шапка */
     .header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 16px;
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .brand-logo {
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 12px var(--accent-glow);
-      flex-shrink: 0;
-    }
-    .brand-logo svg {
-      width: 21px;
-      height: 21px;
-      fill: #fff;
+      padding: 4px 2px;
     }
     .brand-title {
-      font-size: 19px;
+      font-size: 20px;
       font-weight: 800;
-      letter-spacing: -0.3px;
+      letter-spacing: -0.4px;
+      color: var(--text);
     }
-    .header-badges {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .version-pill {
+    .ver-badge {
       font-size: 11px;
       font-weight: 700;
-      padding: 4px 9px;
+      padding: 5px 11px;
       border-radius: 999px;
-      background: rgba(var(--accent-rgb), 0.14);
-      border: 1px solid rgba(var(--accent-rgb), 0.35);
-      color: var(--accent-2);
+      background: var(--glass-btn);
+      color: var(--acc);
+      border: 1px solid var(--glass-dock-border);
+      letter-spacing: 0.4px;
     }
 
-    .tab-pane {
-      display: none;
-    }
-    .tab-pane.active {
-      display: block;
-    }
-
+    /* Карточки */
     .card {
       background: var(--card);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 16px;
-      margin-bottom: 14px;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.26);
-      contain: layout style;
+      border: 1px solid var(--border);
+      border-radius: var(--rad-card);
+      padding: 15px;
+      margin-bottom: 12px;
+      contain: content;
     }
-
-    .card-head {
+    .card.compact {
+      padding: 12px 14px;
+    }
+    .label-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 8px;
+      margin-bottom: 9px;
     }
-
-    .card-label {
+    .label {
+      display: block;
       font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.7px;
+      letter-spacing: 0.6px;
       color: var(--muted);
-      display: block;
+      margin-bottom: 9px;
     }
-
-    .platform-badge {
+    .plat-badge {
+      display: none;
       font-size: 10px;
-      font-weight: 800;
+      font-weight: 700;
       padding: 3px 8px;
       border-radius: 999px;
-      background: rgba(var(--accent-rgb), 0.16);
-      border: 1px solid rgba(var(--accent-rgb), 0.38);
-      color: var(--accent-2);
-      display: none;
-    }
-    .platform-badge.show {
-      display: inline-block;
+      background: var(--glass-active);
+      color: var(--text);
+      border: 1px solid var(--glass-active-border);
     }
 
+    /* Поле ссылки */
     .url-row {
       display: flex;
       gap: 8px;
-      margin-bottom: 12px;
     }
-    .url-input-wrap {
+    .input-wrap {
       position: relative;
       flex: 1;
-      display: flex;
-      align-items: center;
+      min-width: 0;
     }
-    .url-input {
+    .inp {
       width: 100%;
-      background: var(--input-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 13px 34px 13px 14px;
+      background: var(--bg);
       color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: var(--rad-btn);
+      padding: 12px 34px 12px 13px;
       font-size: 14px;
       outline: none;
-      user-select: text;
     }
-    .url-input:focus {
-      border-color: var(--accent);
+    .inp:focus {
+      border-color: var(--acc);
     }
-    .clear-input-btn {
+    .inp::placeholder {
+      color: var(--muted);
+      opacity: 0.7;
+    }
+    .clear-btn {
       position: absolute;
       right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
       width: 22px;
       height: 22px;
       border-radius: 50%;
       border: none;
-      background: rgba(255, 255, 255, 0.1);
+      background: var(--card-2);
       color: var(--muted);
-      font-size: 13px;
-      font-weight: 700;
+      font-size: 14px;
       display: none;
       align-items: center;
       justify-content: center;
       cursor: pointer;
     }
-    .clear-input-btn.show {
-      display: flex;
-    }
 
-    .paste-btn, .seg-btn, .dl-btn, .act-btn, .nav-btn, .danger-btn, .select-btn {
-      transform: translateZ(0);
-      backface-visibility: hidden;
-      transition: transform var(--spring-dur) cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .paste-btn:active, .seg-btn:active, .dl-btn:active, .act-btn:active, .nav-btn:active, .danger-btn:active, .select-btn:active {
-      transform: scale3d(0.93, 0.93, 1);
-    }
-
-    .paste-btn {
-      background: rgba(var(--accent-rgb), 0.14);
-      border: 1px solid rgba(var(--accent-rgb), 0.32);
-      color: var(--accent-2);
-      border-radius: 14px;
-      padding: 0 14px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
+    /* Сетки кнопок */
     .seg-grid-2 {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -283,1453 +253,1501 @@
     .seg-grid-4 {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
+      gap: 7px;
     }
-    .theme-grid {
+
+    .theme-flex {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
     }
-    .theme-grid .seg-btn {
+    .theme-flex .seg-btn {
       flex: 1 1 calc(33.333% - 8px);
       min-width: 92px;
     }
 
-    .seg-btn {
-      background: var(--input-bg);
-      border: 1px solid var(--card-border);
+    /* ОБЩИЕ КНОПКИ */
+    .btn-paste, .seg-btn, .act-btn, .fps-btn {
+      position: relative;
       color: var(--muted);
-      padding: 11px 8px;
-      border-radius: 13px;
+      border-radius: var(--rad-btn);
       font-size: 13px;
-      font-weight: 700;
+      font-weight: 600;
       text-align: center;
       cursor: pointer;
+      transform: translateZ(0);
+      backface-visibility: hidden;
     }
-    .seg-btn.sm {
-      padding: 8px 4px;
+
+    .seg-btn {
+      padding: 11px 8px;
+    }
+
+    .fps-btn {
+      padding: 7px 4px;
       font-size: 11.5px;
-      border-radius: 11px;
+      font-weight: 700;
+      border-radius: 10px;
     }
 
-    body[data-btn-style="glass"] .seg-btn.active,
-    body[data-btn-style="glass"] .paste-btn,
-    body[data-btn-style="glass"] .act-btn.primary {
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(var(--accent-rgb), 0.24) 100%);
-      border-color: rgba(var(--accent-rgb), 0.58);
-      color: #ffffff;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
-    }
-    body[data-btn-style="glass"] .dl-btn {
-      background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.92), var(--accent-2));
-      border: 1px solid rgba(255, 255, 255, 0.24);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 6px 16px var(--accent-glow);
-    }
-    body[data-btn-style="glass"] .nav-pill {
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(var(--accent-rgb), 0.28) 100%);
-      border: 1px solid rgba(var(--accent-rgb), 0.55);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
-    }
-
-    body[data-btn-style="neon"] .seg-btn.active,
-    body[data-btn-style="neon"] .paste-btn,
-    body[data-btn-style="neon"] .act-btn.primary {
-      background: rgba(var(--accent-rgb), 0.16);
-      border-color: var(--accent-2);
-      color: #ffffff;
-      box-shadow: 0 0 12px var(--accent-glow), inset 0 0 6px rgba(var(--accent-rgb), 0.25);
-    }
-    body[data-btn-style="neon"] .dl-btn {
-      background: rgba(var(--accent-rgb), 0.24);
-      border: 1.5px solid var(--accent-2);
-      color: #ffffff;
-      box-shadow: 0 0 16px var(--accent-glow), inset 0 0 10px rgba(var(--accent-rgb), 0.35);
-    }
-    body[data-btn-style="neon"] .nav-pill {
-      background: rgba(var(--accent-rgb), 0.18);
-      border: 1.5px solid var(--accent-2);
-      box-shadow: 0 0 12px var(--accent-glow), inset 0 0 6px rgba(var(--accent-rgb), 0.28);
-    }
-
-    body[data-btn-style="gradient"] .seg-btn.active,
-    body[data-btn-style="gradient"] .paste-btn,
-    body[data-btn-style="gradient"] .act-btn.primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      border-color: transparent;
-      color: #ffffff;
-      box-shadow: 0 4px 12px var(--accent-glow);
-    }
-    body[data-btn-style="gradient"] .dl-btn {
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      border: none;
-      box-shadow: 0 6px 16px var(--accent-glow);
-    }
-    body[data-btn-style="gradient"] .nav-pill {
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      border: none;
-      box-shadow: 0 4px 12px var(--accent-glow);
-    }
-
-    body[data-btn-style="outline"] .seg-btn.active,
-    body[data-btn-style="outline"] .paste-btn,
-    body[data-btn-style="outline"] .act-btn.primary {
-      background: rgba(var(--accent-rgb), 0.08);
-      border: 1.5px solid var(--accent-2);
-      color: var(--accent-2);
-      box-shadow: none;
-    }
-    body[data-btn-style="outline"] .dl-btn {
-      background: rgba(var(--accent-rgb), 0.14);
-      border: 1.5px solid var(--accent);
+    .btn-paste {
       color: var(--text);
-      box-shadow: none;
-    }
-    body[data-btn-style="outline"] .nav-pill {
-      background: rgba(var(--accent-rgb), 0.10);
-      border: 1.5px solid var(--accent-2);
-      box-shadow: none;
+      padding: 0 16px;
+      flex-shrink: 0;
     }
 
-    .dl-btn {
+    .act-btn {
+      color: var(--text);
+      padding: 7px 11px;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    .main-btn {
       width: 100%;
       padding: 15px;
-      border-radius: 16px;
-      color: #fff;
+      border-radius: var(--rad-btn);
+      color: #ffffff;
       font-size: 15px;
-      font-weight: 800;
+      font-weight: 700;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 4px;
+      transform: translateZ(0);
+      backface-visibility: hidden;
     }
-    .dl-btn:disabled {
+    .main-btn:disabled {
       opacity: 0.55;
       pointer-events: none;
     }
 
-    .progress-wrap {
-      display: none;
-      margin-top: 12px;
-      background: var(--input-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 12px;
-    }
-    .progress-top {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      font-weight: 700;
-      margin-bottom: 7px;
-      color: var(--text);
-    }
-    .progress-bar-bg {
-      width: 100%;
-      height: 8px;
-      background: rgba(255, 255, 255, 0.07);
+    /* НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ */
+    .bottom-nav {
+      position: fixed;
+      left: 50%;
+      bottom: calc(env(safe-area-inset-bottom, 10px) + 10px);
+      transform: translate3d(-50%, 0, 0);
+      width: calc(100% - 28px);
+      max-width: 432px;
+      background: var(--glass-dock);
+      backdrop-filter: blur(16px) saturate(160%);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
+      border: 1px solid var(--glass-dock-border);
       border-radius: 999px;
-      overflow: hidden;
-    }
-    .progress-bar-fill {
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-      transition: width 0.18s linear;
-    }
-
-    .status-msg {
-      display: none;
-      margin-top: 10px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      font-size: 12.5px;
-      font-weight: 600;
-      line-height: 1.35;
-    }
-    .status-msg.ok {
-      display: block;
-      background: rgba(16, 185, 129, 0.13);
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      color: #6ee7b7;
-    }
-    .status-msg.err {
-      display: block;
-      background: rgba(239, 68, 68, 0.13);
-      border: 1px solid rgba(239, 68, 68, 0.35);
-      color: #fca5a5;
-    }
-
-    .hist-toolbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      padding: 6px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 6px;
-      flex-wrap: wrap;
-    }
-    .hist-stats {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--muted);
-    }
-    .hist-actions-top {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .select-btn {
-      background: rgba(var(--accent-rgb), 0.13);
-      border: 1px solid rgba(var(--accent-rgb), 0.32);
-      color: var(--accent-2);
-      padding: 6px 11px;
-      border-radius: 10px;
-      font-size: 11.5px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .danger-btn {
-      background: rgba(239, 68, 68, 0.13);
-      border: 1px solid rgba(239, 68, 68, 0.32);
-      color: #f87171;
-      padding: 6px 11px;
-      border-radius: 10px;
-      font-size: 11.5px;
-      font-weight: 700;
-      cursor: pointer;
+      z-index: 60;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.14),
+        0 10px 26px rgba(0, 0, 0, 0.48);
     }
 
-    .history-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .hist-item {
-      background: var(--card);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 11px;
-      display: flex;
-      gap: 11px;
-      align-items: center;
-      contain: layout style;
-    }
-    .hist-item.selected {
-      border-color: var(--accent);
-      background: rgba(var(--accent-rgb), 0.09);
-    }
-    .hist-check {
-      width: 22px;
-      height: 22px;
-      border-radius: 7px;
-      border: 1.5px solid var(--muted);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      font-size: 13px;
-      font-weight: 900;
-      color: #fff;
-      cursor: pointer;
-    }
-    .select-mode .hist-check {
-      display: flex;
-    }
-    .hist-item.selected .hist-check {
-      background: var(--accent);
-      border-color: var(--accent);
-    }
-    .hist-thumb {
-      width: 60px;
-      height: 60px;
-      border-radius: 11px;
-      background: var(--input-bg);
-      object-fit: cover;
-      flex-shrink: 0;
-      border: 1px solid var(--card-border);
-    }
-    .hist-info {
-      flex: 1;
-      min-width: 0;
-    }
-    .hist-title {
-      font-size: 13px;
-      font-weight: 700;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-bottom: 3px;
-    }
-    .hist-meta {
-      font-size: 11px;
-      color: var(--muted);
-      margin-bottom: 7px;
-    }
-    .hist-btns {
-      display: flex;
-      gap: 6px;
-    }
-    .act-btn {
-      padding: 5px 10px;
-      border-radius: 9px;
-      font-size: 11.5px;
-      font-weight: 700;
-      border: 1px solid var(--card-border);
-      background: var(--input-bg);
-      color: var(--text);
-      cursor: pointer;
-    }
-    .act-btn.del {
-      color: #f87171;
-      border-color: rgba(239, 68, 68, 0.25);
-    }
-    .empty-box {
-      text-align: center;
-      padding: 28px 16px;
-      color: var(--muted);
-      font-size: 13px;
+    .nav-liquid-pill {
+      position: absolute;
+      top: 6px;
+      bottom: 6px;
+      left: 6px;
+      width: calc((100% - 24px) / 3);
+      border-radius: 999px;
+      pointer-events: none;
+      z-index: 0;
+      transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+      will-change: transform;
+      backface-visibility: hidden;
     }
 
-    .setting-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    .setting-row:last-child {
-      border-bottom: none;
-      padding-bottom: 2px;
-    }
-    .setting-row:first-of-type {
-      padding-top: 4px;
-    }
-    .setting-title {
-      font-size: 13.5px;
-      font-weight: 700;
-    }
-    .setting-sub {
-      font-size: 11.5px;
-      color: var(--muted);
-      margin-top: 2px;
-    }
-
-    .switch {
+    .nav-btn {
       position: relative;
-      width: 46px;
-      height: 26px;
-      background: var(--input-bg);
-      border: 1px solid var(--card-border);
+      z-index: 1;
       border-radius: 999px;
+      padding: 11px 6px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+      text-align: center;
       cursor: pointer;
+      transform: translateZ(0);
+      backface-visibility: hidden;
+    }
+
+    .nav-btn.active {
+      color: #ffffff;
+      background: transparent !important;
+      border-color: transparent !important;
+      box-shadow: none !important;
+    }
+
+    /* 4 СТИЛЯ КНОПОК */
+    /* 1. Стекло */
+    [data-btnstyle="glass"] .btn-paste,
+    [data-btnstyle="glass"] .seg-btn,
+    [data-btnstyle="glass"] .act-btn,
+    [data-btnstyle="glass"] .fps-btn,
+    [data-btnstyle="glass"] .nav-btn {
+      background: var(--glass-btn);
+      border: 1px solid var(--glass-btn-border);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.09);
+    }
+    [data-btnstyle="glass"] .seg-btn.active,
+    [data-btnstyle="glass"] .fps-btn.active,
+    [data-btnstyle="glass"] .nav-liquid-pill {
+      background: linear-gradient(135deg, rgba(var(--acc-rgb), 0.34), rgba(var(--acc-rgb), 0.12));
+      color: var(--text);
+      border: 1px solid var(--glass-active-border);
+      box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.26),
+        0 4px 12px rgba(var(--acc-rgb), 0.18);
+    }
+    [data-btnstyle="glass"] .main-btn {
+      background: linear-gradient(135deg, rgba(var(--acc-rgb), 0.86), rgba(var(--acc-rgb), 0.56));
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3), 0 6px 16px rgba(var(--acc-rgb), 0.25);
+    }
+
+    /* 2. Неон */
+    [data-btnstyle="neon"] .btn-paste,
+    [data-btnstyle="neon"] .seg-btn,
+    [data-btnstyle="neon"] .act-btn,
+    [data-btnstyle="neon"] .fps-btn,
+    [data-btnstyle="neon"] .nav-btn {
+      background: rgba(var(--acc-rgb), 0.05);
+      border: 1px solid rgba(var(--acc-rgb), 0.28);
+      box-shadow: inset 0 0 6px rgba(var(--acc-rgb), 0.12);
+    }
+    [data-btnstyle="neon"] .seg-btn.active,
+    [data-btnstyle="neon"] .fps-btn.active,
+    [data-btnstyle="neon"] .nav-liquid-pill {
+      background: rgba(var(--acc-rgb), 0.22);
+      color: #ffffff;
+      border: 1px solid var(--acc);
+      box-shadow:
+        inset 0 0 12px rgba(var(--acc-rgb), 0.45),
+        0 0 12px rgba(var(--acc-rgb), 0.35);
+    }
+    [data-btnstyle="neon"] .bottom-nav {
+      border-color: rgba(var(--acc-rgb), 0.45);
+    }
+    [data-btnstyle="neon"] .main-btn {
+      background: rgba(var(--acc-rgb), 0.28);
+      border: 1.5px solid var(--acc);
+      box-shadow: inset 0 0 14px rgba(var(--acc-rgb), 0.5), 0 0 14px rgba(var(--acc-rgb), 0.38);
+    }
+
+    /* 3. Градиент */
+    [data-btnstyle="gradient"] .btn-paste,
+    [data-btnstyle="gradient"] .seg-btn,
+    [data-btnstyle="gradient"] .act-btn,
+    [data-btnstyle="gradient"] .fps-btn,
+    [data-btnstyle="gradient"] .nav-btn {
+      background: linear-gradient(160deg, var(--card-2), var(--bg));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    [data-btnstyle="gradient"] .seg-btn.active,
+    [data-btnstyle="gradient"] .fps-btn.active,
+    [data-btnstyle="gradient"] .nav-liquid-pill {
+      background: linear-gradient(135deg, var(--acc) 0%, rgba(var(--acc-rgb), 0.42) 100%);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+    [data-btnstyle="gradient"] .main-btn {
+      background: linear-gradient(135deg, var(--acc) 0%, rgba(var(--acc-rgb), 0.5) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+
+    /* 4. Контур */
+    [data-btnstyle="outline"] .btn-paste,
+    [data-btnstyle="outline"] .seg-btn,
+    [data-btnstyle="outline"] .act-btn,
+    [data-btnstyle="outline"] .fps-btn,
+    [data-btnstyle="outline"] .nav-btn {
+      background: transparent;
+      border: 1.5px solid var(--border);
+      box-shadow: none;
+    }
+    [data-btnstyle="outline"] .seg-btn.active,
+    [data-btnstyle="outline"] .fps-btn.active,
+    [data-btnstyle="outline"] .nav-liquid-pill {
+      background: rgba(var(--acc-rgb), 0.12);
+      color: var(--acc);
+      border: 1.5px solid var(--acc);
+      box-shadow: none;
+    }
+    [data-btnstyle="outline"] .nav-btn.active {
+      color: var(--acc);
+    }
+    [data-btnstyle="outline"] .main-btn {
+      background: rgba(var(--acc-rgb), 0.16);
+      color: var(--acc);
+      border: 2px solid var(--acc);
+      box-shadow: none;
+    }
+
+    .act-btn.danger {
+      color: #f87171 !important;
+      border-color: rgba(248, 113, 113, 0.4) !important;
+      background: rgba(248, 113, 113, 0.12) !important;
+    }
+
+    /* Тумблер опций */
+    .opt-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0 4px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      margin-top: 9px;
+      font-size: 13px;
+      color: var(--text);
+      cursor: pointer;
+    }
+    .switch {
+      width: 44px;
+      height: 25px;
+      border-radius: 999px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      position: relative;
       flex-shrink: 0;
     }
     .switch::after {
       content: "";
       position: absolute;
-      top: 3px;
-      left: 3px;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: var(--muted);
-      transition: transform var(--spring-dur) cubic-bezier(0.22, 1, 0.36, 1), background-color 0.15s;
-    }
-    .switch.on {
-      background: rgba(var(--accent-rgb), 0.24);
-      border-color: rgba(var(--accent-rgb), 0.6);
-    }
-    .switch.on::after {
-      transform: translate3d(20px, 0, 0);
-      background: var(--accent-2);
-    }
-
-    .bottom-nav-wrap {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: calc(env(safe-area-inset-bottom, 10px) + 10px);
-      display: flex;
-      justify-content: center;
-      padding: 0 16px;
-      z-index: 50;
-      pointer-events: none;
-    }
-    .bottom-nav {
-      pointer-events: auto;
-      width: 100%;
-      max-width: 440px;
-      background: var(--nav-bg);
-      border: 1px solid rgba(var(--accent-rgb), 0.26);
-      border-radius: 22px;
-      padding: 6px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      position: relative;
-      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.5);
-    }
-    .nav-pill {
-      position: absolute;
-      top: 6px;
-      bottom: 6px;
-      left: 6px;
-      width: calc((100% - 12px) / 3);
-      border-radius: 16px;
-      transform: translate3d(0%, 0, 0);
-      transition: transform var(--pill-dur) cubic-bezier(0.22, 1, 0.36, 1);
-      pointer-events: none;
-      z-index: 0;
-    }
-    .nav-btn {
-      position: relative;
-      z-index: 1;
-      background: transparent;
-      border: none;
-      color: var(--muted);
-      padding: 9px 4px;
-      border-radius: 16px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 3px;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .nav-btn svg {
+      top: 2px;
+      left: 2px;
       width: 19px;
       height: 19px;
-      fill: currentColor;
+      border-radius: 50%;
+      background: var(--muted);
+      transition: transform 0.18s cubic-bezier(0.28, 1.35, 0.55, 1);
     }
-    .nav-btn.active {
-      color: #ffffff;
+    .switch.on {
+      background: var(--glass-active);
+      border-color: var(--glass-active-border);
+    }
+    .switch.on::after {
+      transform: translate3d(19px, 0, 0);
+      background: var(--acc);
     }
 
-    .modal-backdrop {
+    /* Прогресс и уведомления */
+    .prog-wrap {
+      display: none;
+      margin-top: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--rad-card);
+      padding: 13px;
+    }
+    .prog-top {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 7px;
+      color: var(--muted);
+    }
+    .prog-track {
+      height: 7px;
+      background: var(--bg);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .prog-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--acc);
+      transition: width 0.2s linear;
+    }
+    .msg-box {
+      display: none;
+      margin-top: 10px;
+      padding: 12px 14px;
+      border-radius: var(--rad-btn);
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      background: var(--card);
+    }
+    .msg-box.ok {
+      border-color: rgba(16, 185, 129, 0.45);
+      color: #34d399;
+    }
+    .msg-box.err {
+      border-color: rgba(239, 68, 68, 0.45);
+      color: #f87171;
+    }
+
+    /* Вкладки */
+    .tab-pane {
+      display: none;
+    }
+    .tab-pane.active {
+      display: block;
+    }
+
+    /* История и статистика */
+    .hist-stats {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--rad-card);
+      padding: 11px 14px;
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+    .hist-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .hist-item {
+      display: flex;
+      gap: 11px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--rad-card);
+      padding: 10px;
+      margin-bottom: 9px;
+      align-items: center;
+      position: relative;
+      contain: content;
+      touch-action: pan-y;
+    }
+    .hist-item.selected {
+      border-color: var(--acc);
+      background: var(--glass-btn);
+    }
+    .hist-check {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid var(--muted);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+      color: #fff;
+    }
+    .select-mode .hist-check {
+      display: flex;
+    }
+    .hist-item.selected .hist-check {
+      background: var(--acc);
+      border-color: var(--acc);
+    }
+    .hist-thumb {
+      width: 68px;
+      height: 52px;
+      border-radius: 10px;
+      background: var(--bg);
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+      pointer-events: none;
+    }
+    .hist-info {
+      flex: 1;
+      min-width: 0;
+      pointer-events: none;
+    }
+    .hist-title {
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 4px;
+    }
+    .hist-meta {
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .badge-fmt {
+      padding: 2px 6px;
+      border-radius: 5px;
+      background: var(--glass-btn);
+      color: var(--acc);
+      border: 1px solid var(--glass-dock-border);
+      font-weight: 700;
+      font-size: 10px;
+    }
+
+    /* Модальное окно плеера */
+    .modal-overlay {
       position: fixed;
       inset: 0;
       background: rgba(0, 0, 0, 0.85);
+      z-index: 100;
       display: none;
       align-items: center;
       justify-content: center;
       padding: 16px;
-      z-index: 100;
     }
-    .modal-backdrop.open {
+    .modal-overlay.open {
       display: flex;
     }
     .modal-card {
       width: 100%;
       max-width: 440px;
       background: var(--card);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
+      border: 1px solid var(--glass-dock-border);
+      border-radius: var(--rad-card);
       padding: 14px;
-      overflow: hidden;
     }
     .modal-head {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       margin-bottom: 10px;
+      gap: 8px;
     }
     .modal-title {
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 700;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 80%;
     }
-    .close-btn {
-      background: rgba(255, 255, 255, 0.08);
-      border: none;
-      color: var(--text);
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      font-weight: 800;
-      cursor: pointer;
-    }
-    .media-box video, .media-box audio, .media-box img {
+    .modal-body video {
       width: 100%;
-      max-height: 68vh;
+      max-height: 66vh;
       border-radius: 12px;
       background: #000;
       display: block;
     }
+    .modal-body audio {
+      width: 100%;
+      margin: 12px 0;
+    }
   </style>
 </head>
-<body data-theme="midnight" data-btn-style="glass" data-fps="60">
-
-  <header class="header">
-    <div class="brand">
-      <div class="brand-logo">
-        <svg viewBox="0 0 24 24"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6Z"/></svg>
-      </div>
-      <div class="brand-title">Media Loader</div>
+<body data-theme="crimson" data-shape="rounded" data-btnstyle="glass" data-fps="120">
+  <div class="app-wrap">
+    <!-- Шапка -->
+    <div class="header">
+      <span class="brand-title">Media Loader</span>
+      <span class="ver-badge">0.11 BETA</span>
     </div>
-    <div class="header-badges">
-      <div class="version-pill">0.11 BETA</div>
-    </div>
-  </header>
 
-  <main id="tab-dl" class="tab-pane active">
-    <div class="card">
-      <div class="card-head">
-        <span class="card-label" data-i18n="linkLabel">Ссылка на медиа</span>
-        <span id="platformBadge" class="platform-badge">LINK</span>
-      </div>
-      <div class="url-row">
-        <div class="url-input-wrap">
-          <input id="urlInput" class="url-input" type="text" placeholder="TikTok, YouTube, Instagram, VK..." autocomplete="off" />
-          <button id="clearInputBtn" class="clear-input-btn" onclick="clearUrlInput()">×</button>
+    <!-- ВКЛАДКА 1: ЗАГРУЗЧИК -->
+    <div id="tab-loader" class="tab-pane active">
+      <div class="card">
+        <div class="label-row">
+          <span class="label" data-i18n="lblUrl" style="margin-bottom:0;">Ссылка на медиа</span>
+          <span id="platBadge" class="plat-badge">Web</span>
         </div>
-        <button class="paste-btn" onclick="pasteClipboard()" data-i18n="pasteBtn">Вставить</button>
-      </div>
-
-      <span class="card-label" style="margin-bottom:8px;" data-i18n="formatLabel">Формат</span>
-      <div class="seg-grid-2" style="margin-bottom:12px;">
-        <button class="seg-btn active" data-mode="video" onclick="setMode('video')" data-i18n="modeVideo">Видео (MP4)</button>
-        <button class="seg-btn" data-mode="audio" onclick="setMode('audio')" data-i18n="modeAudio">Аудио (MP3)</button>
-      </div>
-
-      <div id="qualityBlock">
-        <span class="card-label" style="margin-bottom:8px;" data-i18n="qualityLabel">Качество видео</span>
-        <div class="seg-grid-3" style="margin-bottom:12px;">
-          <button class="seg-btn active" data-q="max" onclick="setQuality('max')" data-i18n="qMax">Макс</button>
-          <button class="seg-btn" data-q="1080" onclick="setQuality('1080')">1080p</button>
-          <button class="seg-btn" data-q="720" onclick="setQuality('720')">720p</button>
+        <div class="url-row">
+          <div class="input-wrap">
+            <input
+              id="urlInp"
+              type="url"
+              class="inp"
+              placeholder="Вставьте ссылку..."
+              autocomplete="off"
+              oninput="onUrlInput()"
+            />
+            <button id="clearBtn" type="button" class="clear-btn" onclick="clearUrl()">×</button>
+          </div>
+          <button type="button" class="btn-paste" data-i18n="btnPaste" onclick="pasteUrl()">Вставить</button>
         </div>
       </div>
 
-      <button id="dlBtn" class="dl-btn" onclick="startDownload()">
-        <span id="dlBtnText" data-i18n="dlBtn">Скачать</span>
+      <div class="card">
+        <span class="label" data-i18n="lblFormat">Формат</span>
+        <div class="seg-grid-2" id="fmtGroup">
+          <button type="button" class="seg-btn active" data-i18n="fmtMp4" onclick="setFmt('mp4', this)">Видео MP4</button>
+          <button type="button" class="seg-btn" data-i18n="fmtMp3" onclick="setFmt('mp3', this)">Аудио MP3</button>
+        </div>
+
+        <div id="qualWrap" style="margin-top: 13px;">
+          <span class="label" data-i18n="lblQuality">Качество видео</span>
+          <div class="seg-grid-4" id="qualGroup">
+            <button type="button" class="seg-btn active" data-i18n="qBest" onclick="setQual('best', this)">Макс.</button>
+            <button type="button" class="seg-btn" onclick="setQual('1080', this)">1080p</button>
+            <button type="button" class="seg-btn" onclick="setQual('720', this)">720p</button>
+            <button type="button" class="seg-btn" onclick="setQual('480', this)">480p</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="label" data-i18n="lblCustomName">Своё имя файла (необязательно)</span>
+        <input
+          id="customName"
+          type="text"
+          class="inp"
+          placeholder="Оставьте пустым для авто-имени"
+          style="padding-right: 12px;"
+        />
+
+        <div class="opt-row" onclick="toggleSwitch('swWatermark')">
+          <span data-i18n="optWatermark">Без водяного знака</span>
+          <div id="swWatermark" class="switch on"></div>
+        </div>
+      </div>
+
+      <button id="dlBtn" type="button" class="main-btn" data-i18n="btnDownload" onclick="startDownload()">
+        Скачать
       </button>
 
-      <div id="progWrap" class="progress-wrap">
-        <div class="progress-top">
-          <span id="progState">Загрузка...</span>
+      <div id="progWrap" class="prog-wrap">
+        <div class="prog-top">
+          <span id="progText">Подготовка...</span>
           <span id="progPct">0%</span>
         </div>
-        <div class="progress-bar-bg">
-          <div id="progFill" class="progress-bar-fill"></div>
+        <div class="prog-track">
+          <div id="progBar" class="prog-fill"></div>
         </div>
       </div>
 
-      <div id="statusMsg" class="status-msg"></div>
-    </div>
-  </main>
-
-  <section id="tab-hist" class="tab-pane">
-    <div class="card hist-toolbar">
-      <span id="histStats" class="hist-stats">Файлов: 0</span>
-      <div class="hist-actions-top">
-        <button id="selectModeBtn" class="select-btn" onclick="toggleSelectMode()" data-i18n="selectBtn">Выбрать</button>
-        <button id="delSelectedBtn" class="danger-btn" style="display:none;" onclick="deleteSelectedHistory()" data-i18n="delSelectedBtn">Удалить (0)</button>
-        <button class="danger-btn" onclick="clearHistory()" data-i18n="clearBtn">Очистить всё</button>
-      </div>
-    </div>
-    <div id="histList" class="history-list"></div>
-  </section>
-
-  <section id="tab-set" class="tab-pane">
-    <div class="card">
-      <span class="card-label" style="margin-bottom:8px;" data-i18n="themeLabel">Тема оформления</span>
-      <div class="theme-grid">
-        <button class="seg-btn active" data-theme-btn="midnight" onclick="setTheme('midnight')">Midnight</button>
-        <button class="seg-btn" data-theme-btn="crimson" onclick="setTheme('crimson')">Crimson</button>
-        <button class="seg-btn" data-theme-btn="emerald" onclick="setTheme('emerald')">Emerald</button>
-        <button class="seg-btn" data-theme-btn="ocean" onclick="setTheme('ocean')">Ocean</button>
-        <button class="seg-btn" data-theme-btn="amoled" onclick="setTheme('amoled')">AMOLED</button>
-      </div>
+      <div id="msgBox" class="msg-box"></div>
     </div>
 
-    <div class="card">
-      <span class="card-label" style="margin-bottom:8px;" data-i18n="btnStyleLabel">Стиль кнопок под тему</span>
-      <div class="seg-grid-4">
-        <button class="seg-btn sm active" data-bstyle="glass" onclick="setBtnStyle('glass')" data-i18n="styleGlass">Стекло</button>
-        <button class="seg-btn sm" data-bstyle="neon" onclick="setBtnStyle('neon')" data-i18n="styleNeon">Неон</button>
-        <button class="seg-btn sm" data-bstyle="gradient" onclick="setBtnStyle('gradient')" data-i18n="styleGrad">Градиент</button>
-        <button class="seg-btn sm" data-bstyle="outline" onclick="setBtnStyle('outline')" data-i18n="styleOutline">Контур</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <span class="card-label" style="margin-bottom:6px;" data-i18n="dlSettingsLabel">Параметры загрузки</span>
-
-      <div class="setting-row">
-        <div>
-          <div class="setting-title" data-i18n="noWmTitle">Без водяного знака</div>
-          <div class="setting-sub" data-i18n="noWmSub">Чистое видео из TikTok и Reels</div>
+    <!-- ВКЛАДКА 2: ИСТОРИЯ -->
+    <div id="tab-history" class="tab-pane">
+      <div class="hist-stats">
+        <span id="histStatText" style="color:var(--muted);font-weight:600;">Файлов: 0</span>
+        <div style="display:flex;gap:5px;" id="histFilterGroup">
+          <button type="button" class="fps-btn active" data-flt="all" onclick="setHistFilter('all', this)">Все</button>
+          <button type="button" class="fps-btn" data-flt="mp4" onclick="setHistFilter('mp4', this)">MP4</button>
+          <button type="button" class="fps-btn" data-flt="mp3" onclick="setHistFilter('mp3', this)">MP3</button>
         </div>
-        <div id="swNoWatermark" class="switch on" onclick="toggleSetting('noWatermark')"></div>
       </div>
 
-      <div class="setting-row">
-        <div>
-          <div class="setting-title" data-i18n="autoPasteTitle">Авто-вставка ссылки</div>
-          <div class="setting-sub" data-i18n="autoPasteSub">Проверять буфер при открытии</div>
+      <div class="hist-head">
+        <span class="label" data-i18n="lblHistory" style="margin-bottom: 0;">История загрузок</span>
+
+        <div id="histNormalBar" style="display: flex; gap: 6px;">
+          <button type="button" class="act-btn" data-i18n="btnSelectMode" onclick="enterSelectMode()">Выбрать</button>
+          <button type="button" class="act-btn" data-i18n="btnClearAll" onclick="clearHistory()">Очистить всё</button>
         </div>
-        <div id="swAutoPaste" class="switch" onclick="toggleSetting('autoPaste')"></div>
+
+        <div id="histSelectBar" style="display: none; gap: 6px; align-items: center;">
+          <button type="button" class="act-btn" data-i18n="btnSelectAll" onclick="selectAllHistory()">Все</button>
+          <button type="button" class="act-btn danger" id="delSelectedBtn" onclick="deleteSelectedHistory()">Удалить (0)</button>
+          <button type="button" class="act-btn" data-i18n="btnCancel" onclick="exitSelectMode()">Отмена</button>
+        </div>
       </div>
+
+      <div id="histHint" style="font-size: 11px; color: var(--muted); margin-bottom: 10px;">
+        Зажмите карточку пальцем или нажмите «Выбрать» для удаления нескольких видео :)
+      </div>
+
+      <div id="historyList"></div>
     </div>
 
-    <div class="card">
-      <span class="card-label" style="margin-bottom:8px;" data-i18n="langLabel">Язык / Language</span>
-      <div class="seg-grid-2">
-        <button class="seg-btn active" data-lang="ru" onclick="setLang('ru')">Русский</button>
-        <button class="seg-btn" data-lang="en" onclick="setLang('en')">English</button>
+    <!-- ВКЛАДКА 3: НАСТРОЙКИ -->
+    <div id="tab-settings" class="tab-pane">
+      <div class="card">
+        <span class="label" data-i18n="lblTheme">Тема оформления</span>
+        <div class="theme-flex" id="themeGroup">
+          <button type="button" class="seg-btn" data-val="midnight" onclick="setPref('theme', 'midnight')">Midnight</button>
+          <button type="button" class="seg-btn active" data-val="crimson" onclick="setPref('theme', 'crimson')">Crimson</button>
+          <button type="button" class="seg-btn" data-val="emerald" onclick="setPref('theme', 'emerald')">Emerald</button>
+          <button type="button" class="seg-btn" data-val="ocean" onclick="setPref('theme', 'ocean')">Ocean</button>
+          <button type="button" class="seg-btn" data-val="amoled" onclick="setPref('theme', 'amoled')">AMOLED</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="label" data-i18n="lblBtnStyle">Стиль кнопок под тему</span>
+        <div class="seg-grid-4" id="btnStyleGroup">
+          <button type="button" class="seg-btn active" data-val="glass" data-i18n="bsGlass" onclick="setPref('btnstyle', 'glass')">Стекло</button>
+          <button type="button" class="seg-btn" data-val="neon" data-i18n="bsNeon" onclick="setPref('btnstyle', 'neon')">Неон</button>
+          <button type="button" class="seg-btn" data-val="gradient" data-i18n="bsGrad" onclick="setPref('btnstyle', 'gradient')">Градиент</button>
+          <button type="button" class="seg-btn" data-val="outline" data-i18n="bsOutline" onclick="setPref('btnstyle', 'outline')">Контур</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="label" data-i18n="lblShape">Форма интерфейса</span>
+        <div class="seg-grid-3" id="shapeGroup">
+          <button type="button" class="seg-btn active" data-val="rounded" data-i18n="shapeRound" onclick="setPref('shape', 'rounded')">Мягкая</button>
+          <button type="button" class="seg-btn" data-val="pill" data-i18n="shapePill" onclick="setPref('shape', 'pill')">Капсула</button>
+          <button type="button" class="seg-btn" data-val="sharp" data-i18n="shapeSharp" onclick="setPref('shape', 'sharp')">Строгая</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="label" data-i18n="lblLang">Язык / Language</span>
+        <div class="seg-grid-2" id="langGroup">
+          <button type="button" class="seg-btn active" data-val="ru" onclick="setPref('lang', 'ru')">Русский</button>
+          <button type="button" class="seg-btn" data-val="en" onclick="setPref('lang', 'en')">English</button>
+        </div>
+      </div>
+
+      <div class="card compact">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;">
+          <span class="label" data-i18n="lblFps" style="margin-bottom:0;">Частота кадров (Герцовка)</span>
+          <span id="fpsLiveBadge" style="font-size:11px;font-weight:700;color:var(--acc);">120 Hz</span>
+        </div>
+        <div class="seg-grid-4" id="fpsGroup">
+          <button type="button" class="fps-btn" data-val="30" data-i18n="fps30" onclick="setPref('fps', '30')">30 фпс</button>
+          <button type="button" class="fps-btn" data-val="60" data-i18n="fps60" onclick="setPref('fps', '60')">60 фпс</button>
+          <button type="button" class="fps-btn" data-val="90" data-i18n="fps90" onclick="setPref('fps', '90')">90 фпс</button>
+          <button type="button" class="fps-btn active" data-val="120" data-i18n="fps120" onclick="setPref('fps', '120')">120 фпс</button>
+        </div>
       </div>
     </div>
-
-    <div class="card">
-      <span class="card-label" style="margin-bottom:8px;" data-i18n="fpsLabel">Частота кадров (Герцовка)</span>
-      <div class="seg-grid-4">
-        <button class="seg-btn sm" data-fps-btn="30" onclick="setFps('30')">30 FPS</button>
-        <button class="seg-btn sm active" data-fps-btn="60" onclick="setFps('60')">60 FPS</button>
-        <button class="seg-btn sm" data-fps-btn="90" onclick="setFps('90')">90 FPS</button>
-        <button class="seg-btn sm" data-fps-btn="120" onclick="setFps('120')">120 FPS</button>
-      </div>
-    </div>
-  </section>
-
-  <div class="bottom-nav-wrap">
-    <nav class="bottom-nav">
-      <div id="navPill" class="nav-pill"></div>
-      <button class="nav-btn active" data-tab="dl" onclick="switchTab('dl', 0)">
-        <svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2ZM19 9h-4V3H9v6H5l7 7 7-7Z"/></svg>
-        <span data-i18n="navDl">Загрузчик</span>
-      </button>
-      <button class="nav-btn" data-tab="hist" onclick="switchTab('hist', 1)">
-        <svg viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18Zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12Z"/></svg>
-        <span data-i18n="navHist">История</span>
-      </button>
-      <button class="nav-btn" data-tab="set" onclick="switchTab('set', 2)">
-        <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58ZM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6Z"/></svg>
-        <span data-i18n="navSet">Настройки</span>
-      </button>
-    </nav>
   </div>
 
-  <div id="playerModal" class="modal-backdrop" onclick="if(event.target===this)closeModal()">
+  <!-- Модальное окно встроенного плеера -->
+  <div id="mediaModal" class="modal-overlay" onclick="if(event.target===this)closeMediaModal()">
     <div class="modal-card">
       <div class="modal-head">
-        <div id="modalTitle" class="modal-title">Media</div>
-        <button class="close-btn" onclick="closeModal()">✕</button>
+        <div id="modalTitle" class="modal-title">Просмотр</div>
+        <button type="button" class="act-btn" data-i18n="btnClose" onclick="closeMediaModal()">Закрыть</button>
       </div>
-      <div id="modalBody" class="media-box"></div>
+      <div id="modalBody" class="modal-body"></div>
     </div>
   </div>
+
+  <!-- Нижняя панель навигации -->
+  <nav class="bottom-nav" id="bottomNav">
+    <div class="nav-liquid-pill" id="navPill"></div>
+    <button type="button" class="nav-btn active" data-idx="0" data-i18n="navLoader" onclick="switchTab('loader', 0, this)">Загрузчик</button>
+    <button type="button" class="nav-btn" data-idx="1" data-i18n="navHistory" onclick="switchTab('history', 1, this)">История</button>
+    <button type="button" class="nav-btn" data-idx="2" data-i18n="navSettings" onclick="switchTab('settings', 2, this)">Настройки</button>
+  </nav>
 
   <script>
     const API = "http://127.0.0.1:8080";
-    const CLOUD_API = "https://ais-pre-ineo35obwx7bs3aehadvke-384724507315.europe-west2.run.app";
+    let curFmt = "mp4";
+    let curQual = "best";
+    let histFilter = "all";
+    let pollTimer = null;
+
+    let prefs = {
+      lang: "ru",
+      theme: "crimson",
+      btnstyle: "glass",
+      shape: "rounded",
+      fps: "120"
+    };
 
     const I18N = {
       ru: {
-        linkLabel: "Ссылка на медиа",
-        pasteBtn: "Вставить",
-        formatLabel: "Формат",
-        modeVideo: "Видео (MP4)",
-        modeAudio: "Аудио (MP3)",
-        qualityLabel: "Качество видео",
-        qMax: "Макс",
-        dlBtn: "Скачать",
-        selectBtn: "Выбрать",
-        cancelSelectBtn: "Отмена",
-        delSelectedBtn: "Удалить",
-        clearBtn: "Очистить всё",
-        emptyHist: "История загрузок пуста :)",
-        watchBtn: "Смотреть",
-        listenBtn: "Слушать",
-        delBtn: "Удалить",
-        themeLabel: "Тема оформления",
-        btnStyleLabel: "Стиль кнопок под тему",
-        styleGlass: "Стекло",
-        styleNeon: "Неон",
-        styleGrad: "Градиент",
-        styleOutline: "Контур",
-        dlSettingsLabel: "Параметры загрузки",
-        noWmTitle: "Без водяного знака",
-        noWmSub: "Чистое видео из TikTok и Reels",
-        autoPasteTitle: "Авто-вставка ссылки",
-        autoPasteSub: "Проверять буфер при открытии",
-        langLabel: "Язык / Language",
-        fpsLabel: "Частота кадров (Герцовка)",
-        navDl: "Загрузчик",
-        navHist: "История",
-        navSet: "Настройки",
-        msgEnterUrl: "Введите или вставьте ссылку :)",
-        msgStart: "Подготовка загрузки...",
-        msgDownloading: "Скачивание...",
-        msgCloudDl: "Скачивание напрямую (без Termux)...",
-        msgSaved: "Сохранено: ",
-        msgClipboardEmpty: "В буфере обмена нет ссылки :)",
-        msgClipboardOk: "Ссылка вставлена из буфера :)",
-        filesCount: "Файлов: "
+        lblUrl: "Ссылка на медиа",
+        phUrl: "Вставьте ссылку...",
+        btnPaste: "Вставить",
+        lblFormat: "Формат",
+        fmtMp4: "Видео MP4",
+        fmtMp3: "Аудио MP3",
+        lblQuality: "Качество видео",
+        qBest: "Макс.",
+        lblCustomName: "Своё имя файла (необязательно)",
+        phCustomName: "Оставьте пустым для авто-имени",
+        optWatermark: "Без водяного знака",
+        btnDownload: "Скачать",
+        lblHistory: "История загрузок",
+        btnSelectMode: "Выбрать",
+        btnClearAll: "Очистить всё",
+        btnSelectAll: "Все",
+        btnCancel: "Отмена",
+        histHint: "Зажмите карточку пальцем или нажмите «Выбрать» для удаления нескольких видео :)",
+        histEmpty: "История пока пуста :)",
+        btnWatch: "Смотреть",
+        btnDeleteCount: "Удалить",
+        statFiles: "Файлов",
+        lblLang: "Язык / Language",
+        lblTheme: "Тема оформления",
+        lblBtnStyle: "Стиль кнопок под тему",
+        bsGlass: "Стекло",
+        bsNeon: "Неон",
+        bsGrad: "Градиент",
+        bsOutline: "Контур",
+        lblShape: "Форма интерфейса",
+        shapeRound: "Мягкая",
+        shapePill: "Капсула",
+        shapeSharp: "Строгая",
+        lblFps: "Частота кадров (Герцовка)",
+        fps30: "30 фпс",
+        fps60: "60 фпс",
+        fps90: "90 фпс",
+        fps120: "120 фпс",
+        btnClose: "Закрыть",
+        navLoader: "Загрузчик",
+        navHistory: "История",
+        navSettings: "Настройки",
+        msgPasteFirst: "Сначала вставьте ссылку :)",
+        msgStartDl: "Запуск загрузки...",
+        msgSaved: "Сохранено в Галерею: ",
+        msgErr: "Ошибка: ",
+        msgTermuxErr: "Ошибка связи с Termux: "
       },
       en: {
-        linkLabel: "Media Link",
-        pasteBtn: "Paste",
-        formatLabel: "Format",
-        modeVideo: "Video (MP4)",
-        modeAudio: "Audio (MP3)",
-        qualityLabel: "Video Quality",
-        qMax: "Max",
-        dlBtn: "Download",
-        selectBtn: "Select",
-        cancelSelectBtn: "Cancel",
-        delSelectedBtn: "Delete",
-        clearBtn: "Clear All",
-        emptyHist: "Download history is empty :)",
-        watchBtn: "Watch",
-        listenBtn: "Listen",
-        delBtn: "Delete",
-        themeLabel: "Theme",
-        btnStyleLabel: "Theme Button Style",
-        styleGlass: "Glass",
-        styleNeon: "Neon",
-        styleGrad: "Gradient",
-        styleOutline: "Outline",
-        dlSettingsLabel: "Download Options",
-        noWmTitle: "No Watermark",
-        noWmSub: "Clean TikTok & Reels video",
-        autoPasteTitle: "Auto-Paste Link",
-        autoPasteSub: "Check clipboard on launch",
-        langLabel: "Язык / Language",
-        fpsLabel: "Refresh Rate (FPS)",
-        navDl: "Loader",
-        navHist: "History",
-        navSet: "Settings",
-        msgEnterUrl: "Please enter or paste a link :)",
-        msgStart: "Preparing download...",
-        msgDownloading: "Downloading...",
-        msgCloudDl: "Direct download (without Termux)...",
-        msgSaved: "Saved: ",
-        msgClipboardEmpty: "Clipboard is empty :)",
-        msgClipboardOk: "Link pasted from clipboard :)",
-        filesCount: "Files: "
+        lblUrl: "Media Link",
+        phUrl: "Paste link...",
+        btnPaste: "Paste",
+        lblFormat: "Format",
+        fmtMp4: "Video MP4",
+        fmtMp3: "Audio MP3",
+        lblQuality: "Video Quality",
+        qBest: "Max",
+        lblCustomName: "Custom file name (optional)",
+        phCustomName: "Leave empty for auto-name",
+        optWatermark: "No watermark",
+        btnDownload: "Download",
+        lblHistory: "Download History",
+        btnSelectMode: "Select",
+        btnClearAll: "Clear All",
+        btnSelectAll: "All",
+        btnCancel: "Cancel",
+        histHint: "Long-press any card or tap 'Select' to delete multiple videos :)",
+        histEmpty: "History is empty :)",
+        btnWatch: "Watch",
+        btnDeleteCount: "Delete",
+        statFiles: "Files",
+        lblLang: "Language / Язык",
+        lblTheme: "App Theme",
+        lblBtnStyle: "Theme Button Style",
+        bsGlass: "Glass",
+        bsNeon: "Neon",
+        bsGrad: "Gradient",
+        bsOutline: "Outline",
+        lblShape: "Interface Shape",
+        shapeRound: "Rounded",
+        shapePill: "Capsule",
+        shapeSharp: "Sharp",
+        lblFps: "Frame Rate (Refresh Rate)",
+        fps30: "30 FPS",
+        fps60: "60 FPS",
+        fps90: "90 FPS",
+        fps120: "120 FPS",
+        btnClose: "Close",
+        navLoader: "Loader",
+        navHistory: "History",
+        navSettings: "Settings",
+        msgPasteFirst: "Please paste a link first :)",
+        msgStartDl: "Starting download...",
+        msgSaved: "Saved to Gallery: ",
+        msgErr: "Error: ",
+        msgTermuxErr: "Termux connection error: "
       }
     };
 
-    let state = {
-      mode: "video",
-      quality: "max",
-      theme: "midnight",
-      btnStyle: "glass",
-      fps: "60",
-      lang: "ru",
-      noWatermark: true,
-      autoPaste: false,
-      history: [],
-      selectMode: false,
-      selectedIds: []
-    };
+    let selectMode = false;
+    let selectedIndices = new Set();
+    let lpTimer = null;
+    let lpTriggered = false;
+    let startX = 0;
+    let startY = 0;
 
-    let pollTimer = null;
-    const elUrl = document.getElementById("urlInput");
-    const elClearBtn = document.getElementById("clearInputBtn");
-    const elPlatformBadge = document.getElementById("platformBadge");
-    const elQualityBlock = document.getElementById("qualityBlock");
+    let pillPos = 0;
+    let pillAnimRaf = null;
+
+    const elUrl = document.getElementById("urlInp");
+    const elPlatBadge = document.getElementById("platBadge");
+    const elCustomName = document.getElementById("customName");
+    const elClear = document.getElementById("clearBtn");
+    const elQualWrap = document.getElementById("qualWrap");
     const elDlBtn = document.getElementById("dlBtn");
     const elProgWrap = document.getElementById("progWrap");
-    const elProgState = document.getElementById("progState");
+    const elProgBar = document.getElementById("progBar");
+    const elProgText = document.getElementById("progText");
     const elProgPct = document.getElementById("progPct");
-    const elProgFill = document.getElementById("progFill");
-    const elStatusMsg = document.getElementById("statusMsg");
-    const elHistList = document.getElementById("histList");
-    const elHistStats = document.getElementById("histStats");
-    const elSelectModeBtn = document.getElementById("selectModeBtn");
-    const elDelSelectedBtn = document.getElementById("delSelectedBtn");
+    const elMsgBox = document.getElementById("msgBox");
     const elNavPill = document.getElementById("navPill");
+    const elHistList = document.getElementById("historyList");
+    const elFpsBadge = document.getElementById("fpsLiveBadge");
 
     function t(key) {
-      return (I18N[state.lang] && I18N[state.lang][key]) || I18N.ru[key] || key;
+      const dict = I18N[prefs.lang] || I18N.ru;
+      return dict[key] || key;
     }
 
-    // Локальное хранилище медиафайлов (IndexedDB), чтобы видео открывалось в плеере даже без Termux
-    function openMediaDB() {
-      return new Promise((resolve, reject) => {
-        const req = indexedDB.open("ml_offline_media_db", 1);
-        req.onupgradeneeded = (e) => {
-          const db = e.target.result;
-          if (!db.objectStoreNames.contains("blobs")) {
-            db.createObjectStore("blobs");
-          }
-        };
-        req.onsuccess = () => resolve(req.result);
-        req.onerror = () => reject(req.error);
+    function applyLang() {
+      document.documentElement.lang = prefs.lang;
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        el.textContent = t(key);
+      });
+      elUrl.placeholder = t("phUrl");
+      elCustomName.placeholder = t("phCustomName");
+      document.getElementById("histHint").textContent = t("histHint");
+      document.getElementById("delSelectedBtn").textContent = `${t("btnDeleteCount")} (${selectedIndices.size})`;
+      updateHistStats();
+    }
+
+    function detectPlatformBadge(val) {
+      const u = val.toLowerCase().trim();
+      if (!u) {
+        elPlatBadge.style.display = "none";
+        return;
+      }
+      let name = "Web Media";
+      if (u.includes("tiktok.com")) name = "TikTok";
+      else if (u.includes("youtube.com") || u.includes("youtu.be")) name = "YouTube";
+      else if (u.includes("instagram.com")) name = "Instagram";
+      else if (u.includes("pinterest.") || u.includes("pin.it")) name = "Pinterest";
+      else if (u.includes("twitter.com") || u.includes("x.com")) name = "X / Twitter";
+      else if (u.includes("vk.com") || u.includes("vkvideo.ru")) name = "VK Video";
+
+      elPlatBadge.textContent = name;
+      elPlatBadge.style.display = "inline-block";
+    }
+
+    function onUrlInput() {
+      const val = elUrl.value.trim();
+      elClear.style.display = val ? "flex" : "none";
+      detectPlatformBadge(val);
+    }
+
+    function runFpsAnimation(durationMs, onStep, onDone) {
+      const targetFps = Number(prefs.fps) || 120;
+      const minFrameDelta = targetFps >= 120 ? 0 : (1000 / targetFps) * 0.92;
+      const startTime = performance.now();
+      let lastFrameTime = 0;
+      let rafId = null;
+
+      function loop(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(1, elapsed / durationMs);
+
+        if (progress >= 1) {
+          onStep(1);
+          if (onDone) onDone();
+          return;
+        }
+
+        if (now - lastFrameTime >= minFrameDelta) {
+          lastFrameTime = now;
+          onStep(progress);
+        }
+
+        rafId = requestAnimationFrame(loop);
+      }
+
+      onStep(0);
+      rafId = requestAnimationFrame(loop);
+      return () => {
+        if (rafId) cancelAnimationFrame(rafId);
+      };
+    }
+
+    function easeOutBack(x) {
+      const c1 = 1.70158;
+      const c3 = c1 + 1;
+      return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+    }
+
+    function animateLiquidPill(toIdx, immediate) {
+      if (pillAnimRaf) pillAnimRaf();
+      const fromPos = pillPos;
+      const toPos = toIdx;
+
+      if (immediate || fromPos === toPos) {
+        pillPos = toPos;
+        elNavPill.style.transform = `translate3d(calc(${toPos * 100}% + ${toPos * 6}px), 0, 0) scale3d(1, 1, 1)`;
+        return;
+      }
+
+      pillAnimRaf = runFpsAnimation(310, (p) => {
+        const eased = easeOutBack(p);
+        const cur = fromPos + (toPos - fromPos) * eased;
+        pillPos = cur;
+        const stretch = Math.sin(p * Math.PI);
+        const sx = 1 + stretch * 0.14;
+        const sy = 1 - stretch * 0.10;
+        elNavPill.style.transform = `translate3d(calc(${cur * 100}% + ${cur * 6}px), 0, 0) scale3d(${sx.toFixed(3)}, ${sy.toFixed(3)}, 1)`;
+      }, () => {
+        pillPos = toPos;
+        elNavPill.style.transform = `translate3d(calc(${toPos * 100}% + ${toPos * 6}px), 0, 0) scale3d(1, 1, 1)`;
       });
     }
 
-    async function saveMediaBlob(key, blob) {
-      try {
-        const db = await openMediaDB();
-        return new Promise((resolve) => {
-          const tx = db.transaction("blobs", "readwrite");
-          tx.objectStore("blobs").put(blob, key);
-          tx.oncomplete = () => resolve(true);
-          tx.onerror = () => resolve(false);
-        });
-      } catch (_e) { return false; }
-    }
+    document.addEventListener("pointerdown", (e) => {
+      const btn = e.target.closest(".seg-btn, .btn-paste, .act-btn, .fps-btn, .main-btn, .nav-btn");
+      if (!btn || btn.disabled) return;
+      const isMain = btn.classList.contains("main-btn");
+      const minScaleX = isMain ? 0.95 : 0.90;
+      const minScaleY = isMain ? 0.91 : 0.85;
 
-    async function getMediaBlobUrl(key) {
-      try {
-        const db = await openMediaDB();
-        return new Promise((resolve) => {
-          const tx = db.transaction("blobs", "readonly");
-          const req = tx.objectStore("blobs").get(key);
-          req.onsuccess = () => {
-            if (req.result instanceof Blob) {
-              resolve(URL.createObjectURL(req.result));
-            } else {
-              resolve(null);
-            }
-          };
-          req.onerror = () => resolve(null);
-        });
-      } catch (_e) { return null; }
-    }
+      runFpsAnimation(190, (p) => {
+        const dip = Math.sin(p * Math.PI);
+        const sx = 1 - dip * (1 - minScaleX);
+        const sy = 1 - dip * (1 - minScaleY);
+        btn.style.transform = `scale3d(${sx.toFixed(3)}, ${sy.toFixed(3)}, 1)`;
+      }, () => {
+        btn.style.transform = "";
+      });
+    }, { passive: true });
 
-    async function deleteMediaBlob(key) {
-      try {
-        const db = await openMediaDB();
-        const tx = db.transaction("blobs", "readwrite");
-        tx.objectStore("blobs").delete(key);
-      } catch (_e) {}
-    }
+    function switchTab(tabName, idx, btnEl) {
+      const target = document.getElementById("tab-" + tabName);
+      if (!target || target.classList.contains("active")) return;
 
-    function detectPlatform(url) {
-      const u = (url || "").toLowerCase();
-      if (!u) return "";
-      if (u.includes("tiktok.com")) return "TIKTOK";
-      if (u.includes("youtube.com") || u.includes("youtu.be")) return "YOUTUBE";
-      if (u.includes("instagram.com")) return "INSTAGRAM";
-      if (u.includes("vk.com") || u.includes("vkvideo.ru")) return "VK VIDEO";
-      if (u.includes("pinterest.") || u.includes("pin.it")) return "PINTEREST";
-      if (u.includes("twitter.com") || u.includes("x.com")) return "X / TWITTER";
-      if (u.includes("soundcloud.com")) return "SOUNDCLOUD";
-      if (u.startsWith("http")) return "LINK";
-      return "";
-    }
+      document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+      btnEl.classList.add("active");
+      animateLiquidPill(idx, false);
 
-    function onUrlChanged() {
-      const val = elUrl.value.trim();
-      elClearBtn.classList.toggle("show", val.length > 0);
-      const p = detectPlatform(val);
-      if (p) {
-        elPlatformBadge.textContent = p;
-        elPlatformBadge.classList.add("show");
-      } else {
-        elPlatformBadge.classList.remove("show");
+      document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
+      target.classList.add("active");
+
+      if (tabName === "history") {
+        renderHistory();
+      } else if (selectMode) {
+        exitSelectMode();
       }
     }
 
-    elUrl.addEventListener("input", onUrlChanged);
-
-    function clearUrlInput() {
+    function clearUrl() {
       elUrl.value = "";
-      onUrlChanged();
+      onUrlInput();
       elUrl.focus();
+    }
+
+    async function pasteUrl() {
+      try {
+        const text = await navigator.clipboard.readText();
+        if (text) {
+          elUrl.value = text.trim();
+          onUrlInput();
+        }
+      } catch (_e) {
+        elUrl.focus();
+      }
+    }
+
+    function setFmt(fmt, btn) {
+      curFmt = fmt;
+      document.querySelectorAll("#fmtGroup .seg-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      elQualWrap.style.display = fmt === "mp4" ? "block" : "none";
+    }
+
+    function setQual(q, btn) {
+      curQual = q;
+      document.querySelectorAll("#qualGroup .seg-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+    }
+
+    function toggleSwitch(id) {
+      document.getElementById(id).classList.toggle("on");
+    }
+
+    function showMsg(text, type) {
+      elMsgBox.textContent = text;
+      elMsgBox.className = "msg-box " + (type || "ok");
+      elMsgBox.style.display = "block";
+    }
+
+    function syncGroup(groupId, val) {
+      document.querySelectorAll(`#${groupId} [data-val]`).forEach(b => {
+        b.classList.toggle("active", b.getAttribute("data-val") === val);
+      });
+    }
+
+    function setPref(key, val) {
+      if (prefs[key] === val) return;
+      prefs[key] = val;
+      try {
+        localStorage.setItem("ml_prefs_v10", JSON.stringify(prefs));
+      } catch (_e) {}
+
+      if (key === "theme") {
+        document.body.setAttribute("data-theme", val);
+        syncGroup("themeGroup", val);
+      } else if (key === "btnstyle") {
+        document.body.setAttribute("data-btnstyle", val);
+        syncGroup("btnStyleGroup", val);
+      } else if (key === "shape") {
+        document.body.setAttribute("data-shape", val);
+        syncGroup("shapeGroup", val);
+      } else if (key === "fps") {
+        document.body.setAttribute("data-fps", val);
+        syncGroup("fpsGroup", val);
+        elFpsBadge.textContent = val + " Hz";
+      } else if (key === "lang") {
+        syncGroup("langGroup", val);
+        applyLang();
+      }
     }
 
     function loadPrefs() {
       try {
-        const saved = JSON.parse(localStorage.getItem("ml_prefs_v11") || "{}");
-        if (saved.theme) state.theme = saved.theme;
-        if (saved.btnStyle) state.btnStyle = saved.btnStyle;
-        if (saved.fps) state.fps = String(saved.fps);
-        if (saved.lang) state.lang = saved.lang;
-        if (typeof saved.noWatermark === "boolean") state.noWatermark = saved.noWatermark;
-        if (typeof saved.autoPaste === "boolean") state.autoPaste = saved.autoPaste;
-        const h = JSON.parse(localStorage.getItem("ml_hist_v6") || "[]");
-        if (Array.isArray(h)) state.history = h;
+        const saved = JSON.parse(localStorage.getItem("ml_prefs_v10") || "{}");
+        prefs = Object.assign(prefs, saved);
       } catch (_e) {}
 
-      applyTheme(state.theme);
-      applyBtnStyle(state.btnStyle);
-      applyFps(state.fps);
-      applyLang(state.lang);
-      updateSwitchesUI();
-      renderHistory();
+      document.body.setAttribute("data-theme", prefs.theme);
+      document.body.setAttribute("data-btnstyle", prefs.btnstyle);
+      document.body.setAttribute("data-shape", prefs.shape);
+      document.body.setAttribute("data-fps", prefs.fps);
+      elFpsBadge.textContent = prefs.fps + " Hz";
 
-      if (state.autoPaste) {
-        setTimeout(() => pasteClipboard(true), 350);
+      syncGroup("langGroup", prefs.lang);
+      syncGroup("themeGroup", prefs.theme);
+      syncGroup("btnStyleGroup", prefs.btnstyle);
+      syncGroup("shapeGroup", prefs.shape);
+      syncGroup("fpsGroup", prefs.fps);
+
+      applyLang();
+      animateLiquidPill(0, true);
+    }
+
+    function getHistory() {
+      try {
+        return JSON.parse(localStorage.getItem("ml_history_v2") || "[]");
+      } catch (_e) {
+        return [];
       }
     }
 
-    function savePrefs() {
+    function saveHistory(arr) {
       try {
-        localStorage.setItem("ml_prefs_v11", JSON.stringify({
-          theme: state.theme,
-          btnStyle: state.btnStyle,
-          fps: state.fps,
-          lang: state.lang,
-          noWatermark: state.noWatermark,
-          autoPaste: state.autoPaste
-        }));
+        localStorage.setItem("ml_history_v2", JSON.stringify(arr.slice(0, 60)));
       } catch (_e) {}
     }
 
-    function switchTab(tab, idx) {
-      document.querySelectorAll(".tab-pane").forEach(el => el.classList.remove("active"));
-      const target = document.getElementById("tab-" + tab);
-      if (target) target.classList.add("active");
-
-      document.querySelectorAll(".nav-btn").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.tab === tab);
+    function updateHistStats() {
+      const list = getHistory();
+      let totalMb = 0;
+      list.forEach(it => {
+        const s = (it.size || "").toUpperCase();
+        const num = parseFloat(s) || 0;
+        if (s.includes("GB")) totalMb += num * 1024;
+        else if (s.includes("MB")) totalMb += num;
+        else if (s.includes("KB")) totalMb += num / 1024;
       });
-      elNavPill.style.transform = `translate3d(${idx * 100}%, 0, 0)`;
-    }
-
-    function applyTheme(theme) {
-      state.theme = theme;
-      document.body.setAttribute("data-theme", theme);
-      document.querySelectorAll("[data-theme-btn]").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.themeBtn === theme);
-      });
-    }
-    function setTheme(theme) {
-      applyTheme(theme);
-      savePrefs();
+      const statEl = document.getElementById("histStatText");
+      if (statEl) {
+        statEl.textContent = `${t("statFiles")}: ${list.length} • ${totalMb.toFixed(1)} MB`;
+      }
     }
 
-    function applyBtnStyle(style) {
-      state.btnStyle = style;
-      document.body.setAttribute("data-btn-style", style);
-      document.querySelectorAll("[data-bstyle]").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.bstyle === style);
-      });
-    }
-    function setBtnStyle(style) {
-      applyBtnStyle(style);
-      savePrefs();
-    }
-
-    function applyFps(fps) {
-      state.fps = String(fps);
-      document.body.setAttribute("data-fps", state.fps);
-      document.querySelectorAll("[data-fps-btn]").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.fpsBtn === state.fps);
-      });
-    }
-    function setFps(fps) {
-      applyFps(fps);
-      savePrefs();
-    }
-
-    function applyLang(lang) {
-      state.lang = lang;
-      document.querySelectorAll("[data-lang]").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.lang === lang);
-      });
-      document.querySelectorAll("[data-i18n]").forEach(el => {
-        const k = el.getAttribute("data-i18n");
-        if (I18N[lang] && I18N[lang][k]) {
-          el.textContent = I18N[lang][k];
-        }
-      });
+    function setHistFilter(flt, btn) {
+      histFilter = flt;
+      document.querySelectorAll("#histFilterGroup .fps-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
       renderHistory();
     }
-    function setLang(lang) {
-      applyLang(lang);
-      savePrefs();
+
+    function formatBadge(item) {
+      const f = (item.format || "mp4").toUpperCase();
+      if (f === "MP3") return "MP3";
+      const q = item.quality === "best" ? "MAX" : (item.quality + "p");
+      return `MP4 ${q}`;
     }
 
-    function setMode(mode) {
-      state.mode = mode;
-      document.querySelectorAll("[data-mode]").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.mode === mode);
-      });
-      elQualityBlock.style.display = mode === "video" ? "block" : "none";
-    }
+    function renderHistory() {
+      const list = getHistory();
+      updateHistStats();
+      elHistList.classList.toggle("select-mode", selectMode);
 
-    function setQuality(q) {
-      state.quality = q;
-      document.querySelectorAll("[data-q]").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.q === q);
-      });
-    }
+      document.getElementById("histNormalBar").style.display = selectMode ? "none" : "flex";
+      document.getElementById("histSelectBar").style.display = selectMode ? "flex" : "none";
+      document.getElementById("delSelectedBtn").textContent = `${t("btnDeleteCount")} (${selectedIndices.size})`;
 
-    function toggleSetting(key) {
-      state[key] = !state[key];
-      updateSwitchesUI();
-      savePrefs();
-    }
+      const filtered = list
+        .map((item, realIdx) => ({ item, realIdx }))
+        .filter(x => histFilter === "all" || (x.item.format || "mp4").toLowerCase() === histFilter);
 
-    function updateSwitchesUI() {
-      const swWm = document.getElementById("swNoWatermark");
-      const swAp = document.getElementById("swAutoPaste");
-      if (swWm) swWm.classList.toggle("on", !!state.noWatermark);
-      if (swAp) swAp.classList.toggle("on", !!state.autoPaste);
-    }
-
-    // Универсальное чтение буфера обмена (Capacitor Native + Android Bridge + Web Clipboard API + Termux)
-    async function readClipboardUniversal() {
-      // 1. Нативный мост Android (MainActivity JavascriptInterface)
-      try {
-        if (window.AndroidNative && typeof window.AndroidNative.getClipboard === "function") {
-          const txt = window.AndroidNative.getClipboard();
-          if (txt && String(txt).trim()) return String(txt).trim();
-        }
-      } catch (_e) {}
-
-      // 2. Официальный нативный плагин @capacitor/clipboard
-      try {
-        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Clipboard) {
-          const res = await window.Capacitor.Plugins.Clipboard.read();
-          if (res && res.value && String(res.value).trim()) return String(res.value).trim();
-        }
-      } catch (_e) {}
-
-      // 3. Браузерный Clipboard API (вызывает системный запрос разрешения Android WebView)
-      try {
-        if (navigator.clipboard && typeof navigator.clipboard.readText === "function") {
-          const txt = await navigator.clipboard.readText();
-          if (txt && String(txt).trim()) return String(txt).trim();
-        }
-      } catch (_e) {}
-
-      // 4. Резерв через локальный сервер Termux (если запущен)
-      try {
-        const r = await fetchWithTimeout(API + "/clipboard", {}, 900);
-        if (r.ok) {
-          const d = await r.json();
-          if (d && d.text && String(d.text).trim()) return String(d.text).trim();
-        }
-      } catch (_e) {}
-
-      return "";
-    }
-
-    async function pasteClipboard(silent = false) {
-      const txt = await readClipboardUniversal();
-      if (txt) {
-        if (!silent || txt.startsWith("http")) {
-          elUrl.value = txt;
-          onUrlChanged();
-          if (!silent) showMsg(t("msgClipboardOk"), "ok");
-        }
+      if (!filtered.length) {
+        elHistList.innerHTML = `<div class="card" style="text-align:center;color:var(--muted);font-size:13px;">${t("histEmpty")}</div>`;
         return;
       }
 
-      if (!silent) {
-        elUrl.focus();
-        try { document.execCommand("paste"); } catch (_e) {}
-        setTimeout(() => {
-          onUrlChanged();
-          if (!elUrl.value.trim()) {
-            showMsg(t("msgClipboardEmpty"), "err");
-          }
-        }, 120);
+      let html = "";
+      for (let k = 0; k < filtered.length; k++) {
+        const { item: it, realIdx: i } = filtered[k];
+        const isSel = selectedIndices.has(i);
+        const thumbSrc = it.thumb || "";
+        const safeTitle = (it.title || it.saved_to || "Media").replace(/"/g, "&quot;");
+        html += `
+          <div class="hist-item ${isSel ? "selected" : ""}" data-idx="${i}">
+            <div class="hist-check">${isSel ? "✓" : ""}</div>
+            ${thumbSrc
+              ? `<img class="hist-thumb" src="${thumbSrc}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.display='none'" />`
+              : `<div class="hist-thumb" style="display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);">${(it.format || "MP4").toUpperCase()}</div>`
+            }
+            <div class="hist-info">
+              <div class="hist-title">${safeTitle}</div>
+              <div class="hist-meta">
+                <span class="badge-fmt">${formatBadge(it)}</span>
+                <span>${it.size || ""}</span>
+                <span>${it.date || ""}</span>
+              </div>
+            </div>
+            ${!selectMode ? `<button type="button" class="act-btn" data-play="${i}">${t("btnWatch")}</button>` : ""}
+          </div>
+        `;
       }
+      elHistList.innerHTML = html;
     }
 
-    function showMsg(text, type) {
-      elStatusMsg.className = "status-msg " + (type || "ok");
-      elStatusMsg.textContent = text;
-      elStatusMsg.style.display = "block";
-    }
+    elHistList.addEventListener("pointerdown", (e) => {
+      const card = e.target.closest(".hist-item");
+      if (!card || e.target.closest("[data-play]")) return;
+      const idx = Number(card.getAttribute("data-idx"));
+      startX = e.clientX;
+      startY = e.clientY;
+      lpTriggered = false;
+      clearTimeout(lpTimer);
 
-    function parseSizeMB(sizeStr) {
-      if (!sizeStr) return 0;
-      const m = String(sizeStr).match(/([\d.]+)\s*(MB|KB|GB)/i);
-      if (!m) return 0;
-      const val = parseFloat(m[1]) || 0;
-      const unit = m[2].toUpperCase();
-      if (unit === "GB") return val * 1024;
-      if (unit === "KB") return val / 1024;
-      return val;
-    }
+      lpTimer = setTimeout(() => {
+        lpTriggered = true;
+        if (!selectMode) {
+          selectMode = true;
+          selectedIndices.clear();
+        }
+        selectedIndices.add(idx);
+        renderHistory();
+      }, 380);
+    }, { passive: true });
 
-    function toggleSelectMode() {
-      state.selectMode = !state.selectMode;
-      state.selectedIds = [];
+    elHistList.addEventListener("pointermove", (e) => {
+      if (!lpTimer) return;
+      if (Math.hypot(e.clientX - startX, e.clientY - startY) > 15) {
+        clearTimeout(lpTimer);
+        lpTimer = null;
+      }
+    }, { passive: true });
+
+    elHistList.addEventListener("pointerup", () => {
+      clearTimeout(lpTimer);
+      lpTimer = null;
+    }, { passive: true });
+
+    elHistList.addEventListener("pointercancel", () => {
+      clearTimeout(lpTimer);
+      lpTimer = null;
+    }, { passive: true });
+
+    elHistList.addEventListener("contextmenu", (e) => {
+      const card = e.target.closest(".hist-item");
+      if (card) e.preventDefault();
+    });
+
+    elHistList.addEventListener("click", (e) => {
+      if (lpTriggered) {
+        lpTriggered = false;
+        return;
+      }
+      const playBtn = e.target.closest("[data-play]");
+      if (playBtn) {
+        const idx = Number(playBtn.getAttribute("data-play"));
+        openMediaModal(idx);
+        return;
+      }
+      const card = e.target.closest(".hist-item");
+      if (!card) return;
+      const idx = Number(card.getAttribute("data-idx"));
+      if (selectMode) {
+        if (selectedIndices.has(idx)) selectedIndices.delete(idx);
+        else selectedIndices.add(idx);
+        renderHistory();
+      }
+    });
+
+    function enterSelectMode() {
+      selectMode = true;
+      selectedIndices.clear();
       renderHistory();
     }
 
-    function toggleSelectItem(idx) {
-      const pos = state.selectedIds.indexOf(idx);
-      if (pos === -1) state.selectedIds.push(idx);
-      else state.selectedIds.splice(pos, 1);
+    function selectAllHistory() {
+      const list = getHistory();
+      if (selectedIndices.size === list.length) {
+        selectedIndices.clear();
+      } else {
+        list.forEach((_, idx) => selectedIndices.add(idx));
+      }
       renderHistory();
     }
 
     function deleteSelectedHistory() {
-      if (!state.selectedIds.length) return;
-      const toRemove = new Set(state.selectedIds);
-      state.history.forEach((item, idx) => {
-        if (toRemove.has(idx) && item.offlineKey) deleteMediaBlob(item.offlineKey);
-      });
-      state.history = state.history.filter((_, idx) => !toRemove.has(idx));
-      state.selectedIds = [];
-      state.selectMode = false;
-      localStorage.setItem("ml_hist_v6", JSON.stringify(state.history));
-      renderHistory();
+      if (!selectedIndices.size) return;
+      const list = getHistory().filter((_, idx) => !selectedIndices.has(idx));
+      saveHistory(list);
+      exitSelectMode();
     }
 
-    function renderHistory() {
-      const totalMB = state.history.reduce((acc, item) => acc + parseSizeMB(item.size), 0);
-      const sizeBadge = totalMB > 0 ? ` • ${totalMB.toFixed(1)} MB` : "";
-      elHistStats.textContent = `${t("filesCount")}${state.history.length}${sizeBadge}`;
-
-      elSelectModeBtn.textContent = state.selectMode ? t("cancelSelectBtn") : t("selectBtn");
-      elSelectModeBtn.style.display = state.history.length ? "inline-block" : "none";
-
-      if (state.selectMode && state.selectedIds.length > 0) {
-        elDelSelectedBtn.style.display = "inline-block";
-        elDelSelectedBtn.textContent = `${t("delSelectedBtn")} (${state.selectedIds.length})`;
-      } else {
-        elDelSelectedBtn.style.display = "none";
-      }
-
-      elHistList.classList.toggle("select-mode", state.selectMode);
-
-      if (!state.history.length) {
-        elHistList.innerHTML = `<div class="card empty-box">${t("emptyHist")}</div>`;
-        return;
-      }
-
-      const watchTxt = t("watchBtn");
-      const listenTxt = t("listenBtn");
-      const delTxt = t("delBtn");
-
-      elHistList.innerHTML = state.history.map((item, idx) => {
-        const isAudio = item.mode === "audio";
-        const actLabel = isAudio ? listenTxt : watchTxt;
-        const thumb = item.thumb || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60'><rect width='100%' height='100%' fill='%23101624'/></svg>";
-        const safeTitle = (item.title || item.filename || "Media").replace(/</g, "&lt;");
-        const meta = [item.mode ? item.mode.toUpperCase() : "MEDIA", item.size || "", item.date || ""].filter(Boolean).join(" • ");
-        const isSel = state.selectedIds.includes(idx);
-
-        return `
-          <div class="hist-item ${isSel ? "selected" : ""}" onclick="${state.selectMode ? `toggleSelectItem(${idx})` : ""}">
-            <div class="hist-check">${isSel ? "✓" : ""}</div>
-            <img class="hist-thumb" src="${thumb}" loading="lazy" onerror="this.style.opacity=0.25" />
-            <div class="hist-info">
-              <div class="hist-title">${safeTitle}</div>
-              <div class="hist-meta">${meta}</div>
-              <div class="hist-btns">
-                <button class="act-btn primary" onclick="event.stopPropagation();openHistoryItem(${idx})">${actLabel}</button>
-                <button class="act-btn del" onclick="event.stopPropagation();removeHistoryItem(${idx})">${delTxt}</button>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join("");
-    }
-
-    function removeHistoryItem(idx) {
-      const item = state.history[idx];
-      if (item && item.offlineKey) deleteMediaBlob(item.offlineKey);
-      state.history.splice(idx, 1);
-      localStorage.setItem("ml_hist_v6", JSON.stringify(state.history));
+    function exitSelectMode() {
+      selectMode = false;
+      selectedIndices.clear();
       renderHistory();
     }
 
     function clearHistory() {
-      state.history.forEach(item => {
-        if (item && item.offlineKey) deleteMediaBlob(item.offlineKey);
-      });
-      state.history = [];
-      state.selectedIds = [];
-      state.selectMode = false;
-      localStorage.setItem("ml_hist_v6", "[]");
-      renderHistory();
+      saveHistory([]);
+      exitSelectMode();
     }
 
-    async function openHistoryItem(idx) {
-      const item = state.history[idx];
+    function openMediaModal(idx) {
+      const list = getHistory();
+      const item = list[idx];
       if (!item) return;
 
-      const modal = document.getElementById("playerModal");
-      const titleEl = document.getElementById("modalTitle");
-      const bodyEl = document.getElementById("modalBody");
-      titleEl.textContent = item.title || item.filename || "Media";
+      const fileName = item.filename || item.saved_to || "";
+      const fileUrl = `${API}/file?name=${encodeURIComponent(fileName)}&t=${Date.now()}`;
+      const fmt = (item.format || "mp4").toLowerCase();
 
-      // 1. Проверяем сохранённый офлайн-файл в IndexedDB (работает без Termux и без интернета)
-      let playUrl = null;
-      if (item.offlineKey) {
-        playUrl = await getMediaBlobUrl(item.offlineKey);
-      }
+      document.getElementById("modalTitle").textContent = item.title || fileName || "Media";
+      const body = document.getElementById("modalBody");
 
-      // 2. Если файла нет в IndexedDB, проверяем локальный сервер Termux или прямую ссылку
-      if (!playUrl) {
-        const termuxAlive = await checkTermuxAlive();
-        if (termuxAlive && item.filename) {
-          const qName = encodeURIComponent(item.filename || "");
-          const qTitle = encodeURIComponent(item.title || "");
-          playUrl = `${API}/file?name=${qName}&title=${qTitle}&t=${Date.now()}`;
-        } else if (item.remoteUrl) {
-          playUrl = item.remoteUrl;
-        }
-      }
-
-      if (!playUrl) {
-        const qName = encodeURIComponent(item.filename || "");
-        const qTitle = encodeURIComponent(item.title || "");
-        playUrl = `${API}/file?name=${qName}&title=${qTitle}&t=${Date.now()}`;
-      }
-
-      if (item.mode === "audio") {
-        bodyEl.innerHTML = `<audio src="${playUrl}" controls autoplay style="width:100%;margin-top:8px;"></audio>`;
+      if (fmt === "mp3") {
+        body.innerHTML = `<audio controls autoplay src="${fileUrl}"></audio>`;
       } else {
-        bodyEl.innerHTML = `<video src="${playUrl}" controls autoplay playsinline preload="auto"></video>`;
+        body.innerHTML = `<video controls autoplay playsinline preload="metadata" src="${fileUrl}"></video>`;
       }
-      modal.classList.add("open");
+
+      document.getElementById("mediaModal").classList.add("open");
     }
 
-    function closeModal() {
-      const modal = document.getElementById("playerModal");
-      const bodyEl = document.getElementById("modalBody");
-      bodyEl.innerHTML = "";
-      modal.classList.remove("open");
-    }
-
-    function fetchWithTimeout(url, options = {}, timeoutMs = 1500) {
-      const ctrl = new AbortController();
-      const id = setTimeout(() => ctrl.abort(), timeoutMs);
-      return fetch(url, { ...options, signal: ctrl.signal }).finally(() => clearTimeout(id));
-    }
-
-    async function checkTermuxAlive() {
-      try {
-        const r = await fetchWithTimeout(API + "/progress", {}, 1100);
-        return r.ok;
-      } catch (_e) {
-        return false;
-      }
-    }
-
-    // Сохранение файла на телефон без Termux
-    async function triggerDeviceSave(blobOrUrl, filename) {
-      // Если есть нативный Android DownloadManager мост в APK и передан прямой URL
-      if (typeof blobOrUrl === "string" && window.AndroidNative && typeof window.AndroidNative.downloadUrl === "function") {
-        try {
-          window.AndroidNative.downloadUrl(blobOrUrl, filename);
-          return true;
-        } catch (_e) {}
-      }
-      // Если передан Blob
-      if (blobOrUrl instanceof Blob) {
-        const bUrl = URL.createObjectURL(blobOrUrl);
-        const a = document.createElement("a");
-        a.href = bUrl;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        setTimeout(() => URL.revokeObjectURL(bUrl), 5000);
-        return true;
-      }
-      return false;
-    }
-
-    // Автономная загрузка БЕЗ Termux (Облачный сервер Media Loader + прямые API TikWM / Cobalt)
-    async function startCloudFallbackDownload(url) {
-      elProgState.textContent = t("msgCloudDl");
-      elProgPct.textContent = "25%";
-      elProgFill.style.width = "25%";
-
-      const ext = state.mode === "audio" ? "mp3" : "mp4";
-      let title = "Media_" + Date.now();
-      let thumb = "";
-      let directMediaUrl = "";
-      let downloadedBlob = null;
-
-      // Способ А: Если это TikTok — мгновенное прямое API TikWM (HD без водяного знака)
-      if (url.toLowerCase().includes("tiktok.com")) {
-        try {
-          const apiUrl = `https://www.tikwm.com/api/?url=${encodeURIComponent(url)}&hd=1`;
-          const r = await fetchWithTimeout(apiUrl, {}, 10000);
-          const j = await r.json();
-          if (j && j.data) {
-            title = j.data.title || j.data.author?.nickname || title;
-            thumb = j.data.cover || j.data.origin_cover || "";
-            if (state.mode === "audio" && j.data.music) {
-              directMediaUrl = j.data.music;
-            } else {
-              directMediaUrl = state.noWatermark
-                ? (j.data.hdplay || j.data.play || j.data.wmplay)
-                : (j.data.wmplay || j.data.play);
-            }
-          }
-        } catch (_e) {}
-      }
-
-      // Способ Б: Через облачный сервер приложения Media Loader (поддерживает YouTube, Instagram, VK, TikTok и др.)
-      if (!directMediaUrl) {
-        try {
-          elProgPct.textContent = "45%";
-          elProgFill.style.width = "45%";
-
-          const infoRes = await fetchWithTimeout(`${CLOUD_API}/api/info?url=${encodeURIComponent(url)}`, {}, 15000);
-          if (infoRes.ok) {
-            const infoData = await infoRes.json();
-            if (infoData.title) title = infoData.title;
-            if (infoData.thumbnail) thumb = infoData.thumbnail;
-          }
-
-          const dlParams = new URLSearchParams({
-            url: url,
-            type: state.mode,
-            quality: state.quality === "max" ? "1080" : state.quality,
-            no_watermark: state.noWatermark ? "1" : "0"
-          });
-          directMediaUrl = `${CLOUD_API}/api/download?${dlParams.toString()}`;
-        } catch (_e) {}
-      }
-
-      if (!directMediaUrl) {
-        throw new Error("Не удалось получить поток без Termux");
-      }
-
-      elProgPct.textContent = "75%";
-      elProgFill.style.width = "75%";
-
-      const cleanName = title.replace(/[\\/:*?"<>|#]/g, "_").slice(0, 60).trim() || ("Media_" + Date.now());
-      const filename = `${cleanName}.${ext}`;
-      let sizeText = "";
-      const offlineKey = "media_" + Date.now();
-
-      try {
-        const mediaResp = await fetch(directMediaUrl);
-        if (mediaResp.ok) {
-          downloadedBlob = await mediaResp.blob();
-          const mb = downloadedBlob.size / (1024 * 1024);
-          if (mb > 0.05) {
-            sizeText = mb.toFixed(1) + " MB";
-            await saveMediaBlob(offlineKey, downloadedBlob);
-            await triggerDeviceSave(downloadedBlob, filename);
-          }
-        }
-      } catch (_e) {
-        // Если CORS не дал скачать в Blob, передаём ссылку нативному загрузчику Android
-        await triggerDeviceSave(directMediaUrl, filename);
-      }
-
-      elProgPct.textContent = "100%";
-      elProgFill.style.width = "100%";
-      elDlBtn.disabled = false;
-      setTimeout(() => { elProgWrap.style.display = "none"; }, 500);
-
-      const newItem = {
-        title: title,
-        filename: filename,
-        thumb: thumb,
-        mode: state.mode,
-        size: sizeText || "Cloud",
-        date: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-        offlineKey: downloadedBlob ? offlineKey : null,
-        remoteUrl: directMediaUrl
-      };
-
-      state.history.unshift(newItem);
-      if (state.history.length > 60) state.history.pop();
-      localStorage.setItem("ml_hist_v6", JSON.stringify(state.history));
-      renderHistory();
-
-      showMsg(t("msgSaved") + filename + (sizeText ? " (" + sizeText + ")" : "") + " :)", "ok");
+    function closeMediaModal() {
+      const body = document.getElementById("modalBody");
+      body.innerHTML = "";
+      document.getElementById("mediaModal").classList.remove("open");
     }
 
     async function startDownload() {
       const url = elUrl.value.trim();
       if (!url) {
-        showMsg(t("msgEnterUrl"), "err");
+        showMsg(t("msgPasteFirst"), "err");
         return;
       }
 
-      elStatusMsg.style.display = "none";
+      if (pollTimer) clearInterval(pollTimer);
       elDlBtn.disabled = true;
+      elMsgBox.style.display = "none";
       elProgWrap.style.display = "block";
-      elProgState.textContent = t("msgStart");
+      elProgBar.style.width = "3%";
       elProgPct.textContent = "0%";
-      elProgFill.style.width = "0%";
+      elProgText.textContent = t("msgStartDl");
 
-      // 1. Проверяем, запущен ли локальный сервер Termux
-      const termuxRunning = await checkTermuxAlive();
+      const payload = {
+        url: url,
+        format: curFmt,
+        quality: curQual,
+        custom_name: elCustomName.value.trim(),
+        no_watermark: document.getElementById("swWatermark").classList.contains("on")
+      };
 
-      // 2. Если Termux НЕ запущен — качаем напрямую через облачный/прямой движок!
-      if (!termuxRunning) {
-        try {
-          await startCloudFallbackDownload(url);
-        } catch (err) {
-          elDlBtn.disabled = false;
-          elProgWrap.style.display = "none";
-          showMsg("Ошибка загрузки: " + err.message, "err");
-        }
-        return;
-      }
-
-      // 3. Если Termux запущен — качаем через локальный сервер Termux
       try {
-        const res = await fetch(API + "/download", {
+        const res = await fetch(`${API}/download`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            url: url,
-            mode: state.mode,
-            quality: state.quality,
-            no_watermark: state.noWatermark
-          })
+          body: JSON.stringify(payload)
         });
-        const data = await res.json();
-        if (data.error) throw new Error(data.error);
+        const dData = await res.json();
+        if (!res.ok || dData.error) {
+          throw new Error(dData.error || "Server error");
+        }
 
-        if (pollTimer) clearInterval(pollTimer);
+        const taskId = dData.task_id || "";
         pollTimer = setInterval(async () => {
           try {
-            const pRes = await fetch(API + "/progress");
+            const pRes = await fetch(`${API}/progress?id=${encodeURIComponent(taskId)}`);
             const pData = await pRes.json();
 
-            const pct = Math.min(100, Math.max(0, Math.round(pData.percent || 0)));
-            elProgPct.textContent = pct + "%";
-            elProgFill.style.width = pct + "%";
-            elProgState.textContent = pData.status_text || t("msgDownloading");
+            if (pData.percent !== undefined) {
+              const pct = Math.min(100, Math.max(0, Math.round(pData.percent)));
+              elProgBar.style.width = pct + "%";
+              elProgPct.textContent = pct + "%";
+            }
+            if (pData.step) {
+              elProgText.textContent = pData.step;
+            }
 
             if (pData.status === "error") {
               clearInterval(pollTimer);
               elDlBtn.disabled = false;
               elProgWrap.style.display = "none";
-              showMsg(pData.error || "Error", "err");
+              showMsg(t("msgErr") + (pData.error || "Failed"), "err");
             } else if (pData.status === "done") {
               clearInterval(pollTimer);
               elDlBtn.disabled = false;
-              setTimeout(() => { elProgWrap.style.display = "none"; }, 400);
+              elProgBar.style.width = "100%";
+              elProgPct.textContent = "100%";
 
-              const newItem = {
-                title: pData.title || pData.filename || "Media",
+              const hist = getHistory();
+              hist.unshift({
+                title: pData.title || pData.saved_to || "Media",
+                saved_to: pData.saved_to || "",
                 filename: pData.filename || pData.saved_to || "",
-                thumb: pData.thumb || "",
-                mode: state.mode,
                 size: pData.size || "",
+                thumb: pData.thumb || "",
+                format: curFmt,
+                quality: curQual,
                 date: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-              };
-              state.history.unshift(newItem);
-              if (state.history.length > 60) state.history.pop();
-              localStorage.setItem("ml_hist_v6", JSON.stringify(state.history));
-              renderHistory();
+              });
+              saveHistory(hist);
+
+              setTimeout(() => {
+                elProgWrap.style.display = "none";
+              }, 500);
 
               showMsg(t("msgSaved") + (pData.saved_to || "file") + (pData.size ? " (" + pData.size + ")" : "") + " :)", "ok");
             }
           } catch (_err) {}
         }, 500);
       } catch (e) {
-        // Если Termux оборвался — пробуем скачать напрямую без Termux
-        try {
-          await startCloudFallbackDownload(url);
-        } catch (_err2) {
-          elDlBtn.disabled = false;
-          elProgWrap.style.display = "none";
-          showMsg(e.message, "err");
-        }
+        elDlBtn.disabled = false;
+        elProgWrap.style.display = "none";
+        showMsg(t("msgTermuxErr") + e.message, "err");
       }
     }
 
     loadPrefs();
   </script>
+
+<script>
+(function() {
+  const CLOUD_API = "https://ais-pre-ineo35obwx7bs3aehadvke-384724507315.europe-west2.run.app";
+  const origFetch = window.fetch.bind(window);
+  let cloudProg = { status: "idle", percent: 0, status_text: "" };
+  let urlMap = {};
+
+  async function readClipNative() {
+    try {
+      if (window.AndroidNative && typeof window.AndroidNative.getClipboard === "function") {
+        const t = window.AndroidNative.getClipboard();
+        if (t && String(t).trim()) return String(t).trim();
+      }
+    } catch (_e) {}
+    try {
+      if (navigator.clipboard && navigator.clipboard.readText) {
+        const t = await navigator.clipboard.readText();
+        if (t && String(t).trim()) return String(t).trim();
+      }
+    } catch (_e) {}
+    return "";
+  }
+
+  // Перехватываем нажатие на кнопку "Вставить" для мгновенной вставки из системного буфера Android
+  document.addEventListener("click", async function(e) {
+    const btn = e.target.closest("button, .paste-btn, [onclick*='paste']");
+    if (!btn) return;
+    const label = (btn.textContent || "").trim().toLowerCase();
+    const oncl = (btn.getAttribute("onclick") || "").toLowerCase();
+    if (label === "вставить" || label === "paste" || oncl.includes("paste")) {
+      const txt = await readClipNative();
+      if (txt) {
+        const inp = document.querySelector("input[type='text'], input[type='url'], #urlInput, #url");
+        if (inp) {
+          inp.value = txt;
+          inp.dispatchEvent(new Event("input", { bubbles: true }));
+        }
+      }
+    }
+  }, true);
+
+  async function runCloudDownload(bodyObj) {
+    const url = (bodyObj && bodyObj.url) || "";
+    const mode = (bodyObj && (bodyObj.mode || bodyObj.type)) || "video";
+    const quality = (bodyObj && bodyObj.quality) || "max";
+    const noWm = bodyObj && bodyObj.no_watermark !== undefined ? bodyObj.no_watermark : true;
+    const customName = (bodyObj && bodyObj.custom_name ? String(bodyObj.custom_name).trim() : "");
+
+    cloudProg = { status: "downloading", percent: 25, status_text: "Загрузка напрямую (без Termux)..." };
+
+    try {
+      let title = customName || ("Media_" + Date.now());
+      let thumb = "";
+      let directUrl = "";
+      const ext = mode === "audio" ? "mp3" : "mp4";
+
+      if (url.toLowerCase().includes("tiktok.com")) {
+        try {
+          const r = await origFetch("https://www.tikwm.com/api/?url=" + encodeURIComponent(url) + "&hd=1");
+          const j = await r.json();
+          if (j && j.data) {
+            if (!customName) title = j.data.title || (j.data.author && j.data.author.nickname) || title;
+            thumb = j.data.cover || j.data.origin_cover || "";
+            directUrl = mode === "audio"
+              ? (j.data.music || j.data.play)
+              : (noWm ? (j.data.hdplay || j.data.play || j.data.wmplay) : (j.data.wmplay || j.data.play));
+          }
+        } catch (_e) {}
+      }
+
+      if (!directUrl) {
+        cloudProg.percent = 50;
+        try {
+          const ir = await origFetch(CLOUD_API + "/api/info?url=" + encodeURIComponent(url));
+          if (ir.ok) {
+            const idata = await ir.json();
+            if (!customName && idata.title) title = idata.title;
+            if (idata.thumbnail) thumb = idata.thumbnail;
+          }
+        } catch (_e) {}
+        const q = quality === "max" ? "1080" : quality;
+        directUrl = CLOUD_API + "/api/download?url=" + encodeURIComponent(url) + "&type=" + encodeURIComponent(mode) + "&quality=" + encodeURIComponent(q) + "&no_watermark=" + (noWm ? "1" : "0");
+      }
+
+      cloudProg.percent = 85;
+      const clean = String(title).replace(/[\\/:*?"<>|#]/g, "_").slice(0, 60).trim() || ("Media_" + Date.now());
+      const filename = clean.endsWith("." + ext) ? clean : (clean + "." + ext);
+      urlMap[filename] = directUrl;
+
+      if (window.AndroidNative && typeof window.AndroidNative.downloadUrl === "function") {
+        window.AndroidNative.downloadUrl(directUrl, filename);
+      } else {
+        const a = document.createElement("a");
+        a.href = directUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      }
+
+      cloudProg = {
+        status: "done",
+        percent: 100,
+        status_text: "Готово!",
+        title: title,
+        filename: filename,
+        saved_to: filename,
+        size: "Cloud",
+        thumb: thumb
+      };
+    } catch (err) {
+      cloudProg = { status: "error", percent: 0, error: "Ошибка загрузки: " + (err.message || err) };
+    }
+  }
+
+  // Если Termux выключен, прозрачно переключаем запросы 127.0.0.1:8080 на облачный движок
+  window.fetch = async function(input, init) {
+    const u = typeof input === "string" ? input : (input && input.url ? input.url : "");
+    if (u.includes("127.0.0.1:8080")) {
+      try {
+        const ctrl = new AbortController();
+        const tid = setTimeout(() => ctrl.abort(), 1200);
+        const res = await origFetch(input, Object.assign({}, init || {}, { signal: ctrl.signal }));
+        clearTimeout(tid);
+        return res;
+      } catch (_err) {
+        if (u.includes("/download")) {
+          let bodyObj = {};
+          try { bodyObj = JSON.parse((init && init.body) || "{}"); } catch (_e) {}
+          runCloudDownload(bodyObj);
+          return new Response(JSON.stringify({ status: "started" }), { status: 200, headers: { "Content-Type": "application/json" } });
+        }
+        if (u.includes("/progress")) {
+          return new Response(JSON.stringify(cloudProg), { status: 200, headers: { "Content-Type": "application/json" } });
+        }
+        if (u.includes("/clipboard")) {
+          const clipTxt = await readClipNative();
+          return new Response(JSON.stringify({ text: clipTxt }), { status: 200, headers: { "Content-Type": "application/json" } });
+        }
+      }
+    }
+    return origFetch(input, init);
+  };
+})();
+</script>
+
 </body>
 </html>
