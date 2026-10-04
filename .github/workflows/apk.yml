@@ -1,7 +1,8 @@
 name: Build Android APK
+
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -19,42 +20,58 @@ jobs:
       - name: Setup Java 17
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
           distribution: 'temurin'
+          java-version: 17
 
-      - name: Generate Android project & Set Custom App Icon
+      - name: Generate Android project
         run: |
-          sudo apt-get update && sudo apt-get install -y imagemagick
           npm install
           npx cap add android
           sed -i 's/versionName "1.0"/versionName "0.11 BETA"/g' android/app/build.gradle
-          npx cap sync android
-          sed -i 's/<application/<application android:usesCleartextTraffic="true"/g' android/app/src/main/AndroidManifest.xml
-          if [ -f icon.png ]; then
-            convert icon.png -resize 192x192^ -gravity center -extent 192x192 android/app/src/main/res/mipmap-mdpi/ic_launcher.png
-            convert icon.png -resize 192x192^ -gravity center -extent 192x192 android/app/src/main/res/mipmap-mdpi/ic_launcher_round.png
-            convert icon.png -resize 192x192^ -gravity center -extent 192x192 android/app/src/main/res/mipmap-mdpi/ic_launcher_foreground.png
 
-            convert icon.png -resize 256x256^ -gravity center -extent 256x256 android/app/src/main/res/mipmap-hdpi/ic_launcher.png
-            convert icon.png -resize 256x256^ -gravity center -extent 256x256 android/app/src/main/res/mipmap-hdpi/ic_launcher_round.png
-            convert icon.png -resize 256x256^ -gravity center -extent 256x256 android/app/src/main/res/mipmap-hdpi/ic_launcher_foreground.png
+          if [ -f "icon.png" ]; then
+            sudo apt-get update && sudo apt-get install -y imagemagick
+            RES="android/app/src/main/res"
 
-            convert icon.png -resize 384x384^ -gravity center -extent 384x384 android/app/src/main/res/mipmap-xhdpi/ic_launcher.png
-            convert icon.png -resize 384x384^ -gravity center -extent 384x384 android/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png
-            convert icon.png -resize 384x384^ -gravity center -extent 384x384 android/app/src/main/res/mipmap-xhdpi/ic_launcher_foreground.png
+            # Красим подложку иконки в #121212 под цвет круга, чтобы не было белых углов
+            cat << 'XML' > "$RES/values/ic_launcher_background.xml"
+          <?xml version="1.0" encoding="utf-8"?>
+          <resources>
+              <color name="ic_launcher_background">#121212</color>
+          </resources>
+          XML
 
-            convert icon.png -resize 512x512^ -gravity center -extent 512x512 android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png
-            convert icon.png -resize 512x512^ -gravity center -extent 512x512 android/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png
-            convert icon.png -resize 512x512^ -gravity center -extent 512x512 android/app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.png
+            # Подготавливаем иконку без белых полей по краям
+            convert icon.png -gravity center -crop 82%x82%+0+0 +repage -background "#121212" -flatten icon_clean.png
 
-            convert icon.png -resize 512x512^ -gravity center -extent 512x512 android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
-            convert icon.png -resize 512x512^ -gravity center -extent 512x512 android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png
-            convert icon.png -resize 512x512^ -gravity center -extent 512x512 android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.png
+            convert icon_clean.png -resize 48x48 "$RES/mipmap-mdpi/ic_launcher.png"
+            convert icon_clean.png -resize 48x48 "$RES/mipmap-mdpi/ic_launcher_round.png"
+            convert icon_clean.png -resize 108x108 "$RES/mipmap-mdpi/ic_launcher_foreground.png"
+
+            convert icon_clean.png -resize 72x72 "$RES/mipmap-hdpi/ic_launcher.png"
+            convert icon_clean.png -resize 72x72 "$RES/mipmap-hdpi/ic_launcher_round.png"
+            convert icon_clean.png -resize 162x162 "$RES/mipmap-hdpi/ic_launcher_foreground.png"
+
+            convert icon_clean.png -resize 96x96 "$RES/mipmap-xhdpi/ic_launcher.png"
+            convert icon_clean.png -resize 96x96 "$RES/mipmap-xhdpi/ic_launcher_round.png"
+            convert icon_clean.png -resize 216x216 "$RES/mipmap-xhdpi/ic_launcher_foreground.png"
+
+            convert icon_clean.png -resize 144x144 "$RES/mipmap-xxhdpi/ic_launcher.png"
+            convert icon_clean.png -resize 144x144 "$RES/mipmap-xxhdpi/ic_launcher_round.png"
+            convert icon_clean.png -resize 324x324 "$RES/mipmap-xxhdpi/ic_launcher_foreground.png"
+
+            convert icon_clean.png -resize 192x192 "$RES/mipmap-xxxhdpi/ic_launcher.png"
+            convert icon_clean.png -resize 192x192 "$RES/mipmap-xxxhdpi/ic_launcher_round.png"
+            convert icon_clean.png -resize 432x432 "$RES/mipmap-xxxhdpi/ic_launcher_foreground.png"
+
+            rm -f "$RES/drawable/ic_launcher_foreground.xml" "$RES/drawable-v24/ic_launcher_foreground.xml"
           fi
 
+          npx cap copy android
+
       - name: Build APK
-        working-directory: ./android
         run: |
+          cd android
           chmod +x gradlew
           ./gradlew assembleDebug
 
