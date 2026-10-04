@@ -490,7 +490,7 @@
       background: rgba(248, 113, 113, 0.12) !important;
     }
 
-    /* Тумблеры опций */
+    /* Тумблер опций */
     .opt-row {
       display: flex;
       align-items: center;
@@ -578,7 +578,7 @@
       color: #f87171;
     }
 
-    /* Вкладки (мгновенное переключение 0 мс без лагов) */
+    /* Вкладки */
     .tab-pane {
       display: none;
     }
@@ -737,7 +737,7 @@
     <!-- Шапка -->
     <div class="header">
       <span class="brand-title">Media Loader</span>
-      <span class="ver-badge">0.1 BETA</span>
+      <span class="ver-badge">0.11 BETA</span>
     </div>
 
     <!-- ВКЛАДКА 1: ЗАГРУЗЧИК -->
@@ -795,11 +795,6 @@
           <span data-i18n="optWatermark">Без водяного знака</span>
           <div id="swWatermark" class="switch on"></div>
         </div>
-
-        <div class="opt-row" onclick="toggleSwitch('swAudioBitrate')">
-          <span data-i18n="optBitrate">Максимальный аудио-битрейт</span>
-          <div id="swAudioBitrate" class="switch on"></div>
-        </div>
       </div>
 
       <button id="dlBtn" type="button" class="main-btn" data-i18n="btnDownload" onclick="startDownload()">
@@ -821,7 +816,6 @@
 
     <!-- ВКЛАДКА 2: ИСТОРИЯ -->
     <div id="tab-history" class="tab-pane">
-      <!-- Статистика скачанных файлов и быстрый фильтр -->
       <div class="hist-stats">
         <span id="histStatText" style="color:var(--muted);font-weight:600;">Файлов: 0</span>
         <div style="display:flex;gap:5px;" id="histFilterGroup">
@@ -883,11 +877,6 @@
           <button type="button" class="seg-btn" data-val="pill" data-i18n="shapePill" onclick="setPref('shape', 'pill')">Капсула</button>
           <button type="button" class="seg-btn" data-val="sharp" data-i18n="shapeSharp" onclick="setPref('shape', 'sharp')">Строгая</button>
         </div>
-
-        <div class="opt-row" onclick="toggleHaptic()">
-          <span data-i18n="optHaptic">Тактильный вибро-отклик</span>
-          <div id="swHaptic" class="switch on"></div>
-        </div>
       </div>
 
       <div class="card">
@@ -898,7 +887,6 @@
         </div>
       </div>
 
-      <!-- ГЕРЦОВКА ПРИЛОЖЕНИЯ В САМОМ НИЗУ -->
       <div class="card compact">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;">
           <span class="label" data-i18n="lblFps" style="margin-bottom:0;">Частота кадров (Герцовка)</span>
@@ -945,8 +933,7 @@
       theme: "crimson",
       btnstyle: "glass",
       shape: "rounded",
-      fps: "120",
-      haptic: true
+      fps: "120"
     };
 
     const I18N = {
@@ -962,7 +949,6 @@
         lblCustomName: "Своё имя файла (необязательно)",
         phCustomName: "Оставьте пустым для авто-имени",
         optWatermark: "Без водяного знака",
-        optBitrate: "Максимальный аудио-битрейт",
         btnDownload: "Скачать",
         lblHistory: "История загрузок",
         btnSelectMode: "Выбрать",
@@ -985,7 +971,6 @@
         shapeRound: "Мягкая",
         shapePill: "Капсула",
         shapeSharp: "Строгая",
-        optHaptic: "Тактильный вибро-отклик",
         lblFps: "Частота кадров (Герцовка)",
         fps30: "30 фпс",
         fps60: "60 фпс",
@@ -1013,7 +998,6 @@
         lblCustomName: "Custom file name (optional)",
         phCustomName: "Leave empty for auto-name",
         optWatermark: "No watermark",
-        optBitrate: "Max audio bitrate",
         btnDownload: "Download",
         lblHistory: "Download History",
         btnSelectMode: "Select",
@@ -1036,7 +1020,6 @@
         shapeRound: "Rounded",
         shapePill: "Capsule",
         shapeSharp: "Sharp",
-        optHaptic: "Haptic Vibration",
         lblFps: "Frame Rate (Refresh Rate)",
         fps30: "30 FPS",
         fps60: "60 FPS",
@@ -1079,12 +1062,6 @@
     const elHistList = document.getElementById("historyList");
     const elFpsBadge = document.getElementById("fpsLiveBadge");
 
-    function vibrate(ms) {
-      if (prefs.haptic && navigator.vibrate) {
-        try { navigator.vibrate(ms || 12); } catch (_e) {}
-      }
-    }
-
     function t(key) {
       const dict = I18N[prefs.lang] || I18N.ru;
       return dict[key] || key;
@@ -1103,7 +1080,6 @@
       updateHistStats();
     }
 
-    // Авто-определение платформы по ссылке
     function detectPlatformBadge(val) {
       const u = val.toLowerCase().trim();
       if (!u) {
@@ -1128,7 +1104,6 @@
       detectPlatformBadge(val);
     }
 
-    // Покадровый движок (30 / 60 / 90 / 120 FPS)
     function runFpsAnimation(durationMs, onStep, onDone) {
       const targetFps = Number(prefs.fps) || 120;
       const minFrameDelta = targetFps >= 120 ? 0 : (1000 / targetFps) * 0.92;
@@ -1195,7 +1170,6 @@
     document.addEventListener("pointerdown", (e) => {
       const btn = e.target.closest(".seg-btn, .btn-paste, .act-btn, .fps-btn, .main-btn, .nav-btn");
       if (!btn || btn.disabled) return;
-      vibrate(10);
       const isMain = btn.classList.contains("main-btn");
       const minScaleX = isMain ? 0.95 : 0.90;
       const minScaleY = isMain ? 0.91 : 0.85;
@@ -1210,7 +1184,6 @@
       });
     }, { passive: true });
 
-    // Переключение вкладок без анимации переходов (0 мс, максимальная оптимизация)
     function switchTab(tabName, idx, btnEl) {
       const target = document.getElementById("tab-" + tabName);
       if (!target || target.classList.contains("active")) return;
@@ -1261,15 +1234,7 @@
     }
 
     function toggleSwitch(id) {
-      vibrate(12);
       document.getElementById(id).classList.toggle("on");
-    }
-
-    function toggleHaptic() {
-      prefs.haptic = !prefs.haptic;
-      document.getElementById("swHaptic").classList.toggle("on", prefs.haptic);
-      vibrate(18);
-      try { localStorage.setItem("ml_prefs_v9", JSON.stringify(prefs)); } catch (_e) {}
     }
 
     function showMsg(text, type) {
@@ -1288,7 +1253,7 @@
       if (prefs[key] === val) return;
       prefs[key] = val;
       try {
-        localStorage.setItem("ml_prefs_v9", JSON.stringify(prefs));
+        localStorage.setItem("ml_prefs_v10", JSON.stringify(prefs));
       } catch (_e) {}
 
       if (key === "theme") {
@@ -1312,7 +1277,7 @@
 
     function loadPrefs() {
       try {
-        const saved = JSON.parse(localStorage.getItem("ml_prefs_v9") || "{}");
+        const saved = JSON.parse(localStorage.getItem("ml_prefs_v10") || "{}");
         prefs = Object.assign(prefs, saved);
       } catch (_e) {}
 
@@ -1320,7 +1285,6 @@
       document.body.setAttribute("data-btnstyle", prefs.btnstyle);
       document.body.setAttribute("data-shape", prefs.shape);
       document.body.setAttribute("data-fps", prefs.fps);
-      document.getElementById("swHaptic").classList.toggle("on", !!prefs.haptic);
       elFpsBadge.textContent = prefs.fps + " Hz";
 
       syncGroup("langGroup", prefs.lang);
@@ -1423,7 +1387,6 @@
       elHistList.innerHTML = html;
     }
 
-    // Надежное зажатие карточки (не сбивается от микродвижений пальца на 120 Гц)
     elHistList.addEventListener("pointerdown", (e) => {
       const card = e.target.closest(".hist-item");
       if (!card || e.target.closest("[data-play]")) return;
@@ -1440,7 +1403,6 @@
           selectedIndices.clear();
         }
         selectedIndices.add(idx);
-        vibrate(30);
         renderHistory();
       }, 380);
     }, { passive: true });
@@ -1485,7 +1447,6 @@
       if (selectMode) {
         if (selectedIndices.has(idx)) selectedIndices.delete(idx);
         else selectedIndices.add(idx);
-        vibrate(10);
         renderHistory();
       }
     });
@@ -1571,8 +1532,7 @@
         format: curFmt,
         quality: curQual,
         custom_name: elCustomName.value.trim(),
-        no_watermark: document.getElementById("swWatermark").classList.contains("on"),
-        max_audio: document.getElementById("swAudioBitrate").classList.contains("on")
+        no_watermark: document.getElementById("swWatermark").classList.contains("on")
       };
 
       try {
@@ -1611,7 +1571,6 @@
               elDlBtn.disabled = false;
               elProgBar.style.width = "100%";
               elProgPct.textContent = "100%";
-              vibrate(35);
 
               const hist = getHistory();
               hist.unshift({
