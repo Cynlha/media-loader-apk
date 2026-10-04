@@ -1,25 +1,6 @@
-import os, re, glob
+import glob, re
 
-root = os.environ.get("GITHUB_WORKSPACE", ".")
-
-gradle_path = os.path.join(root, "android/app/build.gradle")
-if os.path.exists(gradle_path):
-    with open(gradle_path, "r", encoding="utf-8") as f:
-        g = f.read()
-    g = re.sub(r'versionName\s+"[^"]+"', 'versionName "0.11 BETA"', g)
-    with open(gradle_path, "w", encoding="utf-8") as f:
-        f.write(g)
-
-manifest_path = os.path.join(root, "android/app/src/main/AndroidManifest.xml")
-if os.path.exists(manifest_path):
-    with open(manifest_path, "r", encoding="utf-8") as f:
-        m = f.read()
-    if "usesCleartextTraffic" not in m:
-        m = m.replace("<application", '<application android:usesCleartextTraffic="true"', 1)
-    with open(manifest_path, "w", encoding="utf-8") as f:
-        f.write(m)
-
-java_files = glob.glob(os.path.join(root, "android/app/src/main/java/**/MainActivity.java"), recursive=True)
+java_files = glob.glob("android/app/src/main/java/**/MainActivity.java", recursive=True) + glob.glob("app/src/main/java/**/MainActivity.java", recursive=True)
 if java_files:
     jpath = java_files[0]
     with open(jpath, "r", encoding="utf-8") as f:
@@ -32,12 +13,22 @@ if java_files:
 import android.app.DownloadManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebView;
 import com.getcapacitor.BridgeActivity;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 
 public class MainActivity extends BridgeActivity {{
     private volatile String cachedClip = "";
@@ -64,7 +55,10 @@ public class MainActivity extends BridgeActivity {{
         super.onCreate(savedInstanceState);
         try {{
             if (this.bridge != null && this.bridge.getWebView() != null) {{
-                this.bridge.getWebView().addJavascriptInterface(new AndroidNativeBridge(), "AndroidNative");
+                WebView wv = this.bridge.getWebView();
+                wv.getSettings().setMediaPlaybackRequiresUserGesture(false);
+                wv.addJavascriptInterface(new AndroidNativeBridge(), "AndroidNative");
+                wv.reload();
             }}
         }} catch (Exception ignored) {{}}
     }}
@@ -85,12 +79,79 @@ public class MainActivity extends BridgeActivity {{
         }}
 
         @JavascriptInterface
+        public boolean saveBase64(String b64, String filename, String mimeType) {{
+            try {{
+                int comma = b64.indexOf(',');
+                String pure = comma >= 0 ? b64.substring(comma + 1) : b64;
+                byte[] bytes = Base64.decode(pure, Base64.DEFAULT);
+                boolean isAudio = (mimeType != null && mimeType.startsWith("audio")) || filename.toLowerCase().endsWith(".mp3");
+                String finalMime = isAudio ? "audio/mpeg" : "video/mp4";
+
+                if (Build.VERSION.SDK_INT >= 29) {{
+                    ContentResolver resolver = getContentResolver();
+                    ContentValues values = new ContentValues();
+                    values.put(MediaStore.MediaColumns.DISPLAY_NAME, filename);
+                    values.put(MediaStore.MediaColumns.MIME_TYPE, finalMime);
+                    values.put(
+                        MediaStore.MediaColumns.RELATIVE_PATH,
+                        (isAudio ? Environment.DIRECTORY_MUSIC : Environment.DIRECTORY_MOVIES) + "/MediaLoader"
+                    );
+                    values.put(MediaStore.MediaColumns.IS_PENDING, 1);
+
+                    Uri collection = isAudio
+                        ? MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
+                        : MediaStore.Video.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);
+
+                    Uri itemUri = resolver.insert(collection, values);
+                    if (itemUri != null) {{
+                        try (OutputStream os = resolver.openOutputStream(itemUri)) {{
+                            if (os != null) {{
+                                os.write(bytes);
+                                os.flush();
+                            }}
+                        }}
+                        ContentValues doneValues = new ContentValues();
+                        doneValues.put(MediaStore.MediaColumns.IS_PENDING, 0);
+                        resolver.update(itemUri, doneValues, null, null);
+                        return true;
+                    }}
+                }}
+
+                File pubDir = Environment.getExternalStoragePublicDirectory(
+                    isAudio ? Environment.DIRECTORY_MUSIC : Environment.DIRECTORY_MOVIES
+                );
+                File dir = new File(pubDir, "MediaLoader");
+                if (!dir.exists()) dir.mkdirs();
+                File outFile = new File(dir, filename);
+                try (FileOutputStream fos = new FileOutputStream(outFile)) {{
+                    fos.write(bytes);
+                    fos.flush();
+                }}
+                MediaScannerConnection.scanFile(
+                    MainActivity.this,
+                    new String[]{{ outFile.getAbsolutePath() }},
+                    new String[]{{ finalMime }},
+                    null
+                );
+                return true;
+            }} catch (Exception e) {{
+                return false;
+            }}
+        }}
+
+        @JavascriptInterface
         public void downloadUrl(String url, String filename) {{
             try {{
+                boolean isAudio = filename != null && filename.toLowerCase().endsWith(".mp3");
                 DownloadManager.Request req = new DownloadManager.Request(Uri.parse(url));
                 req.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                 req.setTitle(filename);
-                req.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "MediaLoader/" + filename);
+                req.setMimeType(isAudio ? "audio/mpeg" : "video/mp4");
+                req.allowScanningByMediaScanner();
+                req.setDestinationInExternalPublicDir(
+                    isAudio ? Environment.DIRECTORY_MUSIC : Environment.DIRECTORY_MOVIES,
+                    "MediaLoader/" + filename
+                );
                 DownloadManager dm = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
                 if (dm != null) dm.enqueue(req);
             }} catch (Exception ignored) {{}}
