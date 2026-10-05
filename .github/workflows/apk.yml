@@ -5,9 +5,13 @@ on:
     branches: [ "main" ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -23,57 +27,59 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
+      - name: Restore or create persistent signing key
+        run: |
+          mkdir -p ~/.android
+          if [ -f "debug.keystore" ]; then
+            cp -f debug.keystore ~/.android/debug.keystore
+          else
+            keytool -genkeypair -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+            cp -f debug.keystore ~/.android/debug.keystore
+            git config user.name "github-actions"
+            git config user.email "github-actions@github.com"
+            git add debug.keystore
+            git commit -m "Save persistent debug.keystore" || true
+            git push || true
+          fi
+
       - name: Generate Android project
         run: |
           npm install
           npx cap add android
-          sed -i 's/versionName "2.01 BETA"/versionName "2.01 BETA"/g' android/app/build.gradle
-
           if [ -f "icon.png" ]; then
             sudo apt-get update && sudo apt-get install -y imagemagick
             RES="android/app/src/main/res"
-
-            # Красим подложку иконки в #121212 под цвет круга, чтобы не было белых углов
             cat << 'XML' > "$RES/values/ic_launcher_background.xml"
           <?xml version="1.0" encoding="utf-8"?>
           <resources>
               <color name="ic_launcher_background">#121212</color>
           </resources>
           XML
-
-            # Подготавливаем иконку без белых полей по краям
             convert icon.png -gravity center -crop 82%x82%+0+0 +repage -background "#121212" -flatten icon_clean.png
-
             convert icon_clean.png -resize 48x48 "$RES/mipmap-mdpi/ic_launcher.png"
             convert icon_clean.png -resize 48x48 "$RES/mipmap-mdpi/ic_launcher_round.png"
             convert icon_clean.png -resize 108x108 "$RES/mipmap-mdpi/ic_launcher_foreground.png"
-
             convert icon_clean.png -resize 72x72 "$RES/mipmap-hdpi/ic_launcher.png"
             convert icon_clean.png -resize 72x72 "$RES/mipmap-hdpi/ic_launcher_round.png"
             convert icon_clean.png -resize 162x162 "$RES/mipmap-hdpi/ic_launcher_foreground.png"
-
             convert icon_clean.png -resize 96x96 "$RES/mipmap-xhdpi/ic_launcher.png"
             convert icon_clean.png -resize 96x96 "$RES/mipmap-xhdpi/ic_launcher_round.png"
             convert icon_clean.png -resize 216x216 "$RES/mipmap-xhdpi/ic_launcher_foreground.png"
-
             convert icon_clean.png -resize 144x144 "$RES/mipmap-xxhdpi/ic_launcher.png"
             convert icon_clean.png -resize 144x144 "$RES/mipmap-xxhdpi/ic_launcher_round.png"
             convert icon_clean.png -resize 324x324 "$RES/mipmap-xxhdpi/ic_launcher_foreground.png"
-
             convert icon_clean.png -resize 192x192 "$RES/mipmap-xxxhdpi/ic_launcher.png"
             convert icon_clean.png -resize 192x192 "$RES/mipmap-xxxhdpi/ic_launcher_round.png"
             convert icon_clean.png -resize 432x432 "$RES/mipmap-xxxhdpi/ic_launcher_foreground.png"
-
             rm -f "$RES/drawable/ic_launcher_foreground.xml" "$RES/drawable-v24/ic_launcher_foreground.xml"
           fi
-
           npx cap copy android
 
       - name: Build APK
         run: |
+          python3 "$GITHUB_WORKSPACE/patch_android.py"
           cd android
           chmod +x gradlew
-          python3 "$GITHUB_WORKSPACE/patch_android.py"
           ./gradlew assembleDebug
 
       - name: Upload APK Artifact

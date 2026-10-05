@@ -282,7 +282,92 @@ public class MainActivity extends BridgeActivity {{
 
 
 import os, glob, re
-root_dir = globals().get("root", ".")
+
+# --- AUTO-PATCH ---
+import os, glob, re
+
+root_dir = os.environ.get("GITHUB_WORKSPACE") or (".." if os.path.exists("app/build.gradle") else ".")
+run_num = int(os.environ.get("GITHUB_RUN_NUMBER", "1") or "1")
+ver_code = 200 + run_num
+
+gf = os.path.join(root_dir, "android/app/build.gradle")
+if os.path.exists(gf):
+    g = open(gf, encoding="utf-8").read()
+    g = re.sub(r'versionCode\s+\d+', f'versionCode {ver_code}', g)
+    g = re.sub(r'versionName\s+"[^"]*"', 'versionName "2.01 BETA"', g)
+    open(gf, "w", encoding="utf-8").write(g)
+
+for sp in glob.glob(os.path.join(root_dir, "android/app/src/main/res/values*/styles.xml")):
+    st = open(sp, encoding="utf-8").read()
+    st = st.replace("Theme.AppCompat.DayNight", "Theme.AppCompat")
+    if 'xmlns:tools=' not in st:
+        st = st.replace('<resources>', '<resources xmlns:tools="http://schemas.android.com/tools">')
+    st = re.sub(r'\s*<item name="android:(windowBackground|colorBackground|navigationBarColor|statusBarColor|windowLightNavigationBar|windowLightStatusBar|windowDrawsSystemBarBackgrounds|enforceNavigationBarContrast)"[^>]*>[^<]*</item>', '', st)
+    dark_items = (
+        '\n        <item name="android:windowBackground">#0f0a0c</item>'
+        '\n        <item name="android:colorBackground">#0f0a0c</item>'
+        '\n        <item name="android:navigationBarColor">#0f0a0c</item>'
+        '\n        <item name="android:statusBarColor">#0f0a0c</item>'
+        '\n        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>'
+        '\n        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>'
+        '\n        <item name="android:windowDrawsSystemBarBackgrounds">true</item>'
+        '\n        <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>\n    '
+    )
+    st = st.replace("</style>", dark_items + "</style>")
+    open(sp, "w", encoding="utf-8").write(st)
+
 for lp in glob.glob(os.path.join(root_dir, "android/app/src/main/res/layout/*.xml")):
-    ly = open(lp, encoding="utf-8").read().replace('android:fitsSystemWindows="true"', 'android:fitsSystemWindows="false"')
+    ly = open(lp, encoding="utf-8").read()
+    ly = ly.replace('android:fitsSystemWindows="true"', 'android:fitsSystemWindows="false"')
+    if 'android:background=' not in ly:
+        ly = ly.replace('<androidx.coordinatorlayout.widget.CoordinatorLayout', '<androidx.coordinatorlayout.widget.CoordinatorLayout android:background="#0f0a0c"')
     open(lp, "w", encoding="utf-8").write(ly)
+
+for jp in glob.glob(os.path.join(root_dir, "android/app/src/main/java/**/MainActivity.java"), recursive=True):
+    jv = open(jp, encoding="utf-8").read()
+    if "hideSystemGestureBar" not in jv:
+        nav_code = """    private volatile int sysBarColor = android.graphics.Color.parseColor("#0f0a0c");
+
+    private void hideSystemGestureBar() {
+        try {
+            android.view.Window w = getWindow();
+            if (w == null) return;
+            w.addFlags(android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            w.clearFlags(android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            w.clearFlags(android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            w.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(sysBarColor));
+            w.setNavigationBarColor(sysBarColor);
+            w.setStatusBarColor(sysBarColor);
+            if (android.os.Build.VERSION.SDK_INT >= 28) {
+                w.setNavigationBarDividerColor(sysBarColor);
+            }
+            if (android.os.Build.VERSION.SDK_INT >= 29) {
+                w.setNavigationBarContrastEnforced(false);
+                w.setStatusBarContrastEnforced(false);
+            }
+            android.view.View dv = w.getDecorView();
+            if (dv != null) {
+                dv.setBackgroundColor(sysBarColor);
+                androidx.core.view.WindowInsetsControllerCompat ic = androidx.core.view.WindowCompat.getInsetsController(w, dv);
+                if (ic != null) {
+                    ic.setAppearanceLightNavigationBars(false);
+                    ic.setAppearanceLightStatusBars(false);
+                }
+            }
+            if (this.bridge != null && this.bridge.getWebView() != null) {
+                android.webkit.WebView wv = this.bridge.getWebView();
+                wv.setBackgroundColor(sysBarColor);
+                android.view.ViewParent vp = wv.getParent();
+                while (vp instanceof android.view.View) {
+                    ((android.view.View) vp).setBackgroundColor(sysBarColor);
+                    vp = vp.getParent();
+                }
+            }
+        } catch (Exception ignored) {}
+    }
+"""
+        jv = jv.replace('private volatile String cachedClip = "";', 'private volatile String cachedClip = "";\n' + nav_code)
+        jv = jv.replace('super.onCreate(savedInstanceState);', 'super.onCreate(savedInstanceState);\n        hideSystemGestureBar();')
+        jv = jv.replace('if (hasFocus) {', 'if (hasFocus) {\n            hideSystemGestureBar();')
+        jv = jv.replace('public class AndroidNativeBridge {', 'public class AndroidNativeBridge {\n        @JavascriptInterface\n        public void setSystemBarColor(final String hex) {\n            try {\n                if (hex != null && !hex.isEmpty()) {\n                    sysBarColor = android.graphics.Color.parseColor(hex);\n                    runOnUiThread(MainActivity.this::hideSystemGestureBar);\n                }\n            } catch (Exception ignored) {}\n        }')
+        open(jp, "w", encoding="utf-8").write(jv)
