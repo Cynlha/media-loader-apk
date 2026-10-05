@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" id="metaThemeColor" content="#0f0a0c" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>Media Loader</title>
 <style>
-:root{--bg:#0f0a0c;--card:#1a1114;--card-2:#24171b;--text:#f9ecef;--muted:#b08d96;--acc:#f43f5e;--acc-rgb:244,63,94;--border:rgba(244,63,94,0.22);--glass-dock:rgba(26,17,20,0.78);--glass-dock-border:rgba(244,63,94,0.28);--glass-btn:rgba(244,63,94,0.08);--glass-btn-border:rgba(244,63,94,0.18);--glass-active:rgba(244,63,94,0.24);--glass-active-border:rgba(244,63,94,0.55);--rad-card:18px;--rad-btn:12px}
+:root{--bg:#0f0a0c;--card:#1a1114;--card-2:#24171b;--text:#f9ecef;--muted:#b08d96;--acc:#f43f5e;--acc-rgb:244,63,94;--border:rgba(244,63,94,0.22);--glass-dock:rgba(26,17,20,0.78);--glass-dock-border:rgba(244,63,94,0.28);--glass-btn:rgba(244,63,94,0.08);--glass-btn-border:rgba(244,63,94,0.18);--glass-active:rgba(244,63,94,0.24);--glass-active-border:rgba(244,63,94,0.55);--rad-card:18px;--rad-btn:12px;color-scheme:dark}
 body[data-theme="midnight"]{--bg:#090d16;--card:#111827;--card-2:#1e293b;--text:#f1f5f9;--muted:#8b9bb4;--acc:#6366f1;--acc-rgb:99,102,241;--border:rgba(99,102,241,0.22);--glass-dock:rgba(17,24,39,0.78);--glass-dock-border:rgba(99,102,241,0.28);--glass-btn:rgba(99,102,241,0.08);--glass-btn-border:rgba(99,102,241,0.18);--glass-active:rgba(99,102,241,0.24);--glass-active-border:rgba(99,102,241,0.55)}
 body[data-theme="emerald"]{--bg:#07120e;--card:#0d1f18;--card-2:#152e24;--text:#ecfdf5;--muted:#82a898;--acc:#10b981;--acc-rgb:16,185,129;--border:rgba(16,185,129,0.22);--glass-dock:rgba(13,31,24,0.78);--glass-dock-border:rgba(16,185,129,0.28);--glass-btn:rgba(16,185,129,0.08);--glass-btn-border:rgba(16,185,129,0.18);--glass-active:rgba(16,185,129,0.24);--glass-active-border:rgba(16,185,129,0.55)}
 body[data-theme="ocean"]{--bg:#071118;--card:#0c1d29;--card-2:#132b3b;--text:#f0f9ff;--muted:#82a4b8;--acc:#06b6d4;--acc-rgb:6,182,212;--border:rgba(6,182,212,0.22);--glass-dock:rgba(12,29,41,0.78);--glass-dock-border:rgba(6,182,212,0.28);--glass-btn:rgba(6,182,212,0.08);--glass-btn-border:rgba(6,182,212,0.18);--glass-active:rgba(6,182,212,0.24);--glass-active-border:rgba(6,182,212,0.55)}
@@ -14,9 +16,11 @@ body[data-shape="rounded"]{--rad-card:18px;--rad-btn:12px}
 body[data-shape="pill"]{--rad-card:26px;--rad-btn:999px}
 body[data-shape="sharp"]{--rad-card:6px;--rad-btn:4px}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none}
-html{background:var(--bg);min-height:100%}
+html{background:var(--bg);height:100%;min-height:100dvh;overscroll-behavior:none}
 input{user-select:text}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:calc(env(safe-area-inset-top,12px) + 12px) 14px 104px;overflow-x:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;min-height:100dvh;padding:calc(env(safe-area-inset-top,12px) + 12px) 14px calc(env(safe-area-inset-bottom,0px) + 92px);overflow-x:hidden;position:relative;overscroll-behavior:none}
+body::before{content:"";position:fixed;top:-100vh;left:-50vw;right:-50vw;bottom:-100vh;background:var(--bg);pointer-events:none;z-index:-2}
+body::after{content:"";position:fixed;left:0;right:0;bottom:-160px;height:220px;background:var(--bg);pointer-events:none;z-index:55}
 .app-wrap{max-width:460px;margin:0 auto}
 .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding:4px 2px}
 .brand-title{font-size:20px;font-weight:800;letter-spacing:-0.4px;color:var(--text)}
@@ -45,7 +49,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .main-btn{width:100%;padding:15px;border-radius:var(--rad-btn);color:#ffffff;font-size:15px;font-weight:700;cursor:pointer;transform:translateZ(0);backface-visibility:hidden}
 .main-btn:disabled{opacity:0.55;pointer-events:none}
 .main-btn.stop-mode{background:linear-gradient(135deg,#ef4444,#b91c1c) !important;border:1px solid rgba(255,255,255,0.32) !important;color:#ffffff !important;box-shadow:0 6px 16px rgba(239,68,68,0.32) !important}
-.bottom-nav{position:fixed;left:50%;bottom:8px;transform:translate3d(-50%,0,0);width:calc(100% - 28px);max-width:432px;background:var(--glass-dock);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);border:1px solid var(--glass-dock-border);border-radius:999px;padding:6px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;z-index:60;box-shadow:inset 0 1px 0 rgba(255,255,255,0.14),0 10px 26px rgba(0,0,0,0.48)}
+.bottom-nav{position:fixed;left:50%;bottom:max(2px, calc(env(safe-area-inset-bottom,0px) - 8px));transform:translate3d(-50%,0,0);width:calc(100% - 28px);max-width:432px;background:var(--glass-dock);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);border:1px solid var(--glass-dock-border);border-radius:999px;padding:6px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;z-index:60;box-shadow:inset 0 1px 0 rgba(255,255,255,0.14),0 10px 26px rgba(0,0,0,0.48)}
 .nav-liquid-pill{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 24px) / 3);border-radius:999px;pointer-events:none;z-index:0;transform:translate3d(0,0,0) scale3d(1,1,1);will-change:transform;backface-visibility:hidden}
 .nav-btn{position:relative;z-index:1;border-radius:999px;padding:11px 6px;font-size:13px;font-weight:700;color:var(--muted);text-align:center;cursor:pointer;transform:translateZ(0);backface-visibility:hidden}
 .nav-btn.active{color:#ffffff;background:transparent !important;border-color:transparent !important;box-shadow:none !important}
@@ -90,9 +94,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.86);display:none;align-items:center;justify-content:center;padding:14px;z-index:120}
 .modal-overlay.open{display:flex}
 .modal-card{width:100%;max-width:440px;background:var(--card);border:1px solid var(--border);border-radius:var(--rad-card);padding:13px;box-shadow:0 20px 50px rgba(0,0,0,0.72)}
-.modal-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
-.modal-title{flex:1;min-width:0;font-size:12.5px;font-weight:700;color:var(--text);line-height:1.25;word-break:break-word}
-.modal-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.modal-title{flex:0 1 auto;min-width:0;font-size:13px;font-weight:700;color:var(--text);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.modal-actions{flex:1;display:flex;align-items:center;justify-content:flex-end;min-width:118px}
+.modal-close-btn{width:100%;padding:8px 18px;font-size:12.5px;font-weight:700;transition:transform 0.16s cubic-bezier(0.34,1.56,0.64,1)}
 .modal-body{width:100%;background:#000;border-radius:12px;overflow:hidden;border:1px solid var(--border)}
 .player-stage{width:100%;background:#000;display:flex;flex-direction:column}
 .player-media-wrap{position:relative;width:100%;height:52vh;max-height:410px;min-height:220px;background:#000;display:flex;align-items:center;justify-content:center;cursor:pointer}
@@ -101,23 +106,28 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .player-media-wrap audio{display:none}
 .player-center-ind{position:absolute;width:54px;height:54px;border-radius:50%;background:rgba(0,0,0,0.65);border:1.5px solid var(--glass-active-border);color:#fff;font-size:18px;font-weight:800;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:opacity 0.15s ease}
 .player-center-ind.visible{opacity:1}
-.player-controls{background:var(--card);border-top:1px solid var(--border);padding:10px 12px;display:flex;flex-direction:column;gap:9px}
-.player-seek-row{display:flex;align-items:center;gap:10px}
+.player-controls{background:var(--card);border-top:1px solid var(--border);padding:10px 8px;display:flex;flex-direction:column;gap:9px}
+.player-seek-row{display:flex;align-items:center;gap:10px;padding:0 3px}
 .player-seek{-webkit-appearance:none;appearance:none;flex:1;height:6px;border-radius:999px;background:linear-gradient(
     to right,var(--acc) 0%,var(--acc) var(--seek-pct,0%),rgba(255,255,255,0.2) var(--seek-pct,0%),rgba(255,255,255,0.2) 100%
   );outline:none;cursor:pointer}
 .player-seek::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:15px;height:15px;border-radius:50%;background:#ffffff;border:2.5px solid var(--acc);box-shadow:0 1px 6px rgba(0,0,0,0.55);transition:transform 0.12s ease}
 .player-seek:active::-webkit-slider-thumb{transform:scale(1.22)}
-.player-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:32px}
+.player-bar{display:flex;align-items:center;justify-content:space-between;gap:6px;min-height:33px}
 .player-left,.player-right{display:flex;align-items:center;gap:6px}
-.p-btn{color:var(--text);height:31px;padding:0 11px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
-.p-btn.play-toggle{width:36px;min-width:36px;max-width:36px;padding:0}
-.p-btn.mute-toggle{min-width:82px;padding:0 10px}
+.p-btn{color:var(--text);height:33px;padding:0 12px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform 0.16s cubic-bezier(0.34,1.56,0.64,1),background-color 0.15s ease,border-color 0.15s ease,box-shadow 0.15s ease}
+.p-btn:active,.modal-close-btn:active{transform:scale3d(0.91,0.91,1)}
+@keyframes pBtnPop{0%{transform:scale3d(1,1,1)}45%{transform:scale3d(0.88,0.88,1)}80%{transform:scale3d(1.05,1.05,1)}100%{transform:scale3d(1,1,1)}}
+.p-btn.pop-anim{animation:pBtnPop 0.24s cubic-bezier(0.34,1.56,0.64,1)}
+.p-btn.play-toggle{min-width:52px;padding:0 14px}
+.p-btn.mute-toggle{min-width:78px;padding:0 10px}
+.p-btn.fs-toggle{min-width:106px;padding:0 14px}
 .p-time{font-size:11.5px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;flex-shrink:0}
 .modal-overlay.fs-mode{padding:0;background:#000}
 .modal-overlay.fs-mode .modal-card{position:relative;max-width:100%;width:100%;height:100vh;border-radius:0;border:none;padding:0;display:flex;flex-direction:column;background:#000}
 .modal-overlay.fs-mode .modal-head{position:absolute;top:calc(env(safe-area-inset-top,10px) + 8px);right:12px;left:auto;margin:0;z-index:30}
 .modal-overlay.fs-mode .modal-title{display:none}
+.modal-overlay.fs-mode .modal-actions{min-width:110px}
 .modal-overlay.fs-mode .modal-body{flex:1;display:flex;flex-direction:column;border:none;border-radius:0}
 .modal-overlay.fs-mode .player-stage{flex:1;height:100%}
 .modal-overlay.fs-mode .player-media-wrap{flex:1;height:auto;max-height:none}
@@ -128,7 +138,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 <div class="app-wrap">
 <header class="header">
 <div class="brand-title">Media Loader</div>
-<div class="ver-badge">0.14 BETA</div>
+<div class="ver-badge">2.01 BETA</div>
 </header>
 <!-- ВКЛАДКА 1: ЗАГРУЗЧИК -->
 <div id="tab-loader" class="tab-pane active">
@@ -256,7 +266,7 @@ oninput="onUrlInput()"
 <div class="modal-head">
 <div id="modalTitle" class="modal-title" data-i18n="modalInstalled">Видео успешно установлено</div>
 <div class="modal-actions">
-<button type="button" class="act-btn" data-i18n="btnClose" onclick="closeMediaModal()">Закрыть</button>
+<button type="button" class="act-btn modal-close-btn" data-i18n="btnClose" onclick="closeMediaModal()">Закрыть</button>
 </div>
 </div>
 <div id="modalBody" class="modal-body"></div>
@@ -286,6 +296,9 @@ en: {"lblUrl":"Media Link","phUrl":"Paste link...","btnPaste":"Paste","lblFormat
 function syncNativeBarColor(themeName = _a) {
 const hex = THEME_BG[themeName] || "#0f0a0c";
 document.documentElement.style.backgroundColor = hex;
+if (document.body) document.body.style.backgroundColor = hex;
+const metaTheme = document.getElementById("metaThemeColor");
+if (metaTheme) metaTheme.setAttribute("content", hex);
 try {
 if (window.AndroidNative && typeof window.AndroidNative.setSystemBarColor === "function") {
 window.AndroidNative.setSystemBarColor(hex);
@@ -745,8 +758,15 @@ exitSelectMode();
 function fmtSec(s = _a) {
 if (!s || !isFinite(s) || s < 0) return "0:00"; const m = Math.floor(s / 60); const sec = Math.floor(s % 60); return m + ":" + (sec < 10 ? "0" : "") + sec;
 }
+function triggerBtnPop(btnEl = _a) {
+if (!btnEl) return;
+btnEl.classList.remove("pop-anim");
+void btnEl.offsetWidth;
+btnEl.classList.add("pop-anim");
+}
 function togglePlayerFullscreen() {
 const modal = document.getElementById("mediaModal"); if (!modal) return; const isFs = modal.classList.toggle("fs-mode"); const fsBottomBtn = document.getElementById("pFsBtn"); if (fsBottomBtn) {
+triggerBtnPop(fsBottomBtn);
 fsBottomBtn.textContent = isFs ? t("btnExitFullScreen") : t("btnFullScreen");
 }
 try {
@@ -802,7 +822,7 @@ ${isAudio
 </div>
 <span class="p-time" id="pTimeText">0:00 / 0:00</span>
 <div class="player-right">
-<button type="button" class="p-btn" id="pFsBtn" onclick="togglePlayerFullscreen()">${t("btnFullScreen")}</button>
+<button type="button" class="p-btn fs-toggle" id="pFsBtn" onclick="togglePlayerFullscreen()">${t("btnFullScreen")}</button>
 </div>
 </div>
 </div>
@@ -833,13 +853,15 @@ const paused = mediaEl.paused; playBtn.textContent = paused ? "▶" : "||";
 indEl.textContent = paused ? "▶" : "||";
 indEl.classList.toggle("visible", paused); muteBtn.textContent = mediaEl.muted ? t("btnSoundOff") : t("btnSoundOn");
 }; const togglePlay = () => {
-if (!isModalAlive()) return; if (mediaEl.paused) {
+if (!isModalAlive()) return;
+triggerBtnPop(playBtn); if (mediaEl.paused) {
 mediaEl.play().catch(() => {});
 } else { mediaEl.pause(); }
 syncUi();
 };
 wrapEl.onclick = togglePlay; playBtn.onclick = togglePlay; muteBtn.onclick = () => {
-if (!isModalAlive()) return; mediaEl.muted = !mediaEl.muted;
+if (!isModalAlive()) return;
+triggerBtnPop(muteBtn); mediaEl.muted = !mediaEl.muted;
 syncUi();
 }; let seeking = false; let lastScrubTs = 0; const applyScrub = (forceCommit = _a) => {
 const val = Number(seekEl.value) || 0; seekEl.style.setProperty("--seek-pct", (val / 10).toFixed(1) + "%"); const dur = mediaEl.duration; if (dur && isFinite(dur) && dur > 0) {
