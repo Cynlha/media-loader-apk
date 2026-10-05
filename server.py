@@ -298,5 +298,5 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(b"OK")
 
 if __name__ == "__main__":
-    print(f"Сервер Media Loader 0.11 BETA запущен на http://127.0.0.1:{PORT} :)")
+    print(f"Сервер Media Loader 2.01 BETA запущен на http://127.0.0.1:{PORT} :)")
     ThreadingHTTPServer(("127.0.0.1", PORT), Handler).serve_forever()

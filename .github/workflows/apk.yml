@@ -27,7 +27,7 @@ jobs:
         run: |
           npm install
           npx cap add android
-          sed -i 's/versionName "1.0"/versionName "0.11 BETA"/g' android/app/build.gradle
+          sed -i 's/versionName "2.01 BETA"/versionName "2.01 BETA"/g' android/app/build.gradle
 
           if [ -f "icon.png" ]; then
             sudo apt-get update && sudo apt-get install -y imagemagick
