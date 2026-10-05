@@ -1,3 +1,4 @@
+import os, glob, re
 import glob, re
 
 java_files = glob.glob("android/app/src/main/java/**/MainActivity.java", recursive=True) + glob.glob("app/src/main/java/**/MainActivity.java", recursive=True)
@@ -277,3 +278,11 @@ public class MainActivity extends BridgeActivity {{
 """
     with open(jpath, "w", encoding="utf-8") as f:
         f.write(new_java)
+
+
+
+import os, glob, re
+root_dir = globals().get("root", ".")
+for lp in glob.glob(os.path.join(root_dir, "android/app/src/main/res/layout/*.xml")):
+    ly = open(lp, encoding="utf-8").read().replace('android:fitsSystemWindows="true"', 'android:fitsSystemWindows="false"')
+    open(lp, "w", encoding="utf-8").write(ly)
