@@ -294,7 +294,7 @@ gf = os.path.join(root_dir, "android/app/build.gradle")
 if os.path.exists(gf):
     g = open(gf, encoding="utf-8").read()
     g = re.sub(r'versionCode\s+\d+', f'versionCode {ver_code}', g)
-    g = re.sub(r'versionName\s+"[^"]*"', 'versionName "2.01 BETA"', g)
+    g = re.sub(r'versionName\s+"[^"]*"', 'versionName "2.03 BETA"', g)
     open(gf, "w", encoding="utf-8").write(g)
 
 for sp in glob.glob(os.path.join(root_dir, "android/app/src/main/res/values*/styles.xml")):
