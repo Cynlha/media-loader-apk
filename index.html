@@ -14,9 +14,10 @@ body[data-theme="amoled"]{--bg:#000000;--card:#09090b;--card-2:#141418;--text:#f
 body[data-shape="rounded"]{--rad-card:18px;--rad-btn:12px}
 body[data-shape="pill"]{--rad-card:26px;--rad-btn:999px}
 body[data-shape="sharp"]{--rad-card:6px;--rad-btn:4px}
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none;scrollbar-width:none;-ms-overflow-style:none}
+*::-webkit-scrollbar,html::-webkit-scrollbar,body::-webkit-scrollbar{display:none !important;width:0 !important;height:0 !important;background:transparent !important;-webkit-appearance:none !important}
+*::-webkit-scrollbar-track,*::-webkit-scrollbar-thumb{display:none !important;background:transparent !important;border:none !important}
 html{background:var(--bg);height:100%;min-height:100dvh;overscroll-behavior:none;scrollbar-width:none;-ms-overflow-style:none}
-html::-webkit-scrollbar,body::-webkit-scrollbar{display:none;width:0;height:0}
 html.modal-lock,body.modal-lock{overflow:hidden !important;overscroll-behavior:none !important;touch-action:none}
 body.modal-lock .app-wrap,body.modal-lock .bottom-nav,body.modal-lock .top-blur-bar,body.modal-lock .hist-scroll-rail{pointer-events:none !important;user-select:none !important}
 input{user-select:text}
@@ -46,9 +47,9 @@ body::after{content:"";position:fixed;left:0;right:0;bottom:-160px;height:165px;
 .seg-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
 .theme-flex{display:flex;flex-wrap:wrap;gap:8px}
 .theme-flex .seg-btn{flex:1 1 calc(33.333% - 8px);min-width:92px}
-.btn-paste,.seg-btn,.act-btn,.fps-btn,.p-btn,.main-btn,.nav-btn,.save-opt-btn,.clear-btn{touch-action:manipulation}
-.btn-paste,.seg-btn,.act-btn,.fps-btn,.p-btn{position:relative;color:var(--muted);border-radius:var(--rad-btn);font-size:13px;font-weight:600;text-align:center;cursor:pointer;transform:translateZ(0);backface-visibility:hidden;white-space:nowrap;line-height:1.25;transition:transform 0.14s cubic-bezier(0.34,1.56,0.64,1)}
-.btn-paste:active,.seg-btn:active,.act-btn:active,.main-btn:active{transform:scale3d(0.95,0.95,1)}
+.btn-paste,.seg-btn,.act-btn,.fps-btn,.p-btn,.main-btn,.nav-btn,.save-opt-btn,.clear-btn,.del-modal-btn{touch-action:manipulation}
+.btn-paste,.seg-btn,.act-btn,.fps-btn,.p-btn,.del-modal-btn{position:relative;color:var(--muted);border-radius:var(--rad-btn);font-size:13px;font-weight:600;text-align:center;cursor:pointer;transform:translateZ(0);backface-visibility:hidden;white-space:nowrap;line-height:1.25;transition:transform 0.14s cubic-bezier(0.34,1.56,0.64,1)}
+.btn-paste:active,.seg-btn:active,.act-btn:active,.main-btn:active,.del-modal-btn:active{transform:scale3d(0.95,0.95,1)}
 .seg-btn{padding:11px 6px}
 .seg-grid-4 .seg-btn{padding:11px 2px;font-size:12.5px}
 .fps-btn{padding:7px 10px;font-size:12px;font-weight:700;border-radius:10px;flex:0 0 auto;white-space:nowrap;transition:transform 0.14s cubic-bezier(0.34,1.56,0.64,1)}
@@ -64,26 +65,26 @@ body::after{content:"";position:fixed;left:0;right:0;bottom:-160px;height:165px;
 .nav-liquid-pill{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 24px) / 3);border-radius:999px;pointer-events:none;z-index:0;transform:translate3d(0,0,0) scale3d(1,1,1);will-change:transform,filter;backface-visibility:hidden}
 .nav-btn{position:relative;z-index:1;border-radius:999px;padding:11px 6px;font-size:13px;font-weight:700;color:var(--muted);background:transparent !important;border:1px solid transparent !important;box-shadow:none !important;text-align:center;cursor:pointer;transform:translateZ(0);backface-visibility:hidden;white-space:nowrap;line-height:1.25}
 .nav-btn.active{color:#ffffff;background:transparent !important;border-color:transparent !important;box-shadow:none !important}
-[data-btnstyle="glass"] .btn-paste,[data-btnstyle="glass"] .seg-btn,[data-btnstyle="glass"] .act-btn,[data-btnstyle="glass"] .fps-btn,[data-btnstyle="glass"] .p-btn{background:var(--glass-btn);border:1px solid var(--glass-btn-border);box-shadow:inset 0 1px 0 rgba(255,255,255,0.09)}
+[data-btnstyle="glass"] .btn-paste,[data-btnstyle="glass"] .seg-btn,[data-btnstyle="glass"] .act-btn,[data-btnstyle="glass"] .fps-btn,[data-btnstyle="glass"] .p-btn,[data-btnstyle="glass"] .del-modal-btn:not(.confirm){background:var(--glass-btn);border:1px solid var(--glass-btn-border);box-shadow:inset 0 1px 0 rgba(255,255,255,0.09)}
 [data-btnstyle="glass"] .seg-btn.active,[data-btnstyle="glass"] .fps-btn.active,[data-btnstyle="glass"] .nav-liquid-pill,[data-btnstyle="glass"] .nav-liquid-trail{background:linear-gradient(135deg,rgba(var(--acc-rgb),0.34),rgba(var(--acc-rgb),0.12));color:var(--text);border:1px solid var(--glass-active-border);box-shadow:inset 0 1px 1px rgba(255,255,255,0.26),0 4px 12px rgba(var(--acc-rgb),0.18)}
-[data-btnstyle="glass"] .main-btn{background:linear-gradient(135deg,rgba(var(--acc-rgb),0.86),rgba(var(--acc-rgb),0.56));border:1px solid rgba(255,255,255,0.25);box-shadow:inset 0 1px 1px rgba(255,255,255,0.3),0 6px 16px rgba(var(--acc-rgb),0.25)}
-[data-btnstyle="neon"] .btn-paste,[data-btnstyle="neon"] .seg-btn,[data-btnstyle="neon"] .act-btn,[data-btnstyle="neon"] .fps-btn,[data-btnstyle="neon"] .p-btn{background:rgba(10,12,18,0.72);color:var(--muted);border:1px solid rgba(var(--acc-rgb),0.36);box-shadow:inset 0 1px 0 rgba(255,255,255,0.06),inset 0 0 8px rgba(var(--acc-rgb),0.08),0 2px 8px rgba(0,0,0,0.35)}
+[data-btnstyle="glass"] .main-btn,[data-btnstyle="glass"] .del-modal-btn.confirm{background:linear-gradient(135deg,rgba(var(--acc-rgb),0.86),rgba(var(--acc-rgb),0.56));color:#ffffff;border:1px solid rgba(255,255,255,0.25);box-shadow:inset 0 1px 1px rgba(255,255,255,0.3),0 6px 16px rgba(var(--acc-rgb),0.25)}
+[data-btnstyle="neon"] .btn-paste,[data-btnstyle="neon"] .seg-btn,[data-btnstyle="neon"] .act-btn,[data-btnstyle="neon"] .fps-btn,[data-btnstyle="neon"] .p-btn,[data-btnstyle="neon"] .del-modal-btn:not(.confirm){background:rgba(10,12,18,0.72);color:var(--muted);border:1px solid rgba(var(--acc-rgb),0.36);box-shadow:inset 0 1px 0 rgba(255,255,255,0.06),inset 0 0 8px rgba(var(--acc-rgb),0.08),0 2px 8px rgba(0,0,0,0.35)}
 [data-btnstyle="neon"] .seg-btn.active,[data-btnstyle="neon"] .fps-btn.active,[data-btnstyle="neon"] .nav-liquid-pill,[data-btnstyle="neon"] .nav-liquid-trail{background:linear-gradient(180deg,rgba(16,18,26,0.92) 0%,rgba(var(--acc-rgb),0.18) 100%);color:#ffffff;border:1px solid rgba(var(--acc-rgb),0.92);box-shadow:inset 0 1px 0 rgba(255,255,255,0.24),inset 0 0 12px rgba(var(--acc-rgb),0.32),0 0 12px rgba(var(--acc-rgb),0.28);text-shadow:0 0 8px rgba(var(--acc-rgb),0.45)}
 [data-btnstyle="neon"] .bottom-nav{background:rgba(8,10,15,0.86);border-color:rgba(var(--acc-rgb),0.42);box-shadow:inset 0 1px 0 rgba(255,255,255,0.12),0 0 16px rgba(var(--acc-rgb),0.14),0 10px 26px rgba(0,0,0,0.55)}
-[data-btnstyle="neon"] .main-btn{background:linear-gradient(180deg,rgba(16,18,26,0.94) 0%,rgba(var(--acc-rgb),0.24) 100%);color:#ffffff;border:1.5px solid rgba(var(--acc-rgb),0.95);box-shadow:inset 0 1px 0 rgba(255,255,255,0.26),inset 0 0 14px rgba(var(--acc-rgb),0.36),0 0 15px rgba(var(--acc-rgb),0.32);text-shadow:0 0 8px rgba(var(--acc-rgb),0.45)}
-body[data-theme="amoled"][data-btnstyle="neon"] .seg-btn.active,body[data-theme="amoled"][data-btnstyle="neon"] .fps-btn.active,body[data-theme="amoled"][data-btnstyle="neon"] .nav-liquid-pill,body[data-theme="amoled"][data-btnstyle="neon"] .nav-liquid-trail{background:linear-gradient(180deg,#121217 0%,#1f1f27 100%) !important;color:#ffffff !important;border:1px solid rgba(255,255,255,0.78) !important;box-shadow:inset 0 1px 0 rgba(255,255,255,0.32),inset 0 0 10px rgba(255,255,255,0.16),0 0 11px rgba(255,255,255,0.20) !important}
-[data-btnstyle="gradient"] .btn-paste,[data-btnstyle="gradient"] .seg-btn,[data-btnstyle="gradient"] .act-btn,[data-btnstyle="gradient"] .fps-btn,[data-btnstyle="gradient"] .p-btn{background:linear-gradient(135deg,rgba(255,255,255,0.09) 0%,rgba(var(--acc-rgb),0.14) 55%,rgba(0,0,0,0.26) 100%);color:var(--text);border:1px solid rgba(var(--acc-rgb),0.34);box-shadow:inset 0 1px 0 rgba(255,255,255,0.16),0 3px 10px rgba(0,0,0,0.28)}
+[data-btnstyle="neon"] .main-btn,[data-btnstyle="neon"] .del-modal-btn.confirm{background:linear-gradient(180deg,rgba(16,18,26,0.94) 0%,rgba(var(--acc-rgb),0.24) 100%);color:#ffffff;border:1.5px solid rgba(var(--acc-rgb),0.95);box-shadow:inset 0 1px 0 rgba(255,255,255,0.26),inset 0 0 14px rgba(var(--acc-rgb),0.36),0 0 15px rgba(var(--acc-rgb),0.32);text-shadow:0 0 8px rgba(var(--acc-rgb),0.45)}
+body[data-theme="amoled"][data-btnstyle="neon"] .seg-btn.active,body[data-theme="amoled"][data-btnstyle="neon"] .fps-btn.active,body[data-theme="amoled"][data-btnstyle="neon"] .nav-liquid-pill,body[data-theme="amoled"][data-btnstyle="neon"] .nav-liquid-trail,body[data-theme="amoled"][data-btnstyle="neon"] .del-modal-btn.confirm{background:linear-gradient(180deg,#121217 0%,#1f1f27 100%) !important;color:#ffffff !important;border:1px solid rgba(255,255,255,0.78) !important;box-shadow:inset 0 1px 0 rgba(255,255,255,0.32),inset 0 0 10px rgba(255,255,255,0.16),0 0 11px rgba(255,255,255,0.20) !important}
+[data-btnstyle="gradient"] .btn-paste,[data-btnstyle="gradient"] .seg-btn,[data-btnstyle="gradient"] .act-btn,[data-btnstyle="gradient"] .fps-btn,[data-btnstyle="gradient"] .p-btn,[data-btnstyle="gradient"] .del-modal-btn:not(.confirm){background:linear-gradient(135deg,rgba(255,255,255,0.09) 0%,rgba(var(--acc-rgb),0.14) 55%,rgba(0,0,0,0.26) 100%);color:var(--text);border:1px solid rgba(var(--acc-rgb),0.34);box-shadow:inset 0 1px 0 rgba(255,255,255,0.16),0 3px 10px rgba(0,0,0,0.28)}
 [data-btnstyle="gradient"] .bottom-nav{background:linear-gradient(135deg,var(--glass-dock) 0%,rgba(var(--acc-rgb),0.16) 100%);border-color:rgba(var(--acc-rgb),0.42);box-shadow:inset 0 1px 0 rgba(255,255,255,0.18),0 10px 26px rgba(0,0,0,0.52)}
 [data-btnstyle="gradient"] .seg-btn.active,[data-btnstyle="gradient"] .fps-btn.active,[data-btnstyle="gradient"] .nav-liquid-pill,[data-btnstyle="gradient"] .nav-liquid-trail{background:linear-gradient(135deg,rgba(var(--acc-rgb),1) 0%,rgba(var(--acc-rgb),0.74) 52%,rgba(255,255,255,0.22) 100%);color:#ffffff;border:1px solid rgba(255,255,255,0.52);box-shadow:inset 0 1.5px 1px rgba(255,255,255,0.44),0 6px 16px rgba(var(--acc-rgb),0.36);text-shadow:0 1px 2px rgba(0,0,0,0.42)}
-[data-btnstyle="gradient"] .main-btn{background:linear-gradient(135deg,rgba(var(--acc-rgb),1) 0%,rgba(var(--acc-rgb),0.72) 55%,rgba(255,255,255,0.20) 100%);color:#ffffff;border:1px solid rgba(255,255,255,0.46);box-shadow:inset 0 1.5px 1px rgba(255,255,255,0.44),0 8px 20px rgba(var(--acc-rgb),0.38);text-shadow:0 1px 2px rgba(0,0,0,0.42)}
-body[data-theme="amoled"][data-btnstyle="gradient"] .btn-paste,body[data-theme="amoled"][data-btnstyle="gradient"] .seg-btn,body[data-theme="amoled"][data-btnstyle="gradient"] .act-btn,body[data-theme="amoled"][data-btnstyle="gradient"] .fps-btn,body[data-theme="amoled"][data-btnstyle="gradient"] .p-btn{background:linear-gradient(135deg,#22222b 0%,#121217 100%) !important;color:#e4e4ec !important;border:1px solid rgba(255,255,255,0.20) !important;box-shadow:inset 0 1px 0 rgba(255,255,255,0.12),0 3px 9px rgba(0,0,0,0.6) !important}
-body[data-theme="amoled"][data-btnstyle="gradient"] .seg-btn.active,body[data-theme="amoled"][data-btnstyle="gradient"] .fps-btn.active,body[data-theme="amoled"][data-btnstyle="gradient"] .nav-liquid-pill,body[data-theme="amoled"][data-btnstyle="gradient"] .nav-liquid-trail{background:linear-gradient(135deg,#525263 0%,#2b2b36 55%,#1b1b22 100%) !important;color:#ffffff !important;border:1px solid rgba(255,255,255,0.52) !important;box-shadow:inset 0 1.5px 1px rgba(255,255,255,0.34),0 6px 15px rgba(0,0,0,0.8) !important;text-shadow:0 1px 2px rgba(0,0,0,0.8)}
-[data-btnstyle="soft3d"] .btn-paste,[data-btnstyle="soft3d"] .seg-btn,[data-btnstyle="soft3d"] .act-btn,[data-btnstyle="soft3d"] .fps-btn,[data-btnstyle="soft3d"] .p-btn{background:linear-gradient(180deg,var(--card-2) 0%,var(--card) 100%);color:var(--text);border:1px solid rgba(255,255,255,0.12);box-shadow:inset 0 1.5px 0 rgba(255,255,255,0.18),inset 0 -2.5px 0 rgba(0,0,0,0.52),0 4px 10px rgba(0,0,0,0.36)}
+[data-btnstyle="gradient"] .main-btn,[data-btnstyle="gradient"] .del-modal-btn.confirm{background:linear-gradient(135deg,rgba(var(--acc-rgb),1) 0%,rgba(var(--acc-rgb),0.72) 55%,rgba(255,255,255,0.20) 100%);color:#ffffff;border:1px solid rgba(255,255,255,0.46);box-shadow:inset 0 1.5px 1px rgba(255,255,255,0.44),0 8px 20px rgba(var(--acc-rgb),0.38);text-shadow:0 1px 2px rgba(0,0,0,0.42)}
+body[data-theme="amoled"][data-btnstyle="gradient"] .btn-paste,body[data-theme="amoled"][data-btnstyle="gradient"] .seg-btn,body[data-theme="amoled"][data-btnstyle="gradient"] .act-btn,body[data-theme="amoled"][data-btnstyle="gradient"] .fps-btn,body[data-theme="amoled"][data-btnstyle="gradient"] .p-btn,body[data-theme="amoled"][data-btnstyle="gradient"] .del-modal-btn:not(.confirm){background:linear-gradient(135deg,#22222b 0%,#121217 100%) !important;color:#e4e4ec !important;border:1px solid rgba(255,255,255,0.20) !important;box-shadow:inset 0 1px 0 rgba(255,255,255,0.12),0 3px 9px rgba(0,0,0,0.6) !important}
+body[data-theme="amoled"][data-btnstyle="gradient"] .seg-btn.active,body[data-theme="amoled"][data-btnstyle="gradient"] .fps-btn.active,body[data-theme="amoled"][data-btnstyle="gradient"] .nav-liquid-pill,body[data-theme="amoled"][data-btnstyle="gradient"] .nav-liquid-trail,body[data-theme="amoled"][data-btnstyle="gradient"] .del-modal-btn.confirm{background:linear-gradient(135deg,#525263 0%,#2b2b36 55%,#1b1b22 100%) !important;color:#ffffff !important;border:1px solid rgba(255,255,255,0.52) !important;box-shadow:inset 0 1.5px 1px rgba(255,255,255,0.34),0 6px 15px rgba(0,0,0,0.8) !important;text-shadow:0 1px 2px rgba(0,0,0,0.8)}
+[data-btnstyle="soft3d"] .btn-paste,[data-btnstyle="soft3d"] .seg-btn,[data-btnstyle="soft3d"] .act-btn,[data-btnstyle="soft3d"] .fps-btn,[data-btnstyle="soft3d"] .p-btn,[data-btnstyle="soft3d"] .del-modal-btn:not(.confirm){background:linear-gradient(180deg,var(--card-2) 0%,var(--card) 100%);color:var(--text);border:1px solid rgba(255,255,255,0.12);box-shadow:inset 0 1.5px 0 rgba(255,255,255,0.18),inset 0 -2.5px 0 rgba(0,0,0,0.52),0 4px 10px rgba(0,0,0,0.36)}
 [data-btnstyle="soft3d"] .bottom-nav{box-shadow:inset 0 1.5px 0 rgba(255,255,255,0.18),inset 0 -2.5px 0 rgba(0,0,0,0.55),0 12px 28px rgba(0,0,0,0.52)}
 [data-btnstyle="soft3d"] .seg-btn.active,[data-btnstyle="soft3d"] .fps-btn.active,[data-btnstyle="soft3d"] .nav-liquid-pill,[data-btnstyle="soft3d"] .nav-liquid-trail{background:linear-gradient(180deg,rgba(var(--acc-rgb),0.92) 0%,rgba(var(--acc-rgb),0.56) 100%);color:#ffffff;border:1px solid rgba(255,255,255,0.34);box-shadow:inset 0 2px 1px rgba(255,255,255,0.38),inset 0 -3px 0 rgba(0,0,0,0.42),0 6px 15px rgba(var(--acc-rgb),0.28);text-shadow:0 1px 2px rgba(0,0,0,0.45)}
-[data-btnstyle="soft3d"] .main-btn{background:linear-gradient(180deg,rgba(var(--acc-rgb),0.95) 0%,rgba(var(--acc-rgb),0.58) 100%);color:#ffffff;border:1px solid rgba(255,255,255,0.34);box-shadow:inset 0 2px 1px rgba(255,255,255,0.42),inset 0 -3.5px 0 rgba(0,0,0,0.45),0 8px 20px rgba(var(--acc-rgb),0.32);text-shadow:0 1px 2px rgba(0,0,0,0.45)}
-body[data-theme="amoled"][data-btnstyle="soft3d"] .seg-btn.active,body[data-theme="amoled"][data-btnstyle="soft3d"] .fps-btn.active,body[data-theme="amoled"][data-btnstyle="soft3d"] .nav-liquid-pill,body[data-theme="amoled"][data-btnstyle="soft3d"] .nav-liquid-trail{background:linear-gradient(180deg,#383842 0%,#191920 100%) !important;color:#ffffff !important;border:1px solid rgba(255,255,255,0.32) !important;box-shadow:inset 0 2px 1px rgba(255,255,255,0.28),inset 0 -3px 0 rgba(0,0,0,0.68),0 6px 14px rgba(0,0,0,0.75) !important}
-body[data-theme="amoled"] .main-btn:not(.stop-mode){background:linear-gradient(135deg,#242429 0%,#121216 100%) !important;color:#f4f4f5 !important;border:1px solid rgba(255,255,255,0.22) !important;box-shadow:inset 0 1px 0 rgba(255,255,255,0.14),0 6px 16px rgba(0,0,0,0.65) !important}
+[data-btnstyle="soft3d"] .main-btn,[data-btnstyle="soft3d"] .del-modal-btn.confirm{background:linear-gradient(180deg,rgba(var(--acc-rgb),0.95) 0%,rgba(var(--acc-rgb),0.58) 100%);color:#ffffff;border:1px solid rgba(255,255,255,0.34);box-shadow:inset 0 2px 1px rgba(255,255,255,0.42),inset 0 -3.5px 0 rgba(0,0,0,0.45),0 8px 20px rgba(var(--acc-rgb),0.32);text-shadow:0 1px 2px rgba(0,0,0,0.45)}
+body[data-theme="amoled"][data-btnstyle="soft3d"] .seg-btn.active,body[data-theme="amoled"][data-btnstyle="soft3d"] .fps-btn.active,body[data-theme="amoled"][data-btnstyle="soft3d"] .nav-liquid-pill,body[data-theme="amoled"][data-btnstyle="soft3d"] .nav-liquid-trail,body[data-theme="amoled"][data-btnstyle="soft3d"] .del-modal-btn.confirm{background:linear-gradient(180deg,#383842 0%,#191920 100%) !important;color:#ffffff !important;border:1px solid rgba(255,255,255,0.32) !important;box-shadow:inset 0 2px 1px rgba(255,255,255,0.28),inset 0 -3px 0 rgba(0,0,0,0.68),0 6px 14px rgba(0,0,0,0.75) !important}
+body[data-theme="amoled"] .main-btn:not(.stop-mode),body[data-theme="amoled"][data-btnstyle="glass"] .del-modal-btn.confirm{background:linear-gradient(135deg,#242429 0%,#121216 100%) !important;color:#f4f4f5 !important;border:1px solid rgba(255,255,255,0.22) !important;box-shadow:inset 0 1px 0 rgba(255,255,255,0.14),0 6px 16px rgba(0,0,0,0.65) !important}
 body[data-theme="amoled"] #fmtGroup .seg-btn{background:#0e0e12 !important;color:#8e8e98 !important;border:1px solid rgba(255,255,255,0.10) !important;box-shadow:none !important}
 body[data-theme="amoled"] #fmtGroup .seg-btn.active{background:linear-gradient(135deg,#2b2b33 0%,#17171c 100%) !important;color:#fafafa !important;border:1px solid rgba(255,255,255,0.28) !important;box-shadow:inset 0 1px 0 rgba(255,255,255,0.18),0 4px 12px rgba(0,0,0,0.55) !important}
 .act-btn.danger,.act-btn.confirm-warn{color:#f87171 !important;border-color:rgba(248,113,113,0.45) !important;background:rgba(248,113,113,0.14) !important}
@@ -131,12 +132,13 @@ body[data-theme="amoled"] #fmtGroup .seg-btn.active{background:linear-gradient(1
 .hist-scroll-rail{position:fixed;right:2px;top:calc(env(safe-area-inset-top,12px) + 74px);bottom:calc(env(safe-area-inset-bottom,0px) + 98px);width:24px;z-index:59;display:none;pointer-events:none;touch-action:none}
 .hist-scroll-rail.visible{display:block}
 .hist-scroll-rail.scrollable{pointer-events:auto}
-.hist-scroll-thumb{position:absolute;right:3px;top:0;width:5px;height:52px;border-radius:999px;background:linear-gradient(180deg,rgba(var(--acc-rgb),0.95) 0%,rgba(255,255,255,0.68) 100%);border:1px solid rgba(255,255,255,0.28);box-shadow:0 2px 10px rgba(var(--acc-rgb),0.36);opacity:0;transform:translate3d(0,0,0) scale3d(1,1,1);transform-origin:right center;will-change:transform,opacity,width;transition:opacity 0.28s ease,width 0.18s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.18s ease}
-.hist-scroll-rail.active .hist-scroll-thumb{opacity:0.92;width:6.5px}
-.hist-scroll-rail.dragging .hist-scroll-thumb{opacity:1;width:9px;box-shadow:0 0 16px rgba(var(--acc-rgb),0.65)}
-.hist-scroll-rail.idle .hist-scroll-thumb{opacity:0.28;width:4.5px}
-@keyframes thumbStopBounce{0%{transform:translate3d(0,var(--thumb-y,0px),0) scale3d(1.32,0.88,1)}55%{transform:translate3d(0,var(--thumb-y,0px),0) scale3d(0.92,1.07,1)}100%{transform:translate3d(0,var(--thumb-y,0px),0) scale3d(1,1,1)}}
-.hist-scroll-thumb.stop-anim{animation:thumbStopBounce 0.34s cubic-bezier(0.34,1.56,0.64,1)}
+.hist-scroll-thumb{position:absolute;right:3px;top:0;width:4.5px;height:52px;border-radius:999px;background:rgba(var(--acc-rgb),0.78);border:none;box-shadow:none !important;opacity:0;transform:translate3d(0,0,0) scale3d(1,1,1);transform-origin:right center;will-change:transform,opacity,width;transition:opacity 0.22s ease,width 0.14s cubic-bezier(0.34,1.56,0.64,1)}
+body[data-theme="amoled"] .hist-scroll-thumb{background:rgba(255,255,255,0.72)}
+.hist-scroll-rail.active .hist-scroll-thumb{opacity:0.9;width:6px}
+.hist-scroll-rail.dragging .hist-scroll-thumb{opacity:1;width:8px;box-shadow:none !important}
+.hist-scroll-rail.idle .hist-scroll-thumb{opacity:0.26;width:4px}
+@keyframes thumbStopBounce{0%{transform:translate3d(0,var(--thumb-y,0px),0) scale3d(1.26,0.9,1)}55%{transform:translate3d(0,var(--thumb-y,0px),0) scale3d(0.94,1.05,1)}100%{transform:translate3d(0,var(--thumb-y,0px),0) scale3d(1,1,1)}}
+.hist-scroll-thumb.stop-anim{animation:thumbStopBounce 0.26s cubic-bezier(0.34,1.56,0.64,1)}
 .modal-overlay{position:fixed;top:-80px;bottom:-80px;left:-20px;right:-20px;width:calc(100vw + 40px);height:calc(100vh + 160px);height:calc(100dvh + 160px);background:rgba(0,0,0,0.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:94px 34px;z-index:260;overscroll-behavior:none;touch-action:none}
 .modal-overlay.open{display:flex}
 .modal-card{width:100%;max-width:440px;background:var(--card);border:1px solid var(--border);border-radius:var(--rad-card);padding:13px;box-shadow:0 20px 50px rgba(0,0,0,0.72);animation:msgSlideIn 0.22s cubic-bezier(0.34,1.56,0.64,1) both}
@@ -159,8 +161,8 @@ body[data-theme="amoled"] #fmtGroup .seg-btn.active{background:linear-gradient(1
   ) no-repeat center/100% 6px;outline:none;cursor:pointer;touch-action:none;margin:0}
 .player-seek::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:50%;background:#ffffff;border:3px solid var(--acc);box-shadow:0 2px 8px rgba(0,0,0,0.65);transition:transform 0.12s cubic-bezier(0.34,1.56,0.64,1)}
 .player-seek:active::-webkit-slider-thumb{transform:scale(1.26)}
-.player-bar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%}
-.p-btn{color:var(--text);width:100%;height:38px;padding:0 12px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:transform 0.14s cubic-bezier(0.34,1.56,0.64,1)}
+.player-bar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;width:100%}
+.p-btn{color:var(--text);width:100%;height:38px;padding:0 8px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums;transition:transform 0.14s cubic-bezier(0.34,1.56,0.64,1)}
 .p-btn.play-toggle svg{width:22px;height:22px;fill:currentColor;display:block;flex-shrink:0}
 .player-center-ind svg{width:26px;height:26px;fill:currentColor;display:block}
 .p-btn:active,.modal-close-btn:active{transform:scale3d(0.91,0.91,1)}
@@ -180,16 +182,16 @@ body[data-theme="amoled"] #fmtGroup .seg-btn.active{background:linear-gradient(1
 .modal-overlay.fs-mode .player-controls .p-time{color:rgba(255,255,255,0.88) !important;text-shadow:0 1px 3px rgba(0,0,0,0.75)}
 .modal-overlay.fs-mode .player-controls .player-seek{height:24px;background:linear-gradient(to right,rgba(var(--acc-rgb),0.72) 0%,rgba(var(--acc-rgb),0.72) var(--seek-pct,0%),rgba(255,255,255,0.22) var(--seek-pct,0%),rgba(255,255,255,0.22) 100%) no-repeat center/100% 5px !important}
 .modal-overlay.fs-mode .player-controls .player-seek::-webkit-slider-thumb{width:16px;height:16px;background:#ffffff;border:2.5px solid rgba(var(--acc-rgb),0.9);box-shadow:0 0 8px rgba(0,0,0,0.55)}
-.hist-actions{display:flex;align-items:center;gap:5px;flex-shrink:0}
-.hist-actions .act-btn{padding:6px 9px;font-size:11.5px;white-space:nowrap}
+.hist-actions{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.hist-actions .act-btn{padding:6px 8px;font-size:11px;white-space:nowrap}
+.hist-actions .act-btn.copy-btn{padding:6px 7px;min-width:30px;display:inline-flex;align-items:center;justify-content:center}
+.hist-actions .act-btn.copy-btn svg{width:13px;height:13px;fill:currentColor;display:block}
 .save-modal-card{max-width:360px;padding:16px}
 .del-modal-card{max-width:340px;padding:18px 16px;text-align:center}
 .del-modal-title{font-size:15px;font-weight:800;color:var(--text);margin-bottom:6px;line-height:1.3}
 .del-modal-sub{font-size:12.5px;color:var(--muted);margin-bottom:16px;line-height:1.35}
 .del-modal-btns{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.del-modal-btn{padding:12px 10px;border-radius:var(--rad-btn);font-size:13.5px;font-weight:700;cursor:pointer;border:1px solid var(--glass-btn-border);background:var(--glass-btn);color:var(--text);transition:transform 0.14s cubic-bezier(0.34,1.56,0.64,1)}
-.del-modal-btn:active{transform:scale3d(0.95,0.95,1)}
-.del-modal-btn.confirm{background:linear-gradient(135deg,rgba(239,68,68,0.9),rgba(185,28,28,0.72));border-color:rgba(252,165,165,0.45);color:#ffffff;box-shadow:inset 0 1px 0 rgba(255,255,255,0.25),0 6px 16px rgba(239,68,68,0.28)}
+.del-modal-btn{width:100%;padding:12px 10px;border-radius:var(--rad-btn);font-size:13.5px;font-weight:700;color:var(--text)}
 .save-file-box{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:11px 12px;margin:10px 0 14px;display:flex;align-items:center;gap:10px}
 .save-file-thumb{width:42px;height:42px;border-radius:8px;background:var(--card-2);object-fit:cover;flex-shrink:0;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--acc)}
 .save-file-meta{flex:1;min-width:0}
@@ -378,14 +380,14 @@ oninput="onUrlInput()"
 // @ts-nocheck
 /** @type {*} */
 const _a = undefined;
-const API = "http://127.0.0.1:8080"; const CLOUD_API = "https://ais-dev-ineo35obwx7bs3aehadvke-384724507315.europe-west2.run.app"; const BLANK_POSTER = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"; const SILENT_WAV = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA"; const THEME_BG = { crimson: "#0f0a0c", midnight: "#090d16", emerald: "#07120e", amoled: "#000000" }; const PLAY_SVG = `<svg viewBox="0 0 24 24"><path d="M6.5 4.8c0-.95 1.05-1.52 1.86-1.02l11.2 6.95c.77.48.77 1.56 0 2.04l-11.2 6.95c-.81.5-1.86-.07-1.86-1.02V4.8z"/></svg>`; const PAUSE_SVG = `<svg viewBox="0 0 24 24"><rect x="6" y="4.5" width="4.2" height="15" rx="1.4"/><rect x="13.8" y="4.5" width="4.2" height="15" rx="1.4"/></svg>`; let curFmt = "mp4"; let histFilter = "all"; let histSearchQuery = ""; let clearConfirmArmed = false; let clearConfirmTimer = null; let isDownloading = false; let isDeletingHist = false; let currentAbortCtrl = null; let currentDlSession = 0; let modalSessionId = 0; let modalOpenedAt = 0; let nativeCallbacks = {}; let simProgressRaf = null; let progRenderRaf = null; let currentPctVal = 0; let displayedPctVal = 0; let activeMediaEl = null; let activeBlobObjectUrl = null; let warmedAudioCtx = null; let warmedMediaPrime = null; let cachedDbPromise = null; const memBlobStore = new Map(); let preloadedCache = { key: "", items: null }; let preloadDebounceTimer = null; let lastMsgState = null; let prefs = {
+const API = "http://127.0.0.1:8080"; const CLOUD_API = "https://ais-dev-ineo35obwx7bs3aehadvke-384724507315.europe-west2.run.app"; const BLANK_POSTER = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"; const SILENT_WAV = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA"; const THEME_BG = { crimson: "#0f0a0c", midnight: "#090d16", emerald: "#07120e", amoled: "#000000" }; const PLAY_SVG = `<svg viewBox="0 0 24 24"><path d="M6.5 4.8c0-.95 1.05-1.52 1.86-1.02l11.2 6.95c.77.48.77 1.56 0 2.04l-11.2 6.95c-.81.5-1.86-.07-1.86-1.02V4.8z"/></svg>`; const PAUSE_SVG = `<svg viewBox="0 0 24 24"><rect x="6" y="4.5" width="4.2" height="15" rx="1.4"/><rect x="13.8" y="4.5" width="4.2" height="15" rx="1.4"/></svg>`; const COPY_SVG = `<svg viewBox="0 0 24 24"><path d="M16 1H6C4.34 1 3 2.34 3 4v12h2V4c0-.55.45-1 1-1h10V1zm3 4H10c-1.66 0-3 1.34-3 3v12c0 1.66 1.34 3 3 3h9c1.66 0 3-1.34 3-3V8c0-1.66-1.34-3-3-3zm1 15c0 .55-.45 1-1 1h-9c-.55 0-1-.45-1-1V8c0-.55.45-1 1-1h9c.55 0 1 .45 1 1v12z"/></svg>`; let curFmt = "mp4"; let histFilter = "all"; let histSearchQuery = ""; let clearConfirmArmed = false; let clearConfirmTimer = null; let isDownloading = false; let isDeletingHist = false; let currentAbortCtrl = null; let currentDlSession = 0; let modalSessionId = 0; let modalOpenedAt = 0; let nativeCallbacks = {}; let simProgressRaf = null; let progRenderRaf = null; let currentPctVal = 0; let displayedPctVal = 0; let activeMediaEl = null; let activeBlobObjectUrl = null; let currentPlayerSpeed = 1; let lastAutoPastedClip = ""; let warmedAudioCtx = null; let warmedMediaPrime = null; let cachedDbPromise = null; const memBlobStore = new Map(); let preloadedCache = { key: "", items: null }; let preloadDebounceTimer = null; let lastMsgState = null; let prefs = {
 lang: "ru",
 theme: "crimson",
 btnstyle: "glass",
 shape: "rounded"
 }; const I18N = {
-ru: {"lblUrl":"Ссылка на медиа","phUrl":"Вставьте ссылку...","btnPaste":"Вставить","lblFormat":"Формат","fmtMp4":"Видео MP4","fmtMp3":"Аудио MP3","btnDownload":"Скачать","btnStop":"Остановить загрузку","lblHistory":"История загрузок","lblHistoryShort":"Выбор","fltAll":"Все","phSearchHist":"Поиск по названию или платформе...","searchFound":"Найдено","btnSelectMode":"Выбрать","btnClearAll":"Очистить всё","btnConfirmClear":"Точно очистить?","btnConfirmDel":"Точно?","btnSelectAll":"Все","btnCancel":"Отмена","delModalTitle":"Вы точно хотите это удалить?","delModalSubPrefix":"Выбрано файлов: ","btnDeleteConfirm":"Удалить","histHint":"Зажмите карточку пальцем или нажмите «Выбрать» для удаления нескольких видео :)","histEmpty":"История пока пуста :)","histNoMatch":"Ничего не найдено :)","btnWatch":"Смотреть","btnSaveHist":"Скачать видео","btnSaveHistMp3":"Скачать MP3","saveModalTitle":"Сохранение файла","btnSaveDevice":"Сохранить в Галерею / Загрузки","btnSaveProgress":"Сохранение файла...","btnShareFile":"Поделиться / Сохранить как...","btnCopySourceLink":"Скопировать исходную ссылку","msgLinkCopied":"Ссылка скопирована :)","btnDeleteCount":"Удалить","statFiles":"Файлов","lblLang":"Язык / Language","lblTheme":"Тема оформления","lblBtnStyle":"Стиль кнопок под тему","bsGlass":"Стекло","bsNeon":"Неон","bsGrad":"Градиент","bsSoft3d":"Объем 3D","lblShape":"Форма интерфейса","shapeRound":"Мягкая","shapePill":"Капсула","shapeSharp":"Строгая","modalInstalled":"Видео успешно установлено","btnClose":"Закрыть","btnSoundOn":"Звук","btnSoundOff":"Без звука","btnFullScreen":"Весь экран","btnExitFullScreen":"Обычный вид","navLoader":"Загрузчик","navHistory":"История","navSettings":"Настройки","msgPasteFirst":"Сначала вставьте ссылку :)","msgNoYt":"Скачивание с YouTube отключено :)","msgStartDl":"Запуск загрузки...","msgDirectDl":"Скачивание медиа...","msgMuxing":"Склейка видео и звука в высоком качестве...","msgDownloadingItem":"Скачивание видео","msgStopped":"Загрузка остановлена :)","msgSaved":"Сохранено: ","msgInstalledVideo":"Видео успешно установлено: ","msgInstalledAudio":"Аудио успешно установлено: ","msgSavedMultiple":"Видео успешно установлено: ","msgErr":"Ошибка: ","msgTermuxErr":"Не удалось скачать по ссылке: "},
-en: {"lblUrl":"Media Link","phUrl":"Paste link...","btnPaste":"Paste","lblFormat":"Format","fmtMp4":"Video MP4","fmtMp3":"Audio MP3","btnDownload":"Download","btnStop":"Stop Download","lblHistory":"Download History","lblHistoryShort":"Select","fltAll":"All","phSearchHist":"Search by title or platform...","searchFound":"Found","btnSelectMode":"Select","btnClearAll":"Clear All","btnConfirmClear":"Confirm Clear?","btnConfirmDel":"Sure?","btnSelectAll":"All","btnCancel":"Cancel","delModalTitle":"Are you sure you want to delete this?","delModalSubPrefix":"Selected files: ","btnDeleteConfirm":"Delete","histHint":"Long-press any card or tap 'Select' to delete multiple videos :)","histEmpty":"History is empty :)","histNoMatch":"No matching files :)","btnWatch":"Watch","btnSaveHist":"Download Video","btnSaveHistMp3":"Download MP3","saveModalTitle":"Save Media File","btnSaveDevice":"Save to Gallery / Downloads","btnSaveProgress":"Saving file...","btnShareFile":"Share / Save As...","btnCopySourceLink":"Copy Source Link","msgLinkCopied":"Link copied :)","btnDeleteCount":"Delete","statFiles":"Files","lblLang":"Language / Язык","lblTheme":"App Theme","lblBtnStyle":"Theme Button Style","bsGlass":"Glass","bsNeon":"Neon","bsGrad":"Gradient","bsSoft3d":"Soft 3D","lblShape":"Interface Shape","shapeRound":"Rounded","shapePill":"Capsule","shapeSharp":"Sharp","modalInstalled":"Video Installed Successfully","btnClose":"Close","btnSoundOn":"Sound","btnSoundOff":"Muted","btnFullScreen":"Fullscreen","btnExitFullScreen":"Exit Full","navLoader":"Loader","navHistory":"History","navSettings":"Settings","msgPasteFirst":"Please paste a link first :)","msgNoYt":"YouTube downloads are disabled :)","msgStartDl":"Starting download...","msgDirectDl":"Downloading media...","msgMuxing":"Merging high-quality video & audio...","msgDownloadingItem":"Downloading video","msgStopped":"Download stopped :)","msgSaved":"Saved: ","msgInstalledVideo":"Video successfully installed: ","msgInstalledAudio":"Audio successfully installed: ","msgSavedMultiple":"Videos successfully installed: ","msgErr":"Error: ","msgTermuxErr":"Failed to download link: "}
+ru: {"lblUrl":"Ссылка на медиа","phUrl":"Вставьте ссылку...","btnPaste":"Вставить","lblFormat":"Формат","fmtMp4":"Видео MP4","fmtMp3":"Аудио MP3","btnDownload":"Скачать","btnStop":"Остановить загрузку","lblHistory":"История загрузок","lblHistoryShort":"Выбор","fltAll":"Все","phSearchHist":"Поиск по названию или платформе...","searchFound":"Найдено","btnSelectMode":"Выбрать","btnClearAll":"Очистить всё","btnConfirmClear":"Точно очистить?","btnConfirmDel":"Точно?","btnSelectAll":"Все","btnCancel":"Отмена","delModalTitle":"Вы точно хотите это удалить?","delModalSubPrefix":"Выбрано файлов: ","btnDeleteConfirm":"Удалить","histHint":"Зажмите карточку пальцем или нажмите «Выбрать» для удаления нескольких видео :)","histEmpty":"История пока пуста :)","histNoMatch":"Ничего не найдено :)","btnWatch":"Смотреть","btnSaveHist":"Скачать","btnSaveHistMp3":"MP3","saveModalTitle":"Сохранение файла","btnSaveDevice":"Сохранить в Галерею / Загрузки","btnSaveProgress":"Сохранение файла...","btnShareFile":"Поделиться / Сохранить как...","btnCopySourceLink":"Скопировать исходную ссылку","msgLinkCopied":"Ссылка скопирована :)","msgAutoPasted":"Ссылка вставлена из буфера :)","btnDeleteCount":"Удалить","statFiles":"Файлов","lblLang":"Язык / Language","lblTheme":"Тема оформления","lblBtnStyle":"Стиль кнопок под тему","bsGlass":"Стекло","bsNeon":"Неон","bsGrad":"Градиент","bsSoft3d":"Объем 3D","lblShape":"Форма интерфейса","shapeRound":"Мягкая","shapePill":"Капсула","shapeSharp":"Строгая","modalInstalled":"Видео успешно установлено","btnClose":"Закрыть","btnSoundOn":"Звук","btnSoundOff":"Без звука","btnFullScreen":"Экран","btnExitFullScreen":"Обычный","navLoader":"Загрузчик","navHistory":"История","navSettings":"Настройки","msgPasteFirst":"Сначала вставьте ссылку :)","msgNoYt":"Скачивание с YouTube отключено :)","msgStartDl":"Запуск загрузки...","msgDirectDl":"Скачивание медиа...","msgMuxing":"Склейка видео и звука в высоком качестве...","msgDownloadingItem":"Скачивание видео","msgStopped":"Загрузка остановлена :)","msgSaved":"Сохранено: ","msgInstalledVideo":"Видео успешно установлено: ","msgInstalledAudio":"Аудио успешно установлено: ","msgSavedMultiple":"Видео успешно установлено: ","msgErr":"Ошибка: ","msgTermuxErr":"Не удалось скачать по ссылке: "},
+en: {"lblUrl":"Media Link","phUrl":"Paste link...","btnPaste":"Paste","lblFormat":"Format","fmtMp4":"Video MP4","fmtMp3":"Audio MP3","btnDownload":"Download","btnStop":"Stop Download","lblHistory":"Download History","lblHistoryShort":"Select","fltAll":"All","phSearchHist":"Search by title or platform...","searchFound":"Found","btnSelectMode":"Select","btnClearAll":"Clear All","btnConfirmClear":"Confirm Clear?","btnConfirmDel":"Sure?","btnSelectAll":"All","btnCancel":"Cancel","delModalTitle":"Are you sure you want to delete this?","delModalSubPrefix":"Selected files: ","btnDeleteConfirm":"Delete","histHint":"Long-press any card or tap 'Select' to delete multiple videos :)","histEmpty":"History is empty :)","histNoMatch":"No matching files :)","btnWatch":"Watch","btnSaveHist":"Save","btnSaveHistMp3":"MP3","saveModalTitle":"Save Media File","btnSaveDevice":"Save to Gallery / Downloads","btnSaveProgress":"Saving file...","btnShareFile":"Share / Save As...","btnCopySourceLink":"Copy Source Link","msgLinkCopied":"Link copied :)","msgAutoPasted":"Link pasted from clipboard :)","btnDeleteCount":"Delete","statFiles":"Files","lblLang":"Language / Язык","lblTheme":"App Theme","lblBtnStyle":"Theme Button Style","bsGlass":"Glass","bsNeon":"Neon","bsGrad":"Gradient","bsSoft3d":"Soft 3D","lblShape":"Interface Shape","shapeRound":"Rounded","shapePill":"Capsule","shapeSharp":"Sharp","modalInstalled":"Video Installed Successfully","btnClose":"Close","btnSoundOn":"Sound","btnSoundOff":"Muted","btnFullScreen":"Full","btnExitFullScreen":"Normal","navLoader":"Loader","navHistory":"History","navSettings":"Settings","msgPasteFirst":"Please paste a link first :)","msgNoYt":"YouTube downloads are disabled :)","msgStartDl":"Starting download...","msgDirectDl":"Downloading media...","msgMuxing":"Merging high-quality video & audio...","msgDownloadingItem":"Downloading video","msgStopped":"Download stopped :)","msgSaved":"Saved: ","msgInstalledVideo":"Video successfully installed: ","msgInstalledAudio":"Audio successfully installed: ","msgSavedMultiple":"Videos successfully installed: ","msgErr":"Error: ","msgTermuxErr":"Failed to download link: "}
 }; let selectMode = false; let selectedIndices = new Set(); let selectModeEnteredAt = 0; let lpTimer = null; let lpTriggered = false; let startX = 0; let startY = 0; let pillPos = 0; let pillAnimRaf = null; let cachedNavWidth = 0; let historyMemCache = null; const elUrl = document.getElementById("urlInp"); const elPlatBadge = document.getElementById("platBadge"); const elClear = document.getElementById("clearBtn"); const elDlBtn = document.getElementById("dlBtn"); const elProgWrap = document.getElementById("progWrap"); const elProgBar = document.getElementById("progBar"); const elProgText = document.getElementById("progText"); const elProgPct = document.getElementById("progPct"); const elMsgBox = document.getElementById("msgBox"); const elNavPill = document.getElementById("navPill"); const elNavTrail = document.getElementById("navTrail"); const elHistList = document.getElementById("historyList"); const elHistScrollRail = document.getElementById("histScrollRail"); const elHistScrollThumb = document.getElementById("histScrollThumb");
 function unlockAudioGesture() {
 try {
@@ -833,6 +835,12 @@ pillAnimRaf = null;
 }
 let scrollRafPending = false; let lastStuckState = false; let lastBarShowState = false; let lastBarHistOff = false;
 let histScrollStopTimer = null; let histScrollFadeTimer = null; let histThumbDragging = false; let histDragStartY = 0; let histDragStartScroll = 0;
+function triggerThumbStopBounceImmediate() {
+if (!elHistScrollThumb) return;
+elHistScrollThumb.classList.remove("stop-anim");
+void elHistScrollThumb.offsetWidth;
+elHistScrollThumb.classList.add("stop-anim");
+}
 function updateHistCustomScrollbar(fromScrollEvent = _a) {
 if (!elHistScrollRail || !elHistScrollThumb) return;
 const histPane = document.getElementById("tab-history");
@@ -869,16 +877,14 @@ if (histScrollStopTimer) clearTimeout(histScrollStopTimer);
 if (histScrollFadeTimer) clearTimeout(histScrollFadeTimer);
 if (!histThumbDragging) {
 histScrollStopTimer = setTimeout(() => {
-elHistScrollThumb.classList.remove("stop-anim");
-void elHistScrollThumb.offsetWidth;
-elHistScrollThumb.classList.add("stop-anim");
+triggerThumbStopBounceImmediate();
 histScrollFadeTimer = setTimeout(() => {
 if (!histThumbDragging) {
 elHistScrollRail.classList.remove("active");
 elHistScrollRail.classList.add("idle");
 }
-}, 950);
-}, 130);
+}, 850);
+}, 42);
 }
 } else if (!elHistScrollRail.classList.contains("active") && !elHistScrollRail.classList.contains("dragging")) {
 elHistScrollRail.classList.add("idle");
@@ -934,17 +940,16 @@ const endRailDrag = (e = _a) => {
 if (!histThumbDragging) return;
 histThumbDragging = false;
 try { if (e && e.pointerId != null) elHistScrollRail.releasePointerCapture(e.pointerId); } catch (_e) {}
+if (histScrollStopTimer) clearTimeout(histScrollStopTimer);
 elHistScrollRail.classList.remove("dragging");
-elHistScrollThumb.classList.remove("stop-anim");
-void elHistScrollThumb.offsetWidth;
-elHistScrollThumb.classList.add("stop-anim");
+triggerThumbStopBounceImmediate();
 if (histScrollFadeTimer) clearTimeout(histScrollFadeTimer);
 histScrollFadeTimer = setTimeout(() => {
 if (!histThumbDragging) {
 elHistScrollRail.classList.remove("active");
 elHistScrollRail.classList.add("idle");
 }
-}, 950);
+}, 850);
 };
 elHistScrollRail.addEventListener("pointerup", endRailDrag);
 elHistScrollRail.addEventListener("pointercancel", endRailDrag);
@@ -1024,7 +1029,43 @@ return m[0].replace(/[),.;!?]+$/, "");
 }
 return str;
 }
+function isSupportedAutoPasteUrl(urlStr = _a) {
+const u = String(urlStr || "").toLowerCase().trim();
+if (!u.startsWith("http://") && !u.startsWith("https://")) return false;
+if (u.includes("youtube.com") || u.includes("youtu.be")) return false;
+return !!(u.includes("tiktok.com") || u.includes("douyin.com") || u.includes("pinterest.") || u.includes("pin.it") || u.includes("twitter.com") || u.includes("x.com") || u.includes("instagram.com") || u.includes("vk.com") || u.includes("vkvideo.ru"));
+}
+async function tryAutoPasteClipboard() {
+if (!elUrl || elUrl.value.trim() || isDownloading) return;
+const loaderPane = document.getElementById("tab-loader");
+if (loaderPane && !loaderPane.classList.contains("active")) return;
+let rawClip = "";
+try {
+if (window.AndroidNative && typeof window.AndroidNative.getClipboard === "function") {
+rawClip = window.AndroidNative.getClipboard() || "";
+}
+} catch (_e) {}
+if (!rawClip) {
+try {
+if (navigator.clipboard && navigator.clipboard.readText) {
+rawClip = await navigator.clipboard.readText();
+}
+} catch (_e) {}
+}
+const clean = extractCleanUrl(rawClip);
+if (!clean || clean === lastAutoPastedClip || !isSupportedAutoPasteUrl(clean)) return;
+if (elUrl.value.trim()) return;
+lastAutoPastedClip = clean;
+elUrl.value = clean;
+onUrlInput(true);
+showToast(t("msgAutoPasted"));
+}
+window.addEventListener("focus", () => { setTimeout(tryAutoPasteClipboard, 120); });
+document.addEventListener("visibilitychange", () => {
+if (document.visibilityState === "visible") setTimeout(tryAutoPasteClipboard, 120);
+});
 function clearUrl() {
+if (elUrl.value.trim()) lastAutoPastedClip = elUrl.value.trim();
 elUrl.value = "";
 onUrlInput(false); lastMsgState = null; elMsgBox.style.display = "none"; elUrl.focus();
 }
@@ -1034,7 +1075,9 @@ elMsgBox.style.display = "none";
 try {
 if (window.AndroidNative && typeof window.AndroidNative.getClipboard === "function") {
 const nativeTxt = window.AndroidNative.getClipboard(); if (nativeTxt && nativeTxt.trim()) {
-elUrl.value = extractCleanUrl(nativeTxt);
+const clean = extractCleanUrl(nativeTxt);
+lastAutoPastedClip = clean;
+elUrl.value = clean;
 onUrlInput(true);
 return;
 }
@@ -1043,7 +1086,9 @@ return;
 try {
 if (navigator.clipboard && navigator.clipboard.readText) {
 const txt = await navigator.clipboard.readText(); if (txt && txt.trim()) {
-elUrl.value = extractCleanUrl(txt);
+const clean = extractCleanUrl(txt);
+lastAutoPastedClip = clean;
+elUrl.value = clean;
 onUrlInput(true);
 return;
 }
@@ -1051,7 +1096,10 @@ return;
 } catch (_e) {}
 elUrl.focus();
 setTimeout(() => {
-if (elUrl.value) elUrl.value = extractCleanUrl(elUrl.value);
+if (elUrl.value) {
+elUrl.value = extractCleanUrl(elUrl.value);
+lastAutoPastedClip = elUrl.value;
+}
 onUrlInput(true);
 }, 80);
 }
@@ -1131,6 +1179,7 @@ try {
 getHistory();
 updateHistStats();
 openOfflineDB().catch(() => {});
+tryAutoPasteClipboard();
 } catch (_e) {}
 }, 90);
 }
@@ -1516,7 +1565,7 @@ ${platName ? `<span class="badge-plat">${platName}</span>` : ""}
 <span>${it.date || ""}</span>
 </div>
 </div>
-${!selectMode ? `<div class="hist-actions"><button type="button" class="act-btn" data-dl="${i}">${isMp3 ? t("btnSaveHistMp3") : t("btnSaveHist")}</button><button type="button" class="act-btn" data-play="${i}">${t("btnWatch")}</button></div>` : ""}
+${!selectMode ? `<div class="hist-actions">${(it.source_url || it.play_url) ? `<button type="button" class="act-btn copy-btn" data-copy="${i}" title="${t("btnCopySourceLink")}">${COPY_SVG}</button>` : ""}<button type="button" class="act-btn" data-dl="${i}">${isMp3 ? t("btnSaveHistMp3") : t("btnSaveHist")}</button><button type="button" class="act-btn" data-play="${i}">${t("btnWatch")}</button></div>` : ""}
 </div>`;
 }
 if (countBadge) {
@@ -1536,7 +1585,7 @@ elHistList.innerHTML = html;
 requestAnimationFrame(() => updateHistCustomScrollbar(false));
 }
 elHistList.addEventListener("pointerdown", (e = _a) => {
-const card = e.target.closest(".hist-item"); if (!card || e.target.closest("[data-play]") || e.target.closest("[data-dl]")) return; const idx = Number(card.getAttribute("data-idx"));
+const card = e.target.closest(".hist-item"); if (!card || e.target.closest("[data-play]") || e.target.closest("[data-dl]") || e.target.closest("[data-copy]")) return; const idx = Number(card.getAttribute("data-idx"));
 startX = e.clientX;
 startY = e.clientY;
 lpTriggered = false;
@@ -1568,6 +1617,21 @@ const card = e.target.closest(".hist-item"); if (card) e.preventDefault();
 }); elHistList.addEventListener("click", (e = _a) => {
 if (lpTriggered) {
 lpTriggered = false;
+return;
+}
+const copyBtn = e.target.closest("[data-copy]"); if (copyBtn) {
+const idx = Number(copyBtn.getAttribute("data-copy"));
+const list = getHistory();
+const item = list[idx];
+if (item) {
+triggerBtnPop(copyBtn);
+const linkToCopy = item.source_url || item.play_url || "";
+if (linkToCopy) {
+lastAutoPastedClip = linkToCopy;
+copyTextUniversal(linkToCopy);
+showToast(t("msgLinkCopied"));
+}
+}
 return;
 }
 const dlBtn = e.target.closest("[data-dl]"); if (dlBtn) {
@@ -1764,31 +1828,40 @@ ${isAudio
 </div>
 <div class="player-bar">
 <button type="button" class="p-btn play-toggle" id="pPlayBtn">${PAUSE_SVG}</button>
+<button type="button" class="p-btn speed-toggle" id="pSpeedBtn">${currentPlayerSpeed}x</button>
 <button type="button" class="p-btn mute-toggle" id="pMuteBtn">${t("btnSoundOn")}</button>
 <button type="button" class="p-btn fs-toggle" id="pFsBtn" onclick="togglePlayerFullscreen()">${t("btnFullScreen")}</button>
 </div>
 </div>
 </div>
-`; const mediaEl = document.getElementById("activeMediaPlayer"); const wrapEl = document.getElementById("playerMediaWrap"); const indEl = document.getElementById("playerCenterInd"); const seekEl = document.getElementById("playerSeek"); const playBtn = document.getElementById("pPlayBtn"); const muteBtn = document.getElementById("pMuteBtn"); const timeTxt = document.getElementById("pTimeText");
+`; const mediaEl = document.getElementById("activeMediaPlayer"); const wrapEl = document.getElementById("playerMediaWrap"); const indEl = document.getElementById("playerCenterInd"); const seekEl = document.getElementById("playerSeek"); const playBtn = document.getElementById("pPlayBtn"); const speedBtn = document.getElementById("pSpeedBtn"); const muteBtn = document.getElementById("pMuteBtn"); const timeTxt = document.getElementById("pTimeText");
 activeMediaEl = mediaEl; if (!mediaEl) return;
 mediaEl.loop = true;
 mediaEl.defaultMuted = false;
 mediaEl.muted = false;
 mediaEl.volume = 1;
+try { mediaEl.defaultPlaybackRate = currentPlayerSpeed; mediaEl.playbackRate = currentPlayerSpeed; } catch (_e) {}
 let userExplicitMute = false;
 const isModalAlive = () => myModalSession === modalSessionId && modal.classList.contains("open") && activeMediaEl === mediaEl;
 let fallbackStage = 0; let seeking = false; let seekSettleUntil = 0; let lastLiveScrubTs = 0; let loopRestartLockUntil = 0;
+const applyCurrentSpeed = () => {
+try {
+if (mediaEl.defaultPlaybackRate !== currentPlayerSpeed) mediaEl.defaultPlaybackRate = currentPlayerSpeed;
+if (mediaEl.playbackRate !== currentPlayerSpeed) mediaEl.playbackRate = currentPlayerSpeed;
+} catch (_e) {}
+if (speedBtn) speedBtn.textContent = currentPlayerSpeed + "x";
+};
 const switchPlayerSource = async () => {
 if (!isModalAlive() || usingLocalBlob) return;
 if (fallbackStage === 0 && altPlayUrl && mediaEl.src !== altPlayUrl) {
-fallbackStage = 1; mediaEl.src = altPlayUrl; mediaEl.loop = true; mediaEl.muted = userExplicitMute; mediaEl.load(); if (!seeking) mediaEl.play().catch(() => {});
+fallbackStage = 1; mediaEl.src = altPlayUrl; mediaEl.loop = true; mediaEl.muted = userExplicitMute; mediaEl.load(); applyCurrentSpeed(); if (!seeking) mediaEl.play().catch(() => {});
 return;
 }
 if (fallbackStage <= 1 && sourceOriginUrl && sourceOriginUrl.toLowerCase().includes("tiktok.com")) {
 fallbackStage = 2;
 try {
 const fresh = await resolveTikTokItems(sourceOriginUrl, isAudio); if (fresh && fresh[0] && fresh[0].playUrl && isModalAlive()) {
-mediaEl.src = fresh[0].playUrl; mediaEl.loop = true; mediaEl.muted = userExplicitMute; mediaEl.load(); if (!seeking) mediaEl.play().catch(() => {});
+mediaEl.src = fresh[0].playUrl; mediaEl.loop = true; mediaEl.muted = userExplicitMute; mediaEl.load(); applyCurrentSpeed(); if (!seeking) mediaEl.play().catch(() => {});
 return;
 }
 } catch (_e) {}
@@ -1797,7 +1870,7 @@ if (fallbackStage <= 2 && sourceOriginUrl) {
 fallbackStage = 3;
 const cloudStream = `${CLOUD_API}/api/download?url=${encodeURIComponent(sourceOriginUrl)}&type=${isAudio ? "audio" : "video"}&quality=best&no_watermark=1`;
 if (mediaEl.src !== cloudStream) {
-mediaEl.src = cloudStream; mediaEl.loop = true; mediaEl.muted = userExplicitMute; mediaEl.load(); if (!seeking) mediaEl.play().catch(() => {});
+mediaEl.src = cloudStream; mediaEl.loop = true; mediaEl.muted = userExplicitMute; mediaEl.load(); applyCurrentSpeed(); if (!seeking) mediaEl.play().catch(() => {});
 }
 }
 };
@@ -1835,11 +1908,13 @@ indEl.innerHTML = iconSvg;
 indEl.classList.toggle("visible", paused && !seeking);
 }
 muteBtn.textContent = userExplicitMute ? t("btnSoundOff") : t("btnSoundOn");
+if (speedBtn) speedBtn.textContent = currentPlayerSpeed + "x";
 }; const ensureUnmutedIfDesired = () => {
 if (!userExplicitMute && mediaEl.muted) {
 mediaEl.muted = false;
 if (mediaEl.volume === 0) mediaEl.volume = 1;
 }
+applyCurrentSpeed();
 }; const restartLoopSeamless = () => {
 if (seeking) return;
 const now = performance.now();
@@ -1895,7 +1970,17 @@ startSeekLoop120Hz();
 } else { mediaEl.pause(); }
 syncUi();
 };
-wrapEl.onclick = togglePlay; playBtn.onclick = togglePlay; muteBtn.onclick = (ev = _a) => {
+wrapEl.onclick = togglePlay; playBtn.onclick = togglePlay;
+if (speedBtn) {
+speedBtn.onclick = (ev = _a) => {
+if (ev) ev.stopPropagation();
+if (!isModalAlive()) return;
+currentPlayerSpeed = currentPlayerSpeed === 1 ? 1.5 : (currentPlayerSpeed === 1.5 ? 2 : 1);
+applyCurrentSpeed();
+triggerBtnPop(speedBtn);
+};
+}
+muteBtn.onclick = (ev = _a) => {
 if (ev) ev.stopPropagation();
 if (!isModalAlive()) return;
 userExplicitMute = !userExplicitMute;
