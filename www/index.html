@@ -15,9 +15,10 @@ body[data-shape="rounded"]{--rad-card:18px;--rad-btn:12px}
 body[data-shape="pill"]{--rad-card:26px;--rad-btn:999px}
 body[data-shape="sharp"]{--rad-card:6px;--rad-btn:4px}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none}
-html{background:var(--bg);height:100%;min-height:100dvh;overscroll-behavior:none}
+html{background:var(--bg);height:100%;min-height:100dvh;overscroll-behavior:none;scrollbar-width:none;-ms-overflow-style:none}
+html::-webkit-scrollbar,body::-webkit-scrollbar{display:none;width:0;height:0}
 html.modal-lock,body.modal-lock{overflow:hidden !important;overscroll-behavior:none !important;touch-action:none}
-body.modal-lock .app-wrap,body.modal-lock .bottom-nav,body.modal-lock .top-blur-bar{pointer-events:none !important;user-select:none !important}
+body.modal-lock .app-wrap,body.modal-lock .bottom-nav,body.modal-lock .top-blur-bar,body.modal-lock .hist-scroll-rail{pointer-events:none !important;user-select:none !important}
 input{user-select:text}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;min-height:100dvh;padding:calc(env(safe-area-inset-top,12px) + 12px) 14px calc(env(safe-area-inset-bottom,0px) + 92px);overflow-x:hidden;position:relative;overscroll-behavior:none}
 body::before{content:"";position:fixed;top:-100vh;left:-50vw;right:-50vw;bottom:-100vh;background:var(--bg);pointer-events:none;z-index:-2}
@@ -127,6 +128,15 @@ body[data-theme="amoled"] #fmtGroup .seg-btn.active{background:linear-gradient(1
 .hist-meta{font-size:11px;color:var(--muted);display:flex;align-items:center;flex-wrap:wrap;gap:4px;line-height:1.2}
 .badge-fmt{font-size:10px;font-weight:700;padding:2px 6px;border-radius:6px;background:var(--glass-btn);color:var(--acc);border:1px solid var(--glass-btn-border);white-space:nowrap}
 .badge-plat{font-size:10px;font-weight:700;padding:2px 6px;border-radius:6px;background:rgba(255,255,255,0.06);color:var(--text);border:1px solid rgba(255,255,255,0.14);white-space:nowrap}
+.hist-scroll-rail{position:fixed;right:2px;top:calc(env(safe-area-inset-top,12px) + 74px);bottom:calc(env(safe-area-inset-bottom,0px) + 98px);width:24px;z-index:59;display:none;pointer-events:none;touch-action:none}
+.hist-scroll-rail.visible{display:block}
+.hist-scroll-rail.scrollable{pointer-events:auto}
+.hist-scroll-thumb{position:absolute;right:3px;top:0;width:5px;height:52px;border-radius:999px;background:linear-gradient(180deg,rgba(var(--acc-rgb),0.95) 0%,rgba(255,255,255,0.68) 100%);border:1px solid rgba(255,255,255,0.28);box-shadow:0 2px 10px rgba(var(--acc-rgb),0.36);opacity:0;transform:translate3d(0,0,0) scale3d(1,1,1);transform-origin:right center;will-change:transform,opacity,width;transition:opacity 0.28s ease,width 0.18s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.18s ease}
+.hist-scroll-rail.active .hist-scroll-thumb{opacity:0.92;width:6.5px}
+.hist-scroll-rail.dragging .hist-scroll-thumb{opacity:1;width:9px;box-shadow:0 0 16px rgba(var(--acc-rgb),0.65)}
+.hist-scroll-rail.idle .hist-scroll-thumb{opacity:0.28;width:4.5px}
+@keyframes thumbStopBounce{0%{transform:translate3d(0,var(--thumb-y,0px),0) scale3d(1.32,0.88,1)}55%{transform:translate3d(0,var(--thumb-y,0px),0) scale3d(0.92,1.07,1)}100%{transform:translate3d(0,var(--thumb-y,0px),0) scale3d(1,1,1)}}
+.hist-scroll-thumb.stop-anim{animation:thumbStopBounce 0.34s cubic-bezier(0.34,1.56,0.64,1)}
 .modal-overlay{position:fixed;top:-80px;bottom:-80px;left:-20px;right:-20px;width:calc(100vw + 40px);height:calc(100vh + 160px);height:calc(100dvh + 160px);background:rgba(0,0,0,0.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:94px 34px;z-index:260;overscroll-behavior:none;touch-action:none}
 .modal-overlay.open{display:flex}
 .modal-card{width:100%;max-width:440px;background:var(--card);border:1px solid var(--border);border-radius:var(--rad-card);padding:13px;box-shadow:0 20px 50px rgba(0,0,0,0.72);animation:msgSlideIn 0.22s cubic-bezier(0.34,1.56,0.64,1) both}
@@ -134,21 +144,21 @@ body[data-theme="amoled"] #fmtGroup .seg-btn.active{background:linear-gradient(1
 .modal-title{flex:0 1 auto;min-width:0;font-size:13px;font-weight:700;color:var(--text);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .modal-actions{flex:1;display:flex;align-items:center;justify-content:flex-end;min-width:118px}
 .modal-close-btn{width:100%;padding:8px 18px;font-size:12.5px;font-weight:700}
-.modal-body{width:100%;background:#000;border-radius:12px;overflow:hidden;border:1px solid var(--border)}
-.player-stage{position:relative;width:100%;background:#000;display:flex;flex-direction:column}
-.player-media-wrap{position:relative;width:100%;height:50vh;max-height:400px;min-height:210px;background:#000;display:flex;align-items:center;justify-content:center;cursor:pointer}
-.player-media-wrap.audio-mode{height:140px;min-height:140px}
-.player-media-wrap video{width:100%;height:100%;object-fit:contain;background:#000;display:block;outline:none}
+.modal-body{width:100%;background:#000;border-radius:12px;overflow:hidden;border:1px solid var(--border);contain:layout paint}
+.player-stage{position:relative;width:100%;background:#000;display:flex;flex-direction:column;overflow:hidden}
+.player-media-wrap{position:relative;width:100%;height:330px;max-height:48vh;min-height:240px;background:#000;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;contain:strict}
+.player-media-wrap.audio-mode{height:140px;min-height:140px;max-height:140px}
+.player-media-wrap video{position:absolute;top:0;left:0;right:0;bottom:0;width:100% !important;height:100% !important;max-width:100% !important;max-height:100% !important;object-fit:contain;background:#000;display:block;outline:none;transform:translateZ(0)}
 .player-media-wrap audio{display:none}
-.player-center-ind{position:absolute;width:54px;height:54px;border-radius:50%;background:rgba(0,0,0,0.65);border:1.5px solid var(--glass-active-border);color:#fff;font-size:18px;font-weight:800;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:opacity 0.12s ease}
+.player-center-ind{position:absolute;z-index:3;width:54px;height:54px;border-radius:50%;background:rgba(0,0,0,0.65);border:1.5px solid var(--glass-active-border);color:#fff;font-size:18px;font-weight:800;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:opacity 0.12s ease}
 .player-center-ind.visible{opacity:1}
-.player-controls{background:var(--card);border-top:1px solid var(--border);padding:11px 12px;display:flex;flex-direction:column;gap:9px}
-.player-seek-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 2px}
-.player-seek{-webkit-appearance:none;appearance:none;flex:1;height:6px;border-radius:999px;background:linear-gradient(
-    to right,var(--acc) 0%,var(--acc) var(--seek-pct,0%),rgba(255,255,255,0.2) var(--seek-pct,0%),rgba(255,255,255,0.2) 100%
-  );outline:none;cursor:pointer;touch-action:none}
-.player-seek::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:15px;height:15px;border-radius:50%;background:#ffffff;border:2.5px solid var(--acc);box-shadow:0 1px 6px rgba(0,0,0,0.55);transition:transform 0.1s ease}
-.player-seek:active::-webkit-slider-thumb{transform:scale(1.22)}
+.player-controls{background:var(--card);border-top:1px solid var(--border);padding:11px 12px;display:flex;flex-direction:column;gap:9px;position:relative;z-index:4}
+.player-seek-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 2px;min-height:28px}
+.player-seek{-webkit-appearance:none;appearance:none;flex:1;height:26px;border-radius:999px;background:linear-gradient(
+    to right,var(--acc) 0%,var(--acc) var(--seek-pct,0%),rgba(255,255,255,0.22) var(--seek-pct,0%),rgba(255,255,255,0.22) 100%
+  ) no-repeat center/100% 6px;outline:none;cursor:pointer;touch-action:none;margin:0}
+.player-seek::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:50%;background:#ffffff;border:3px solid var(--acc);box-shadow:0 2px 8px rgba(0,0,0,0.65);transition:transform 0.12s cubic-bezier(0.34,1.56,0.64,1)}
+.player-seek:active::-webkit-slider-thumb{transform:scale(1.26)}
 .player-bar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%}
 .p-btn{color:var(--text);width:100%;height:38px;padding:0 12px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:transform 0.14s cubic-bezier(0.34,1.56,0.64,1)}
 .p-btn.play-toggle svg{width:22px;height:22px;fill:currentColor;display:block;flex-shrink:0}
@@ -162,17 +172,24 @@ body[data-theme="amoled"] #fmtGroup .seg-btn.active{background:linear-gradient(1
 .modal-overlay.fs-mode .modal-head{display:none !important}
 .modal-overlay.fs-mode .modal-body{flex:1;display:flex;flex-direction:column;border:none;border-radius:0;position:relative}
 .modal-overlay.fs-mode .player-stage{flex:1;height:100%;position:relative}
-.modal-overlay.fs-mode .player-media-wrap{flex:1;width:100%;height:100%;max-height:none}
+.modal-overlay.fs-mode .player-media-wrap{flex:1;width:100%;height:100%;max-height:none;min-height:0}
 .modal-overlay.fs-mode .player-controls{position:absolute;left:0;right:0;bottom:0;z-index:6;background:transparent !important;border-top:none !important;box-shadow:none !important;padding:12px 14px calc(env(safe-area-inset-bottom,12px) + 12px);gap:10px}
-.modal-overlay.fs-mode .player-controls .player-seek-row{background:rgba(255,255,255,0.06);backdrop-filter:blur(10px) saturate(140%);-webkit-backdrop-filter:blur(10px) saturate(140%);border:1px solid rgba(255,255,255,0.16);border-radius:999px;padding:7px 12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.14),0 4px 14px rgba(0,0,0,0.22)}
+.modal-overlay.fs-mode .player-controls .player-seek-row{background:rgba(255,255,255,0.06);backdrop-filter:blur(10px) saturate(140%);-webkit-backdrop-filter:blur(10px) saturate(140%);border:1px solid rgba(255,255,255,0.16);border-radius:999px;padding:4px 12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.14),0 4px 14px rgba(0,0,0,0.22)}
 .modal-overlay.fs-mode .player-controls .p-btn{background:rgba(255,255,255,0.07) !important;backdrop-filter:blur(12px) saturate(150%);-webkit-backdrop-filter:blur(12px) saturate(150%);border:1px solid rgba(255,255,255,0.20) !important;color:rgba(255,255,255,0.92) !important;box-shadow:inset 0 1px 0 rgba(255,255,255,0.18),0 4px 14px rgba(0,0,0,0.22) !important;text-shadow:0 1px 3px rgba(0,0,0,0.65) !important}
 .modal-overlay.fs-mode .player-controls .p-btn:active{background:rgba(255,255,255,0.15) !important;border-color:rgba(255,255,255,0.36) !important}
 .modal-overlay.fs-mode .player-controls .p-time{color:rgba(255,255,255,0.88) !important;text-shadow:0 1px 3px rgba(0,0,0,0.75)}
-.modal-overlay.fs-mode .player-controls .player-seek{height:5px;background:linear-gradient(to right,rgba(var(--acc-rgb),0.58) 0%,rgba(var(--acc-rgb),0.58) var(--seek-pct,0%),rgba(255,255,255,0.18) var(--seek-pct,0%),rgba(255,255,255,0.18) 100%) !important}
-.modal-overlay.fs-mode .player-controls .player-seek::-webkit-slider-thumb{width:14px;height:14px;background:rgba(255,255,255,0.78);border:2px solid rgba(var(--acc-rgb),0.75);box-shadow:0 0 8px rgba(0,0,0,0.45)}
+.modal-overlay.fs-mode .player-controls .player-seek{height:24px;background:linear-gradient(to right,rgba(var(--acc-rgb),0.72) 0%,rgba(var(--acc-rgb),0.72) var(--seek-pct,0%),rgba(255,255,255,0.22) var(--seek-pct,0%),rgba(255,255,255,0.22) 100%) no-repeat center/100% 5px !important}
+.modal-overlay.fs-mode .player-controls .player-seek::-webkit-slider-thumb{width:16px;height:16px;background:#ffffff;border:2.5px solid rgba(var(--acc-rgb),0.9);box-shadow:0 0 8px rgba(0,0,0,0.55)}
 .hist-actions{display:flex;align-items:center;gap:5px;flex-shrink:0}
 .hist-actions .act-btn{padding:6px 9px;font-size:11.5px;white-space:nowrap}
 .save-modal-card{max-width:360px;padding:16px}
+.del-modal-card{max-width:340px;padding:18px 16px;text-align:center}
+.del-modal-title{font-size:15px;font-weight:800;color:var(--text);margin-bottom:6px;line-height:1.3}
+.del-modal-sub{font-size:12.5px;color:var(--muted);margin-bottom:16px;line-height:1.35}
+.del-modal-btns{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.del-modal-btn{padding:12px 10px;border-radius:var(--rad-btn);font-size:13.5px;font-weight:700;cursor:pointer;border:1px solid var(--glass-btn-border);background:var(--glass-btn);color:var(--text);transition:transform 0.14s cubic-bezier(0.34,1.56,0.64,1)}
+.del-modal-btn:active{transform:scale3d(0.95,0.95,1)}
+.del-modal-btn.confirm{background:linear-gradient(135deg,rgba(239,68,68,0.9),rgba(185,28,28,0.72));border-color:rgba(252,165,165,0.45);color:#ffffff;box-shadow:inset 0 1px 0 rgba(255,255,255,0.25),0 6px 16px rgba(239,68,68,0.28)}
 .save-file-box{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:11px 12px;margin:10px 0 14px;display:flex;align-items:center;gap:10px}
 .save-file-thumb{width:42px;height:42px;border-radius:8px;background:var(--card-2);object-fit:cover;flex-shrink:0;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--acc)}
 .save-file-meta{flex:1;min-width:0}
@@ -333,6 +350,21 @@ oninput="onUrlInput()"
 </div>
 </div>
 </div>
+<!-- Центральное модальное окно подтверждения удаления выбранных файлов -->
+<div id="delConfirmModal" class="modal-overlay" onclick="onDelModalOverlayClick(this, arguments[0])">
+<div class="modal-card del-modal-card">
+<div class="del-modal-title" id="delModalTitle" data-i18n="delModalTitle">Вы точно хотите это удалить?</div>
+<div class="del-modal-sub" id="delModalSub">Выбрано файлов: 1</div>
+<div class="del-modal-btns">
+<button type="button" class="del-modal-btn" data-i18n="btnCancel" onclick="closeDelConfirmModal()">Отмена</button>
+<button type="button" class="del-modal-btn confirm" id="delModalConfirmBtn" data-i18n="btnDeleteConfirm" onclick="confirmDeleteSelectedHistory()">Удалить</button>
+</div>
+</div>
+</div>
+<!-- Кастомный интерактивный ползунок прокрутки Истории -->
+<div id="histScrollRail" class="hist-scroll-rail">
+<div id="histScrollThumb" class="hist-scroll-thumb"></div>
+</div>
 <div id="toastPop" class="toast-pop"></div>
 <!-- Нижняя панель навигации -->
 <nav class="bottom-nav" id="bottomNav">
@@ -352,9 +384,9 @@ theme: "crimson",
 btnstyle: "glass",
 shape: "rounded"
 }; const I18N = {
-ru: {"lblUrl":"Ссылка на медиа","phUrl":"Вставьте ссылку...","btnPaste":"Вставить","lblFormat":"Формат","fmtMp4":"Видео MP4","fmtMp3":"Аудио MP3","btnDownload":"Скачать","btnStop":"Остановить загрузку","lblHistory":"История загрузок","lblHistoryShort":"Выбор","fltAll":"Все","phSearchHist":"Поиск по названию или платформе...","searchFound":"Найдено","btnSelectMode":"Выбрать","btnClearAll":"Очистить всё","btnConfirmClear":"Точно очистить?","btnConfirmDel":"Точно?","btnSelectAll":"Все","btnCancel":"Отмена","histHint":"Зажмите карточку пальцем или нажмите «Выбрать» для удаления нескольких видео :)","histEmpty":"История пока пуста :)","histNoMatch":"Ничего не найдено :)","btnWatch":"Смотреть","btnSaveHist":"Скачать видео","btnSaveHistMp3":"Скачать MP3","saveModalTitle":"Сохранение файла","btnSaveDevice":"Сохранить в Галерею / Загрузки","btnSaveProgress":"Сохранение файла...","btnShareFile":"Поделиться / Сохранить как...","btnCopySourceLink":"Скопировать исходную ссылку","msgLinkCopied":"Ссылка скопирована :)","btnDeleteCount":"Удалить","statFiles":"Файлов","lblLang":"Язык / Language","lblTheme":"Тема оформления","lblBtnStyle":"Стиль кнопок под тему","bsGlass":"Стекло","bsNeon":"Неон","bsGrad":"Градиент","bsSoft3d":"Объем 3D","lblShape":"Форма интерфейса","shapeRound":"Мягкая","shapePill":"Капсула","shapeSharp":"Строгая","modalInstalled":"Видео успешно установлено","btnClose":"Закрыть","btnSoundOn":"Звук","btnSoundOff":"Без звука","btnFullScreen":"Весь экран","btnExitFullScreen":"Обычный вид","navLoader":"Загрузчик","navHistory":"История","navSettings":"Настройки","msgPasteFirst":"Сначала вставьте ссылку :)","msgNoYt":"Скачивание с YouTube отключено :)","msgStartDl":"Запуск загрузки...","msgDirectDl":"Скачивание медиа...","msgMuxing":"Склейка видео и звука в высоком качестве...","msgDownloadingItem":"Скачивание видео","msgStopped":"Загрузка остановлена :)","msgSaved":"Сохранено: ","msgInstalledVideo":"Видео успешно установлено: ","msgInstalledAudio":"Аудио успешно установлено: ","msgSavedMultiple":"Видео успешно установлено: ","msgErr":"Ошибка: ","msgTermuxErr":"Не удалось скачать по ссылке: "},
-en: {"lblUrl":"Media Link","phUrl":"Paste link...","btnPaste":"Paste","lblFormat":"Format","fmtMp4":"Video MP4","fmtMp3":"Audio MP3","btnDownload":"Download","btnStop":"Stop Download","lblHistory":"Download History","lblHistoryShort":"Select","fltAll":"All","phSearchHist":"Search by title or platform...","searchFound":"Found","btnSelectMode":"Select","btnClearAll":"Clear All","btnConfirmClear":"Confirm Clear?","btnConfirmDel":"Sure?","btnSelectAll":"All","btnCancel":"Cancel","histHint":"Long-press any card or tap 'Select' to delete multiple videos :)","histEmpty":"History is empty :)","histNoMatch":"No matching files :)","btnWatch":"Watch","btnSaveHist":"Download Video","btnSaveHistMp3":"Download MP3","saveModalTitle":"Save Media File","btnSaveDevice":"Save to Gallery / Downloads","btnSaveProgress":"Saving file...","btnShareFile":"Share / Save As...","btnCopySourceLink":"Copy Source Link","msgLinkCopied":"Link copied :)","btnDeleteCount":"Delete","statFiles":"Files","lblLang":"Language / Язык","lblTheme":"App Theme","lblBtnStyle":"Theme Button Style","bsGlass":"Glass","bsNeon":"Neon","bsGrad":"Gradient","bsSoft3d":"Soft 3D","lblShape":"Interface Shape","shapeRound":"Rounded","shapePill":"Capsule","shapeSharp":"Sharp","modalInstalled":"Video Installed Successfully","btnClose":"Close","btnSoundOn":"Sound","btnSoundOff":"Muted","btnFullScreen":"Fullscreen","btnExitFullScreen":"Exit Full","navLoader":"Loader","navHistory":"History","navSettings":"Settings","msgPasteFirst":"Please paste a link first :)","msgNoYt":"YouTube downloads are disabled :)","msgStartDl":"Starting download...","msgDirectDl":"Downloading media...","msgMuxing":"Merging high-quality video & audio...","msgDownloadingItem":"Downloading video","msgStopped":"Download stopped :)","msgSaved":"Saved: ","msgInstalledVideo":"Video successfully installed: ","msgInstalledAudio":"Audio successfully installed: ","msgSavedMultiple":"Videos successfully installed: ","msgErr":"Error: ","msgTermuxErr":"Failed to download link: "}
-}; let selectMode = false; let selectedIndices = new Set(); let delConfirmArmed = false; let delConfirmTimer = null; let selectModeEnteredAt = 0; let lpTimer = null; let lpTriggered = false; let startX = 0; let startY = 0; let pillPos = 0; let pillAnimRaf = null; let cachedNavWidth = 0; let historyMemCache = null; const elUrl = document.getElementById("urlInp"); const elPlatBadge = document.getElementById("platBadge"); const elClear = document.getElementById("clearBtn"); const elDlBtn = document.getElementById("dlBtn"); const elProgWrap = document.getElementById("progWrap"); const elProgBar = document.getElementById("progBar"); const elProgText = document.getElementById("progText"); const elProgPct = document.getElementById("progPct"); const elMsgBox = document.getElementById("msgBox"); const elNavPill = document.getElementById("navPill"); const elNavTrail = document.getElementById("navTrail"); const elHistList = document.getElementById("historyList");
+ru: {"lblUrl":"Ссылка на медиа","phUrl":"Вставьте ссылку...","btnPaste":"Вставить","lblFormat":"Формат","fmtMp4":"Видео MP4","fmtMp3":"Аудио MP3","btnDownload":"Скачать","btnStop":"Остановить загрузку","lblHistory":"История загрузок","lblHistoryShort":"Выбор","fltAll":"Все","phSearchHist":"Поиск по названию или платформе...","searchFound":"Найдено","btnSelectMode":"Выбрать","btnClearAll":"Очистить всё","btnConfirmClear":"Точно очистить?","btnConfirmDel":"Точно?","btnSelectAll":"Все","btnCancel":"Отмена","delModalTitle":"Вы точно хотите это удалить?","delModalSubPrefix":"Выбрано файлов: ","btnDeleteConfirm":"Удалить","histHint":"Зажмите карточку пальцем или нажмите «Выбрать» для удаления нескольких видео :)","histEmpty":"История пока пуста :)","histNoMatch":"Ничего не найдено :)","btnWatch":"Смотреть","btnSaveHist":"Скачать видео","btnSaveHistMp3":"Скачать MP3","saveModalTitle":"Сохранение файла","btnSaveDevice":"Сохранить в Галерею / Загрузки","btnSaveProgress":"Сохранение файла...","btnShareFile":"Поделиться / Сохранить как...","btnCopySourceLink":"Скопировать исходную ссылку","msgLinkCopied":"Ссылка скопирована :)","btnDeleteCount":"Удалить","statFiles":"Файлов","lblLang":"Язык / Language","lblTheme":"Тема оформления","lblBtnStyle":"Стиль кнопок под тему","bsGlass":"Стекло","bsNeon":"Неон","bsGrad":"Градиент","bsSoft3d":"Объем 3D","lblShape":"Форма интерфейса","shapeRound":"Мягкая","shapePill":"Капсула","shapeSharp":"Строгая","modalInstalled":"Видео успешно установлено","btnClose":"Закрыть","btnSoundOn":"Звук","btnSoundOff":"Без звука","btnFullScreen":"Весь экран","btnExitFullScreen":"Обычный вид","navLoader":"Загрузчик","navHistory":"История","navSettings":"Настройки","msgPasteFirst":"Сначала вставьте ссылку :)","msgNoYt":"Скачивание с YouTube отключено :)","msgStartDl":"Запуск загрузки...","msgDirectDl":"Скачивание медиа...","msgMuxing":"Склейка видео и звука в высоком качестве...","msgDownloadingItem":"Скачивание видео","msgStopped":"Загрузка остановлена :)","msgSaved":"Сохранено: ","msgInstalledVideo":"Видео успешно установлено: ","msgInstalledAudio":"Аудио успешно установлено: ","msgSavedMultiple":"Видео успешно установлено: ","msgErr":"Ошибка: ","msgTermuxErr":"Не удалось скачать по ссылке: "},
+en: {"lblUrl":"Media Link","phUrl":"Paste link...","btnPaste":"Paste","lblFormat":"Format","fmtMp4":"Video MP4","fmtMp3":"Audio MP3","btnDownload":"Download","btnStop":"Stop Download","lblHistory":"Download History","lblHistoryShort":"Select","fltAll":"All","phSearchHist":"Search by title or platform...","searchFound":"Found","btnSelectMode":"Select","btnClearAll":"Clear All","btnConfirmClear":"Confirm Clear?","btnConfirmDel":"Sure?","btnSelectAll":"All","btnCancel":"Cancel","delModalTitle":"Are you sure you want to delete this?","delModalSubPrefix":"Selected files: ","btnDeleteConfirm":"Delete","histHint":"Long-press any card or tap 'Select' to delete multiple videos :)","histEmpty":"History is empty :)","histNoMatch":"No matching files :)","btnWatch":"Watch","btnSaveHist":"Download Video","btnSaveHistMp3":"Download MP3","saveModalTitle":"Save Media File","btnSaveDevice":"Save to Gallery / Downloads","btnSaveProgress":"Saving file...","btnShareFile":"Share / Save As...","btnCopySourceLink":"Copy Source Link","msgLinkCopied":"Link copied :)","btnDeleteCount":"Delete","statFiles":"Files","lblLang":"Language / Язык","lblTheme":"App Theme","lblBtnStyle":"Theme Button Style","bsGlass":"Glass","bsNeon":"Neon","bsGrad":"Gradient","bsSoft3d":"Soft 3D","lblShape":"Interface Shape","shapeRound":"Rounded","shapePill":"Capsule","shapeSharp":"Sharp","modalInstalled":"Video Installed Successfully","btnClose":"Close","btnSoundOn":"Sound","btnSoundOff":"Muted","btnFullScreen":"Fullscreen","btnExitFullScreen":"Exit Full","navLoader":"Loader","navHistory":"History","navSettings":"Settings","msgPasteFirst":"Please paste a link first :)","msgNoYt":"YouTube downloads are disabled :)","msgStartDl":"Starting download...","msgDirectDl":"Downloading media...","msgMuxing":"Merging high-quality video & audio...","msgDownloadingItem":"Downloading video","msgStopped":"Download stopped :)","msgSaved":"Saved: ","msgInstalledVideo":"Video successfully installed: ","msgInstalledAudio":"Audio successfully installed: ","msgSavedMultiple":"Videos successfully installed: ","msgErr":"Error: ","msgTermuxErr":"Failed to download link: "}
+}; let selectMode = false; let selectedIndices = new Set(); let selectModeEnteredAt = 0; let lpTimer = null; let lpTriggered = false; let startX = 0; let startY = 0; let pillPos = 0; let pillAnimRaf = null; let cachedNavWidth = 0; let historyMemCache = null; const elUrl = document.getElementById("urlInp"); const elPlatBadge = document.getElementById("platBadge"); const elClear = document.getElementById("clearBtn"); const elDlBtn = document.getElementById("dlBtn"); const elProgWrap = document.getElementById("progWrap"); const elProgBar = document.getElementById("progBar"); const elProgText = document.getElementById("progText"); const elProgPct = document.getElementById("progPct"); const elMsgBox = document.getElementById("msgBox"); const elNavPill = document.getElementById("navPill"); const elNavTrail = document.getElementById("navTrail"); const elHistList = document.getElementById("historyList"); const elHistScrollRail = document.getElementById("histScrollRail"); const elHistScrollThumb = document.getElementById("histScrollThumb");
 function unlockAudioGesture() {
 try {
 const AC = window.AudioContext || window.webkitAudioContext;
@@ -573,10 +605,14 @@ activeBlobObjectUrl = null;
 }
 const body = document.getElementById("modalBody"); if (body) body.innerHTML = "";
 }
-function syncModalScrollLock() {
+function isAnyModalOpen() {
 const m1 = document.getElementById("mediaModal");
 const m2 = document.getElementById("saveModal");
-const isOpen = !!((m1 && m1.classList.contains("open")) || (m2 && m2.classList.contains("open")));
+const m3 = document.getElementById("delConfirmModal");
+return !!((m1 && m1.classList.contains("open")) || (m2 && m2.classList.contains("open")) || (m3 && m3.classList.contains("open")));
+}
+function syncModalScrollLock() {
+const isOpen = isAnyModalOpen();
 document.documentElement.classList.toggle("modal-lock", isOpen);
 if (document.body) document.body.classList.toggle("modal-lock", isOpen);
 }
@@ -587,7 +623,7 @@ history.pushState({ modalOpen: true }, "");
 }
 } catch (_e) {}
 }
-["mediaModal", "saveModal"].forEach((id = _a) => {
+["mediaModal", "saveModal", "delConfirmModal"].forEach((id = _a) => {
 const el = document.getElementById(id);
 if (!el) return;
 el.addEventListener("touchmove", (e = _a) => {
@@ -599,6 +635,10 @@ if (e.cancelable) e.preventDefault();
 }, { passive: false });
 });
 window.addEventListener("popstate", () => {
+const delMod = document.getElementById("delConfirmModal");
+if (delMod && delMod.classList.contains("open")) {
+delMod.classList.remove("open");
+}
 const saveMod = document.getElementById("saveModal");
 if (saveMod && saveMod.classList.contains("open")) {
 saveMod.classList.remove("open");
@@ -645,12 +685,12 @@ function updateDelBtnLabel() {
 const btn = document.getElementById("delSelectedBtn");
 if (!btn) return;
 const cnt = selectedIndices.size;
-btn.textContent = delConfirmArmed ? `${t("btnConfirmDel")} (${cnt})` : `${t("btnDeleteCount")} (${cnt})`;
-btn.classList.toggle("confirm-warn", delConfirmArmed);
+btn.textContent = `${t("btnDeleteCount")} (${cnt})`;
+btn.classList.remove("confirm-warn");
+const subEl = document.getElementById("delModalSub");
+if (subEl) subEl.textContent = `${t("delModalSubPrefix")}${cnt}`;
 }
 function resetDelConfirmState() {
-delConfirmArmed = false;
-if (delConfirmTimer) { clearTimeout(delConfirmTimer); delConfirmTimer = null; }
 updateDelBtnLabel();
 }
 function resetClearConfirmState() {
@@ -663,7 +703,7 @@ btn.textContent = t("btnClearAll");
 }
 resetDelConfirmState();
 }
-function applyLang() {
+function applyLang(skipHistStats = _a) {
 document.documentElement.lang = prefs.lang;
 document.querySelectorAll("[data-i18n]").forEach((el) => {
 const key = el.getAttribute("data-i18n");
@@ -682,7 +722,7 @@ const elHistSearch = document.getElementById("histSearchInp");
 if (elHistSearch) elHistSearch.placeholder = t("phSearchHist");
 elUrl.placeholder = t("phUrl");
 updateMainBtnState();
-updateHistStats();
+if (!skipHistStats) updateHistStats();
 refreshMsgBoxLang();
 syncFullscreenUiState();
 if (document.getElementById("tab-history").classList.contains("active")) { renderHistory(false, true); }
@@ -745,7 +785,7 @@ pillAnimRaf();
 pillAnimRaf = null;
 }
 const navEl = document.getElementById("bottomNav");
-const navWidth = navEl ? navEl.clientWidth : (cachedNavWidth || 360);
+const navWidth = navEl ? (navEl.clientWidth || cachedNavWidth || 360) : (cachedNavWidth || 360);
 cachedNavWidth = navWidth;
 const pillWidth = (navWidth - 24) / 3; const stepPx = pillWidth + 6; const fromPos = pillPos; const toPos = toIdx;
 if (immediate || Math.abs(toPos - fromPos) < 0.001) {
@@ -791,13 +831,131 @@ elNavTrail.style.transform = `translate3d(${toPos * stepPx}px, 0, 0) scale3d(1, 
 pillAnimRaf = null;
 });
 }
+let scrollRafPending = false; let lastStuckState = false; let lastBarShowState = false; let lastBarHistOff = false;
+let histScrollStopTimer = null; let histScrollFadeTimer = null; let histThumbDragging = false; let histDragStartY = 0; let histDragStartScroll = 0;
+function updateHistCustomScrollbar(fromScrollEvent = _a) {
+if (!elHistScrollRail || !elHistScrollThumb) return;
+const histPane = document.getElementById("tab-history");
+const isHistActive = !!(histPane && histPane.classList.contains("active"));
+if (!isHistActive) {
+elHistScrollRail.classList.remove("visible", "scrollable", "active", "dragging", "idle");
+return;
+}
+elHistScrollRail.classList.add("visible");
+const docEl = document.documentElement;
+const scrollHeight = Math.max(docEl.scrollHeight, document.body ? document.body.scrollHeight : 0);
+const viewHeight = window.innerHeight || docEl.clientHeight || 1;
+const maxScroll = scrollHeight - viewHeight;
+if (maxScroll <= 24) {
+elHistScrollRail.classList.remove("scrollable", "active", "dragging", "idle");
+elHistScrollThumb.style.opacity = "0";
+return;
+}
+elHistScrollRail.classList.add("scrollable");
+elHistScrollThumb.style.opacity = "";
+const railHeight = elHistScrollRail.clientHeight || Math.max(120, viewHeight - 180);
+const thumbHeight = Math.max(42, Math.min(96, Math.round((viewHeight / scrollHeight) * railHeight)));
+elHistScrollThumb.style.height = thumbHeight + "px";
+const maxThumbY = Math.max(1, railHeight - thumbHeight);
+const scrollTop = Math.max(0, Math.min(maxScroll, window.scrollY || docEl.scrollTop || 0));
+const thumbY = (scrollTop / maxScroll) * maxThumbY;
+elHistScrollThumb.style.setProperty("--thumb-y", `${thumbY.toFixed(1)}px`);
+elHistScrollThumb.style.transform = `translate3d(0, ${thumbY.toFixed(1)}px, 0) scale3d(1, 1, 1)`;
+if (fromScrollEvent || histThumbDragging) {
+elHistScrollThumb.classList.remove("stop-anim");
+elHistScrollRail.classList.remove("idle");
+elHistScrollRail.classList.add("active");
+if (histScrollStopTimer) clearTimeout(histScrollStopTimer);
+if (histScrollFadeTimer) clearTimeout(histScrollFadeTimer);
+if (!histThumbDragging) {
+histScrollStopTimer = setTimeout(() => {
+elHistScrollThumb.classList.remove("stop-anim");
+void elHistScrollThumb.offsetWidth;
+elHistScrollThumb.classList.add("stop-anim");
+histScrollFadeTimer = setTimeout(() => {
+if (!histThumbDragging) {
+elHistScrollRail.classList.remove("active");
+elHistScrollRail.classList.add("idle");
+}
+}, 950);
+}, 130);
+}
+} else if (!elHistScrollRail.classList.contains("active") && !elHistScrollRail.classList.contains("dragging")) {
+elHistScrollRail.classList.add("idle");
+}
+}
+if (elHistScrollRail && elHistScrollThumb) {
+const applyRailDrag = (clientY = _a) => {
+const docEl = document.documentElement;
+const scrollHeight = Math.max(docEl.scrollHeight, document.body ? document.body.scrollHeight : 0);
+const viewHeight = window.innerHeight || docEl.clientHeight || 1;
+const maxScroll = Math.max(0, scrollHeight - viewHeight);
+if (maxScroll <= 0) return;
+const rect = elHistScrollRail.getBoundingClientRect();
+const thumbH = elHistScrollThumb.offsetHeight || 52;
+const usable = Math.max(1, rect.height - thumbH);
+const relY = Math.max(0, Math.min(usable, clientY - rect.top - thumbH / 2));
+const targetScroll = (relY / usable) * maxScroll;
+window.scrollTo(0, targetScroll);
+updateHistCustomScrollbar(true);
+};
+elHistScrollRail.addEventListener("pointerdown", (e = _a) => {
+if (!elHistScrollRail.classList.contains("scrollable")) return;
+histThumbDragging = true;
+histDragStartY = e.clientY;
+histDragStartScroll = window.scrollY || document.documentElement.scrollTop || 0;
+if (histScrollStopTimer) clearTimeout(histScrollStopTimer);
+if (histScrollFadeTimer) clearTimeout(histScrollFadeTimer);
+elHistScrollThumb.classList.remove("stop-anim");
+elHistScrollRail.classList.remove("idle");
+elHistScrollRail.classList.add("active", "dragging");
+try { elHistScrollRail.setPointerCapture(e.pointerId); } catch (_e) {}
+if (e.target !== elHistScrollThumb) {
+applyRailDrag(e.clientY);
+}
+if (e.cancelable) e.preventDefault();
+});
+elHistScrollRail.addEventListener("pointermove", (e = _a) => {
+if (!histThumbDragging) return;
+const docEl = document.documentElement;
+const scrollHeight = Math.max(docEl.scrollHeight, document.body ? document.body.scrollHeight : 0);
+const viewHeight = window.innerHeight || docEl.clientHeight || 1;
+const maxScroll = Math.max(0, scrollHeight - viewHeight);
+const railH = elHistScrollRail.clientHeight || 200;
+const thumbH = elHistScrollThumb.offsetHeight || 52;
+const usable = Math.max(1, railH - thumbH);
+const deltaY = e.clientY - histDragStartY;
+const nextScroll = Math.max(0, Math.min(maxScroll, histDragStartScroll + (deltaY / usable) * maxScroll));
+window.scrollTo(0, nextScroll);
+updateHistCustomScrollbar(true);
+if (e.cancelable) e.preventDefault();
+});
+const endRailDrag = (e = _a) => {
+if (!histThumbDragging) return;
+histThumbDragging = false;
+try { if (e && e.pointerId != null) elHistScrollRail.releasePointerCapture(e.pointerId); } catch (_e) {}
+elHistScrollRail.classList.remove("dragging");
+elHistScrollThumb.classList.remove("stop-anim");
+void elHistScrollThumb.offsetWidth;
+elHistScrollThumb.classList.add("stop-anim");
+if (histScrollFadeTimer) clearTimeout(histScrollFadeTimer);
+histScrollFadeTimer = setTimeout(() => {
+if (!histThumbDragging) {
+elHistScrollRail.classList.remove("active");
+elHistScrollRail.classList.add("idle");
+}
+}, 950);
+};
+elHistScrollRail.addEventListener("pointerup", endRailDrag);
+elHistScrollRail.addEventListener("pointercancel", endRailDrag);
+}
 window.addEventListener("resize", () => {
 const navEl = document.getElementById("bottomNav");
 cachedNavWidth = navEl ? navEl.clientWidth : 360;
 animateLiquidPill(Math.round(pillPos), true);
+updateHistCustomScrollbar(false);
 });
-let scrollRafPending = false; let lastStuckState = false; let lastBarShowState = false; let lastBarHistOff = false;
-function updateTopBlurBar() {
+function updateTopBlurBar(fromScrollEvent = _a) {
 const bar = document.getElementById("topBlurBar");
 const histPane = document.getElementById("tab-history");
 const histHead = document.getElementById("histHeadBar");
@@ -825,13 +983,16 @@ lastBarShowState = nextShow;
 bar.classList.toggle("show", nextShow);
 }
 }
+if (isHistActive) {
+updateHistCustomScrollbar(!!fromScrollEvent);
+}
 }
 window.addEventListener("scroll", () => {
 if (!scrollRafPending) {
 scrollRafPending = true;
 requestAnimationFrame(() => {
 scrollRafPending = false;
-updateTopBlurBar();
+updateTopBlurBar(true);
 });
 }
 }, { passive: true });
@@ -848,8 +1009,11 @@ if (tab === "history") {
 selectMode = false;
 selectedIndices.clear();
 renderHistory(true);
+requestAnimationFrame(() => updateHistCustomScrollbar(false));
+} else if (elHistScrollRail) {
+elHistScrollRail.classList.remove("visible", "scrollable", "active", "dragging", "idle");
 }
-updateTopBlurBar();
+updateTopBlurBar(false);
 }
 function extractCleanUrl(rawText = _a) {
 const str = String(rawText || "").trim();
@@ -960,8 +1124,15 @@ syncGroup("langGroup", prefs.lang);
 syncGroup("themeGroup", prefs.theme);
 syncGroup("btnStyleGroup", prefs.btnstyle);
 syncGroup("shapeGroup", prefs.shape);
-applyLang();
+applyLang(true);
 animateLiquidPill(0, true);
+setTimeout(() => {
+try {
+getHistory();
+updateHistStats();
+openOfflineDB().catch(() => {});
+} catch (_e) {}
+}, 90);
 }
 function getHistory() {
 if (historyMemCache) return historyMemCache;
@@ -1053,8 +1224,7 @@ function closeSaveModal() {
 const modal = document.getElementById("saveModal");
 if (modal && modal.classList.contains("open")) {
 modal.classList.remove("open");
-const m1 = document.getElementById("mediaModal");
-if (!m1 || !m1.classList.contains("open")) {
+if (!isAnyModalOpen()) {
 try { if (history.state && history.state.modalOpen) history.back(); } catch (_e) {}
 }
 }
@@ -1309,6 +1479,7 @@ const countBadge = document.getElementById("histSearchCountBadge");
 if (!list.length) {
 if (countBadge) countBadge.style.display = "none";
 elHistList.innerHTML = `<div class="card" style="text-align:center;color:var(--muted);font-size:13px;animation:msgSlideIn 0.24s cubic-bezier(0.34,1.56,0.64,1) both;">${t("histEmpty")}</div>`;
+requestAnimationFrame(() => updateHistCustomScrollbar(false));
 return;
 }
 const q = histSearchQuery;
@@ -1358,9 +1529,11 @@ countBadge.style.display = "none";
 }
 if (!matchCount) {
 elHistList.innerHTML = `<div class="card" style="text-align:center;color:var(--muted);font-size:13px;animation:msgSlideIn 0.24s cubic-bezier(0.34,1.56,0.64,1) both;">${t("histNoMatch")}</div>`;
+requestAnimationFrame(() => updateHistCustomScrollbar(false));
 return;
 }
 elHistList.innerHTML = html;
+requestAnimationFrame(() => updateHistCustomScrollbar(false));
 }
 elHistList.addEventListener("pointerdown", (e = _a) => {
 const card = e.target.closest(".hist-item"); if (!card || e.target.closest("[data-play]") || e.target.closest("[data-dl]")) return; const idx = Number(card.getAttribute("data-idx"));
@@ -1441,19 +1614,40 @@ visibleIdxs.forEach((idx = _a) => selectedIndices.add(idx));
 }
 renderHistory(false, true);
 }
+function onDelModalOverlayClick(overlayEl = _a, ev = _a) {
+if (ev && ev.target === overlayEl) closeDelConfirmModal();
+}
+function closeDelConfirmModal() {
+const modal = document.getElementById("delConfirmModal");
+if (modal && modal.classList.contains("open")) {
+modal.classList.remove("open");
+if (!isAnyModalOpen()) {
+try { if (history.state && history.state.modalOpen) history.back(); } catch (_e) {}
+}
+}
+syncModalScrollLock();
+}
 function deleteSelectedHistory() {
 if (!selectedIndices.size || isDeletingHist) return;
 if (performance.now() - selectModeEnteredAt < 350) return;
 const btn = document.getElementById("delSelectedBtn");
-if (!delConfirmArmed) {
-delConfirmArmed = true;
-updateDelBtnLabel();
 if (btn) triggerBtnPop(btn);
-if (delConfirmTimer) clearTimeout(delConfirmTimer);
-delConfirmTimer = setTimeout(() => { resetDelConfirmState(); }, 3200);
-return;
+const titleEl = document.getElementById("delModalTitle");
+const subEl = document.getElementById("delModalSub");
+const confirmBtn = document.getElementById("delModalConfirmBtn");
+if (titleEl) titleEl.textContent = t("delModalTitle");
+if (subEl) subEl.textContent = `${t("delModalSubPrefix")}${selectedIndices.size}`;
+if (confirmBtn) confirmBtn.textContent = t("btnDeleteConfirm");
+const modal = document.getElementById("delConfirmModal");
+if (modal && !modal.classList.contains("open")) {
+modal.classList.add("open");
+pushModalHistoryState();
 }
-resetDelConfirmState();
+syncModalScrollLock();
+}
+function confirmDeleteSelectedHistory() {
+closeDelConfirmModal();
+if (!selectedIndices.size || isDeletingHist) return;
 isDeletingHist = true; const toRemove = new Set(selectedIndices);
 document.querySelectorAll("#historyList .hist-item").forEach((card = _a) => {
 const idx = Number(card.getAttribute("data-idx")); if (toRemove.has(idx)) card.classList.add("removing");
@@ -1469,6 +1663,7 @@ exitSelectMode();
 }, 260);
 }
 function exitSelectMode() {
+closeDelConfirmModal();
 resetClearConfirmState();
 selectMode = false;
 selectedIndices.clear();
@@ -1583,24 +1778,17 @@ mediaEl.volume = 1;
 let userExplicitMute = false;
 const isModalAlive = () => myModalSession === modalSessionId && modal.classList.contains("open") && activeMediaEl === mediaEl;
 let fallbackStage = 0; let seeking = false; let seekSettleUntil = 0; let lastLiveScrubTs = 0; let loopRestartLockUntil = 0;
-mediaEl._cleanupPlayer = () => {
-seeking = false;
-if (seekAnimRaf) {
-cancelAnimationFrame(seekAnimRaf);
-seekAnimRaf = null;
-}
-};
 const switchPlayerSource = async () => {
 if (!isModalAlive() || usingLocalBlob) return;
 if (fallbackStage === 0 && altPlayUrl && mediaEl.src !== altPlayUrl) {
-fallbackStage = 1; mediaEl.src = altPlayUrl; mediaEl.loop = true; mediaEl.muted = userExplicitMute; mediaEl.load(); mediaEl.play().catch(() => {});
+fallbackStage = 1; mediaEl.src = altPlayUrl; mediaEl.loop = true; mediaEl.muted = userExplicitMute; mediaEl.load(); if (!seeking) mediaEl.play().catch(() => {});
 return;
 }
 if (fallbackStage <= 1 && sourceOriginUrl && sourceOriginUrl.toLowerCase().includes("tiktok.com")) {
 fallbackStage = 2;
 try {
 const fresh = await resolveTikTokItems(sourceOriginUrl, isAudio); if (fresh && fresh[0] && fresh[0].playUrl && isModalAlive()) {
-mediaEl.src = fresh[0].playUrl; mediaEl.loop = true; mediaEl.muted = userExplicitMute; mediaEl.load(); mediaEl.play().catch(() => {});
+mediaEl.src = fresh[0].playUrl; mediaEl.loop = true; mediaEl.muted = userExplicitMute; mediaEl.load(); if (!seeking) mediaEl.play().catch(() => {});
 return;
 }
 } catch (_e) {}
@@ -1609,7 +1797,7 @@ if (fallbackStage <= 2 && sourceOriginUrl) {
 fallbackStage = 3;
 const cloudStream = `${CLOUD_API}/api/download?url=${encodeURIComponent(sourceOriginUrl)}&type=${isAudio ? "audio" : "video"}&quality=best&no_watermark=1`;
 if (mediaEl.src !== cloudStream) {
-mediaEl.src = cloudStream; mediaEl.loop = true; mediaEl.muted = userExplicitMute; mediaEl.load(); mediaEl.play().catch(() => {});
+mediaEl.src = cloudStream; mediaEl.loop = true; mediaEl.muted = userExplicitMute; mediaEl.load(); if (!seeking) mediaEl.play().catch(() => {});
 }
 }
 };
@@ -1638,13 +1826,13 @@ try { mediaEl.pause(); mediaEl.muted = true; } catch (_e) {}
 return;
 }
 const now = performance.now();
-const paused = mediaEl.paused && !mediaEl.ended && now >= loopRestartLockUntil;
+const paused = seeking || (mediaEl.paused && !mediaEl.ended && now >= loopRestartLockUntil);
 if (paused !== lastPausedUiState) {
 lastPausedUiState = paused;
 const iconSvg = paused ? PLAY_SVG : PAUSE_SVG;
 playBtn.innerHTML = iconSvg;
 indEl.innerHTML = iconSvg;
-indEl.classList.toggle("visible", paused);
+indEl.classList.toggle("visible", paused && !seeking);
 }
 muteBtn.textContent = userExplicitMute ? t("btnSoundOff") : t("btnSoundOn");
 }; const ensureUnmutedIfDesired = () => {
@@ -1653,6 +1841,7 @@ mediaEl.muted = false;
 if (mediaEl.volume === 0) mediaEl.volume = 1;
 }
 }; const restartLoopSeamless = () => {
+if (seeking) return;
 const now = performance.now();
 if (now < loopRestartLockUntil) return;
 loopRestartLockUntil = now + 260;
@@ -1664,11 +1853,11 @@ const p = mediaEl.play();
 if (p && typeof p.catch === "function") p.catch(() => {});
 syncUi();
 }; const updatePlaybackFrame = () => {
-if (!isModalAlive()) return;
+if (!isModalAlive() || seeking) return;
 const now = performance.now();
 const dur = mediaEl.duration;
 const cur = mediaEl.currentTime;
-if (!seeking && dur && isFinite(dur) && dur > 0) {
+if (dur && isFinite(dur) && dur > 0) {
 if (dur > 0.35 && cur >= dur - 0.06 && now >= loopRestartLockUntil) {
 restartLoopSeamless();
 return;
@@ -1683,10 +1872,10 @@ timeTxt.textContent = nextStr;
 }
 }
 }; const startSeekLoop120Hz = () => {
-if (seekAnimRaf) return;
+if (seekAnimRaf || seeking) return;
 const tick = () => {
 seekAnimRaf = null;
-if (!isModalAlive()) return;
+if (!isModalAlive() || seeking) return;
 updatePlaybackFrame();
 if (!mediaEl.paused || mediaEl.ended || performance.now() < loopRestartLockUntil) {
 seekAnimRaf = requestAnimationFrame(tick);
@@ -1694,7 +1883,7 @@ seekAnimRaf = requestAnimationFrame(tick);
 };
 seekAnimRaf = requestAnimationFrame(tick);
 }; const togglePlay = () => {
-if (!isModalAlive()) return;
+if (!isModalAlive() || seeking) return;
 ensureUnmutedIfDesired();
 triggerBtnPop(playBtn); if (mediaEl.paused) {
 const dur = mediaEl.duration;
@@ -1730,7 +1919,7 @@ lastRenderedTimeStr = nextStr;
 timeTxt.textContent = nextStr;
 }
 const now = performance.now();
-if (commitExact || (now - lastLiveScrubTs >= 40 && !mediaEl.seeking)) {
+if (commitExact || (now - lastLiveScrubTs >= 28 && !mediaEl.seeking)) {
 lastLiveScrubTs = now;
 try { mediaEl.currentTime = target; } catch (_e) {}
 }
@@ -1746,6 +1935,7 @@ cancelAnimationFrame(seekAnimRaf);
 seekAnimRaf = null;
 }
 try { mediaEl.pause(); } catch (_e) {}
+syncUi();
 }
 };
 const finishSeeking = () => {
@@ -1761,6 +1951,18 @@ if (p && typeof p.catch === "function") p.catch(() => {});
 startSeekLoop120Hz();
 syncUi();
 };
+mediaEl._cleanupPlayer = () => {
+seeking = false;
+window.removeEventListener("pointerup", finishSeeking, true);
+window.removeEventListener("pointercancel", finishSeeking, true);
+window.removeEventListener("touchend", finishSeeking, true);
+window.removeEventListener("touchcancel", finishSeeking, true);
+window.removeEventListener("mouseup", finishSeeking, true);
+if (seekAnimRaf) {
+cancelAnimationFrame(seekAnimRaf);
+seekAnimRaf = null;
+}
+};
 seekEl.addEventListener("pointerdown", beginSeeking);
 seekEl.addEventListener("mousedown", beginSeeking);
 seekEl.addEventListener("touchstart", beginSeeking, { passive: true });
@@ -1769,10 +1971,16 @@ seekEl.addEventListener("pointercancel", finishSeeking);
 seekEl.addEventListener("mouseup", finishSeeking);
 seekEl.addEventListener("touchend", finishSeeking, { passive: true });
 seekEl.addEventListener("touchcancel", finishSeeking, { passive: true });
+window.addEventListener("pointerup", finishSeeking, true);
+window.addEventListener("pointercancel", finishSeeking, true);
+window.addEventListener("touchend", finishSeeking, true);
+window.addEventListener("touchcancel", finishSeeking, true);
+window.addEventListener("mouseup", finishSeeking, true);
 seekEl.oninput = () => {
 if (!seeking) {
 beginSeeking();
 }
+try { if (!mediaEl.paused) mediaEl.pause(); } catch (_e) {}
 previewAndApplyScrub(false);
 };
 seekEl.onchange = () => {
@@ -1784,10 +1992,18 @@ seekSettleUntil = 0;
 }
 };
 mediaEl.onplay = () => {
+if (seeking) {
+try { mediaEl.pause(); } catch (_e) {}
+return;
+}
 syncUi();
 startSeekLoop120Hz();
 };
 mediaEl.onplaying = () => {
+if (seeking) {
+try { mediaEl.pause(); } catch (_e) {}
+return;
+}
 syncUi();
 startSeekLoop120Hz();
 };
@@ -1806,11 +2022,15 @@ mediaEl.onloadedmetadata = () => {
 if (!isModalAlive()) return;
 timeTxt.textContent = `${fmtSec(mediaEl.currentTime)} / ${fmtSec(mediaEl.duration)}`;
 syncUi();
-startSeekLoop120Hz();
+if (!seeking) startSeekLoop120Hz();
 };
 mediaEl.ontimeupdate = () => {
 if (!isModalAlive()) {
 try { mediaEl.pause(); mediaEl.muted = true; } catch (_e) {}
+return;
+}
+if (seeking) {
+try { if (!mediaEl.paused) mediaEl.pause(); } catch (_e) {}
 return;
 }
 updatePlaybackFrame();
@@ -1825,7 +2045,7 @@ startSeekLoop120Hz();
 };
 let autoplayStarted = false;
 const startAutoplay = () => {
-if (autoplayStarted || !isModalAlive()) return;
+if (autoplayStarted || !isModalAlive() || seeking) return;
 autoplayStarted = true;
 mediaEl.loop = true;
 mediaEl.defaultMuted = false;
@@ -1834,20 +2054,20 @@ mediaEl.volume = 1;
 const p = mediaEl.play();
 if (p && typeof p.then === "function") {
 p.then(() => {
-if (!isModalAlive()) return;
+if (!isModalAlive() || seeking) return;
 if (!userExplicitMute && mediaEl.muted) {
 mediaEl.muted = false;
 }
 syncUi();
 startSeekLoop120Hz();
 }).catch(() => {
-if (!isModalAlive()) return;
+if (!isModalAlive() || seeking) return;
 mediaEl.muted = true;
 mediaEl.play().then(() => {
-if (!isModalAlive()) return;
+if (!isModalAlive() || seeking) return;
 startSeekLoop120Hz();
 setTimeout(() => {
-if (isModalAlive() && !userExplicitMute) {
+if (isModalAlive() && !userExplicitMute && !seeking) {
 try {
 mediaEl.muted = false;
 mediaEl.volume = 1;
@@ -1887,8 +2107,7 @@ document.exitFullscreen().catch(() => {});
 } catch (_e) {}
 const modal = document.getElementById("mediaModal"); if (modal.classList.contains("open")) {
 modal.classList.remove("open", "fs-mode");
-const m2 = document.getElementById("saveModal");
-if (!m2 || !m2.classList.contains("open")) {
+if (!isAnyModalOpen()) {
 try { if (history.state && history.state.modalOpen) history.back(); } catch (_e) {}
 }
 }
