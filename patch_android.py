@@ -357,6 +357,8 @@ for jp in glob.glob(os.path.join(root_dir, "android/app/src/main/java/**/MainAct
             if (this.bridge != null && this.bridge.getWebView() != null) {
                 android.webkit.WebView wv = this.bridge.getWebView();
                 wv.setBackgroundColor(sysBarColor);
+        wv.setVerticalScrollBarEnabled(false);
+        wv.setHorizontalScrollBarEnabled(false);
                 android.view.ViewParent vp = wv.getParent();
                 while (vp instanceof android.view.View) {
                     ((android.view.View) vp).setBackgroundColor(sysBarColor);
